@@ -22,16 +22,16 @@ public class CardModel
     public CardModel(CardEntity entity, bool isPlayer)
     {
         CardEntity cardEntity = entity;
-        name = cardEntity.name;
-        hp = cardEntity.hp;
-        at = cardEntity.at;
-        cost = cardEntity.cost;
-        icon = cardEntity.icon;
-        cip = cardEntity.cip;
-        pig = cardEntity.pig;
-        spAbility = cardEntity.spAbility;
-        ability = cardEntity.ability;
-        spell = cardEntity.spell;
+        name = cardEntity.Name;
+        hp = cardEntity.HP;
+        at = cardEntity.At;
+        cost = cardEntity.Cost;
+        icon = cardEntity.Icon;
+        cip = cardEntity.Cip;
+        pig = cardEntity.Pig;
+        spAbility = cardEntity.SpAbility;
+        ability = cardEntity.Ability;
+        spell = cardEntity.Spell;
         isAlive = true;
         isPlayerCard = isPlayer;
     }

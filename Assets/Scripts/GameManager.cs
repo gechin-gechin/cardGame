@@ -5,10 +5,8 @@ using R3;   //UniRxから書き換え
 
 public class GameManager : Singleton<GameManager>
 {
-    public Transform playerHeroTransform,
-                    enemyHeroTransform;
     // whose turn?
-    public bool isplayerTurn;
+    public bool isplayerTurn { get; private set;}
 
     public Transform heroTransform;
     [SerializeField] Transform enemyTransform;
@@ -26,36 +24,22 @@ public class GameManager : Singleton<GameManager>
 
 
     //TIME
-    int timeCount;
+    private ReactiveProperty<int> timeCount = new ReactiveProperty<int>();
 
 
     void Start()
     {
         StartGame();
-        Player.HP.Subscribe(hp => {
-            uiManager.ShowPlayerHp(hp);
-            if (hp <= 0) {
-                ShowResultPanel(Player.HP.CurrentValue);
-            }
-        }).AddTo(Player);
-        Enemy.HP.Subscribe(hp => {
-            uiManager.ShowEnemyHp(hp);
-            if (hp <= 0)
-            {
-                ShowResultPanel(Player.HP.CurrentValue);
-            }
-        }).AddTo(Enemy);
+        timeCount.Subscribe(time => uiManager.UpdateTime(time)).AddTo(this);
     }
 
     void StartGame()
     {
         Player.Init(true,8);
         Enemy.Init(false,7);
-        timeCount =  20;
-        uiManager.UpdateTime(timeCount);
+        timeCount.Value =  20;
         isplayerTurn = true;
         TurnCalc();
-        uiManager.ShowManaCost(Player.manaCost,Enemy.manaCost);
         uiManager.HideResultPanel();
     }
     
@@ -77,13 +61,11 @@ public class GameManager : Singleton<GameManager>
 
     private IEnumerator CountDownTime()
     {
-        timeCount = 20;
-        uiManager.UpdateTime(timeCount);
-        while (timeCount>0)
+        timeCount.Value = 20;
+        while (timeCount.Value >0)
         {
             yield return new WaitForSeconds(1);
-            timeCount--;
-            uiManager.UpdateTime(timeCount);
+            timeCount.Value--;
         }
         ChangeTurn();
     }
@@ -127,21 +109,13 @@ public class GameManager : Singleton<GameManager>
     
     public void ReduceManaCost(int cost, bool isPlayerCard)
     {
-        if (isPlayerCard)
-        {
-            Player.manaCost -= cost;
-        }
-        else
-        {
-            Enemy.manaCost -= cost;
-        }
-        uiManager.ShowManaCost(Player.manaCost,Enemy.manaCost);
+        gamePlayer(isPlayerCard).ReduceManaCost(cost);
     }
 
-    private void ShowResultPanel(int heroHP)
+    public void ShowResultPanel()
     {
         StopAllCoroutines();
-        uiManager.ShowResultPanel(heroHP);
+        uiManager.ShowResultPanel(Player.HP.CurrentValue);
     }
 
     public void OnClickTurnENdButton()
@@ -179,7 +153,6 @@ public class GameManager : Singleton<GameManager>
             Enemy.DrawCard();
         }
         TurnCalc();
-        uiManager.ShowManaCost(Player.manaCost, Enemy.manaCost);
     }
 
     public void Restart()

@@ -15,16 +15,15 @@ public class AI : MonoBehaviour
         /*場にカードを出す*/
         //手札のリストを取得
         CardController[] handcardList = GameManager.I.Enemy.GetHandCards();
-
         //条件：モンスターカードならコストのみ
         //条件：スペルカードはコストと使用可能かどうか CanSpellUse
         //コスト以下のカードがあれば、カードをフィールドに出し続ける。 モンスターでなければ
         while (Array.Exists(handcardList, card =>
-        (card.model.cost <= GameManager.I.Enemy.manaCost)//コスト以下で勝つ
+        (card.model.cost <= GameManager.I.Enemy.ManaCost.CurrentValue)//コスト以下で勝つ
         && (!card.IsSpell||(card.IsSpell&&card.CanUseSpell()))))//スペルじゃない＝モンスター　あるいは　使用可能なスペルカード
         {
             //その中から出せるカードを取得
-            CardController[] selectableHandCardList = Array.FindAll(handcardList, card =>(card.model.cost <= GameManager.I.Enemy.manaCost) && (!card.IsSpell || (card.IsSpell && card.CanUseSpell())));
+            CardController[] selectableHandCardList = Array.FindAll(handcardList, card =>(card.model.cost <= GameManager.I.Enemy.ManaCost.CurrentValue) && (!card.IsSpell || (card.IsSpell && card.CanUseSpell())));
 
             //場に出すカードを選択
             CardController selectCard = selectableHandCardList[0];
@@ -119,10 +118,10 @@ public class AI : MonoBehaviour
                 break;
             //HERO
             case SPELL.DAMAGE_ENEMY_HERO:
-                movePosition = GameManager.I.playerHeroTransform;
+                movePosition = GameManager.I.Player.Icon;
                 break;
             case SPELL.HEAL_FRIEND_HERO:
-                movePosition = GameManager.I.enemyHeroTransform;
+                movePosition = GameManager.I.Enemy.Icon;
                 break;
             //Draw
             case SPELL.DRAW_CARD:

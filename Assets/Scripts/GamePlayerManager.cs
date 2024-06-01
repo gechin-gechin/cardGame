@@ -10,18 +10,22 @@ public class GamePlayerManager : MonoBehaviour
     [SerializeField]private List<CardEntity> decklist = new List<CardEntity>();//motomoto
     public List<CardEntity> Deck { get; private set; }//yamafuda
     //Hand
-    [SerializeField]private Transform hand = null;
+    [SerializeField] private Transform icon = null;
+    [SerializeField] private Transform hand = null;
     [SerializeField] private Transform field = null;
     [SerializeField] private CardController cardPrefab = null;
 
     //HP
     private ReactiveProperty<int> hp = new ReactiveProperty<int>();
     public ReadOnlyReactiveProperty<int> HP => hp;
-
-    public Transform Field { get => field;private set => field = value; }
-
     //COST
-    public int manaCost;
+    private ReactiveProperty<int> manaCost = new ReactiveProperty<int>();
+    public ReadOnlyReactiveProperty<int> ManaCost => manaCost;
+
+    //Propaty
+    public Transform Field { get => field; private set => field = value; }
+    public Transform Icon { get => icon; private set => icon = value; }
+
     public int defaultManaCost;
 
     public void Init(bool isplayer,int mana)
@@ -30,7 +34,7 @@ public class GamePlayerManager : MonoBehaviour
         this.isPlayer = isplayer;
 
         hp.Value = 10;
-        manaCost = defaultManaCost = mana;
+        manaCost.Value = defaultManaCost = mana;
 
         //3mai kubaru
         for (int i = 0; i < 3; i++)
@@ -63,7 +67,7 @@ public class GamePlayerManager : MonoBehaviour
         {
             defaultManaCost++;
         }
-        manaCost = defaultManaCost;
+        manaCost.Value = defaultManaCost;
     }
 
     public CardController[] GetFieldCards()
@@ -96,5 +100,10 @@ public class GamePlayerManager : MonoBehaviour
     public void TakeDamage(int strength)
     {
         hp.Value -= strength;
+    }
+
+    public void ReduceManaCost(int cost)
+    {
+        manaCost.Value -= cost;
     }
 }

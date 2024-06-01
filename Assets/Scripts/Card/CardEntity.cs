@@ -6,16 +6,27 @@ using UnityEngine;
 
 public class CardEntity : ScriptableObject
 {
-    public new string name;
-    public int hp;
-    public int at;
-    public int cost;
-    public Sprite icon;
-    public ABILITY ability;
-    public CIP cip;
-    public PIG pig;
-    public SP_ABILITY spAbility;
-    public SPELL spell;
+    [SerializeField] private new string name;
+    [SerializeField] private int hp;
+    [SerializeField] private int at;
+    [SerializeField] private int cost;
+    [SerializeField] private Sprite icon;
+    [SerializeField] private ABILITY ability;
+    [SerializeField] private CIP cip;
+    [SerializeField] private PIG pig;
+    [SerializeField] private SP_ABILITY spAbility;
+    [SerializeField] private SPELL spell;
+
+    public string Name { get => name;private set => name = value; }
+    public int HP { get => hp; private set => hp = value; }
+    public int At { get => at; private set => at = value; }
+    public int Cost { get => cost; private set => cost = value; }
+    public Sprite Icon { get => icon; private set => icon = value; }
+    public ABILITY Ability { get => ability; private set => ability = value; }
+    public CIP Cip { get => cip; private set => cip = value; }
+    public PIG Pig { get => pig; private set => pig = value; }
+    public SP_ABILITY SpAbility { get => spAbility; private set => spAbility = value; }
+    public SPELL Spell { get => spell; private set => spell = value; }
 }
 
 public enum ABILITY
