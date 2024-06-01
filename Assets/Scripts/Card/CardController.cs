@@ -22,9 +22,9 @@ public class CardController : MonoBehaviour
         movement = GetComponent<CardMovement>();
         gameManager = GameManager.I;
     }
-    public void Init(int cardID, bool isPlayer)
+    public void Init(CardEntity entity, bool isPlayer)
     {
-        model = new CardModel(cardID, isPlayer);
+        model = new CardModel(entity, isPlayer);
         view.SetCard(model);
     }
 
@@ -47,11 +47,11 @@ public class CardController : MonoBehaviour
     {
         if (model.isPlayerCard)
         {
-            gameManager.GiveCardToHand(gameManager.player.deck, gameManager.PlayerHandTransform);
+            gameManager.Player.DrawCard();
         }
         else
         {
-            gameManager.GiveCardToHand(gameManager.enemy.deck, gameManager.EnemyHandTransform);
+            gameManager.Enemy.DrawCard();
         }
     }
     public void RefreshView()

@@ -19,9 +19,9 @@ public class CardModel
     public bool isFieldCard;
     public bool isPlayerCard;
 
-    public CardModel(int cardID, bool isPlayer)
+    public CardModel(CardEntity entity, bool isPlayer)
     {
-        CardEntity cardEntity = Resources.Load<CardEntity>("CardDataList/Card" + cardID);
+        CardEntity cardEntity = entity;
         name = cardEntity.name;
         hp = cardEntity.hp;
         at = cardEntity.at;

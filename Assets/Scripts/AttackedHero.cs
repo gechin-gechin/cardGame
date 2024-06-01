@@ -28,7 +28,6 @@ public class AttackedHero : MonoBehaviour, IDropHandler
         {
             //attacked to hero
             GameManager.I.AttackToHero(attacker);
-            GameManager.I.CheckHeroHP();
         }
 
     }

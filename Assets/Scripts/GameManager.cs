@@ -1,17 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using R3;   //UniRxから書き換え
 
 public class GameManager : Singleton<GameManager>
 {
-    public Transform PlayerHandTransform,
-                    PlayerFieldTransform,
-                    EnemyHandTransform,
-                    EnemyFieldTransform,
-                    playerHeroTransform,
+    public Transform playerHeroTransform,
                     enemyHeroTransform;
-
-    [SerializeField] CardController cardPrefab;
     // whose turn?
     public bool isplayerTurn;
 
@@ -21,9 +16,13 @@ public class GameManager : Singleton<GameManager>
     //other scripts
     [SerializeField] AI enemyAI;
     [SerializeField] UIManager uiManager;
-    public GamePlayerManager player;
-    public GamePlayerManager enemy;
 
+    public GamePlayerManager Player;
+    public GamePlayerManager Enemy;
+    public GamePlayerManager gamePlayer(bool isPlayer)
+    {
+        return isPlayer ? Player : Enemy;
+    }
 
 
     //TIME
@@ -33,58 +32,36 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         StartGame();
+        Player.HP.Subscribe(hp => {
+            uiManager.ShowPlayerHp(hp);
+            if (hp <= 0) {
+                ShowResultPanel(Player.HP.CurrentValue);
+            }
+        }).AddTo(Player);
+        Enemy.HP.Subscribe(hp => {
+            uiManager.ShowEnemyHp(hp);
+            if (hp <= 0)
+            {
+                ShowResultPanel(Player.HP.CurrentValue);
+            }
+        }).AddTo(Enemy);
     }
 
     void StartGame()
     {
-        player.Init(new List<int>() { 5, 7, 9, 10, 6, 3, 10, 5, 2, 2, 5, 2, 10, 3, 3, 4 }, 8);
-        enemy.Init(new List<int>() { 10,3,7,8,8,10,10,10,7,6,3,5,2,1,3,4,1,2,3,4,10},7);
+        Player.Init(true,8);
+        Enemy.Init(false,7);
         timeCount =  20;
         uiManager.UpdateTime(timeCount);
-        SetInitHand();
         isplayerTurn = true;
         TurnCalc();
-        uiManager.ShowHeroHP(player.heroHp, enemy.heroHp);
-        uiManager.ShowManaCost(player.manaCost,enemy.manaCost);
+        uiManager.ShowManaCost(Player.manaCost,Enemy.manaCost);
         uiManager.HideResultPanel();
     }
-    void SetInitHand()
-    {
-        //3mai kubaru
-        for (int i = 0; i < 3; i++)
-        {
-            GiveCardToHand(player.deck,PlayerHandTransform);
-            GiveCardToHand(enemy.deck,EnemyHandTransform);
-        }
-    }
-    //カードをひく
-    public void GiveCardToHand(List<int>deck,Transform hand)
-    {
-        if (deck.Count == 0)
-        {
-            return;
-        }
-        int cardID = deck[0];
-        deck.RemoveAt(0);
-        CreateCard(cardID, hand);
-    }
-
-    void CreateCard(int cardID ,Transform hand)
-    {
-        CardController card = Instantiate(cardPrefab, hand, false);
-        if (hand.name == "PlayerHand")
-        {
-            card.Init(cardID,true);
-        }
-        else
-        {
-            card.Init(cardID, false);
-        }
-
-    }
+    
 
     //turn no shori
-    void TurnCalc()
+    private void TurnCalc()
     {
         StopAllCoroutines();
         StartCoroutine(CountDownTime());
@@ -98,7 +75,7 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    IEnumerator CountDownTime()
+    private IEnumerator CountDownTime()
     {
         timeCount = 20;
         uiManager.UpdateTime(timeCount);
@@ -119,12 +96,11 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    void PlayerTurn()
+    private void PlayerTurn()
     {
         Debug.Log("player turn");
         //フィールドカードを攻撃表示にする。
-        CardController[] playerFieldCardList = PlayerFieldTransform.GetComponentsInChildren<CardController>();
-        SettingCanAttackView(playerFieldCardList, true);
+        SettingCanAttackView(Player.GetFieldCards(), true);
     }
 
     //Battle!
@@ -139,28 +115,13 @@ public class GameManager : Singleton<GameManager>
     //主人公に攻撃
     public void AttackToHero(CardController attacker)
     {
-        if (attacker.model.isPlayerCard)
-        {
-            enemy.heroHp -= attacker.model.at;
-        }
-        else
-        {
-            player.heroHp -= attacker.model.at;
-        }
+        //shujinko ja nai kara
+        gamePlayer(!attacker.model.isPlayerCard).TakeDamage(attacker.model.at);
         attacker.SetCanAttack(false);
-        uiManager.ShowHeroHP(player.heroHp,enemy.heroHp);
     }
     public void HealToHero(CardController healer)
     {
-        if (healer.model.isPlayerCard)
-        {
-            player.heroHp += healer.model.at;
-        }
-        else
-        {
-            enemy.heroHp += healer.model.at;
-        }
-        uiManager.ShowHeroHP(player.heroHp, enemy.heroHp);
+        gamePlayer(healer.model.isPlayerCard).TakeHeal(healer.model.at);
     }
 
     
@@ -168,23 +129,16 @@ public class GameManager : Singleton<GameManager>
     {
         if (isPlayerCard)
         {
-            player.manaCost -= cost;
+            Player.manaCost -= cost;
         }
         else
         {
-            enemy.manaCost -= cost;
+            Enemy.manaCost -= cost;
         }
-        uiManager.ShowManaCost(player.manaCost,enemy.manaCost);
+        uiManager.ShowManaCost(Player.manaCost,Enemy.manaCost);
     }
 
-    public void CheckHeroHP()
-    {
-        if (player.heroHp <= 0 || enemy.heroHp <= 0)
-        {
-            ShowResultPanel(player.heroHp);
-        }
-    }
-    void ShowResultPanel(int heroHP)
+    private void ShowResultPanel(int heroHP)
     {
         StopAllCoroutines();
         uiManager.ShowResultPanel(heroHP);
@@ -200,72 +154,38 @@ public class GameManager : Singleton<GameManager>
     // tekinoka-do
     public CardController[] GetEnemyFieldCards(bool isPlayer)
     {
-        if (isPlayer)
-        {
-            return EnemyFieldTransform.GetComponentsInChildren<CardController>();
-        }
-        else
-        {
-            return PlayerFieldTransform.GetComponentsInChildren<CardController>();
-        }
+        return gamePlayer(!isPlayer).GetFieldCards();
     }
     //mikatanoka-do
     public CardController[] GetFriendFieldCards(bool isPlayer)
     {
-        if (isPlayer)
-        {
-            return PlayerFieldTransform.GetComponentsInChildren<CardController>();
-        }
-        else
-        {
-            return EnemyFieldTransform.GetComponentsInChildren<CardController>();
-        }
+        return gamePlayer(isPlayer).GetFieldCards();
     }
 
     public void ChangeTurn()
     {
-        CardController[] playerFieldCardList = PlayerFieldTransform.GetComponentsInChildren<CardController>();
-        SettingCanAttackView(playerFieldCardList, false);
-        CardController[] enemyFieldCardList = EnemyFieldTransform.GetComponentsInChildren<CardController>();
-        SettingCanAttackView(enemyFieldCardList, false);
+        SettingCanAttackView(Player.GetFieldCards(), false);
+        SettingCanAttackView(Enemy.GetFieldCards(), false);
         isplayerTurn = !isplayerTurn;
         //draw
         if (isplayerTurn)
         {
-            player.IncreaseManaCost();
-            GiveCardToHand(player.deck, PlayerHandTransform);
+            Player.IncreaseManaCost();
+            Player.DrawCard();
         }
         else
         {
-            enemy.IncreaseManaCost();
-            GiveCardToHand(enemy.deck, EnemyHandTransform);
+            Enemy.IncreaseManaCost();
+            Enemy.DrawCard();
         }
         TurnCalc();
-        uiManager.ShowManaCost(player.manaCost, enemy.manaCost);
+        uiManager.ShowManaCost(Player.manaCost, Enemy.manaCost);
     }
 
     public void Restart()
     {
-        //場のカードを破壊
-        foreach (Transform card in PlayerHandTransform)
-        {
-            Destroy(card.gameObject);
-        }
-        foreach (Transform card in PlayerFieldTransform)
-        {
-            Destroy(card.gameObject);
-        }
-        foreach (Transform card in EnemyHandTransform)
-        {
-            Destroy(card.gameObject);
-        }
-        foreach (Transform card in EnemyFieldTransform)
-        {
-            Destroy(card.gameObject);
-        }
-        //デッキを元に戻す
-        player.deck = new List<int>() { 1, 1, 2, 3, 1, 4, 2, 2 };
-        enemy.deck = new List<int>() { 1, 2, 1, 2, 4, 1, 2, 3 };
+        Player.Restart();
+        Enemy.Restart();
         StartGame();
     }
 }

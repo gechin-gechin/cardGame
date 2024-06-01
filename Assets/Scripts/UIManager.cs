@@ -25,11 +25,16 @@ public class UIManager : MonoBehaviour
         timeCountText.text = timeCount.ToString();
     }
 
-    public void ShowHeroHP(int playerHeroHp, int enemyHeroHp)
+    public void ShowPlayerHp(int hp)
     {
-        playerHeroHpText.text = playerHeroHp.ToString();
-        EnemyHeroHpText.text = enemyHeroHp.ToString();
+        playerHeroHpText.text = hp.ToString();
     }
+
+    public void ShowEnemyHp(int hp)
+    {
+        EnemyHeroHpText.text = hp.ToString();
+    }
+
     public void ShowManaCost(int playerManaCost, int enemyManaCost)
     {
         playerManaCostText.text = playerManaCost.ToString();

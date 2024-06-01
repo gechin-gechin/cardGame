@@ -1163,8 +1163,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d189eb11205674784939b2f065706ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deck: 
-  heroHp: 0
+  decklist:
+  - {fileID: 11400000, guid: e0af5c49ea8b948a6aa0bd79474ee580, type: 2}
+  - {fileID: 11400000, guid: 774f44c793fdb4009b33d9a81b9d88ed, type: 2}
+  - {fileID: 11400000, guid: e0af5c49ea8b948a6aa0bd79474ee580, type: 2}
+  - {fileID: 11400000, guid: e0af5c49ea8b948a6aa0bd79474ee580, type: 2}
+  - {fileID: 11400000, guid: e0af5c49ea8b948a6aa0bd79474ee580, type: 2}
+  - {fileID: 11400000, guid: e0af5c49ea8b948a6aa0bd79474ee580, type: 2}
+  - {fileID: 11400000, guid: c03bd46f24f3544078fe43ff150bc9b3, type: 2}
+  - {fileID: 11400000, guid: c03bd46f24f3544078fe43ff150bc9b3, type: 2}
+  - {fileID: 11400000, guid: c03bd46f24f3544078fe43ff150bc9b3, type: 2}
+  - {fileID: 11400000, guid: c03bd46f24f3544078fe43ff150bc9b3, type: 2}
+  - {fileID: 11400000, guid: e23c317a3a9ae47a9be564c6ba4d69c1, type: 2}
+  - {fileID: 11400000, guid: e23c317a3a9ae47a9be564c6ba4d69c1, type: 2}
+  - {fileID: 11400000, guid: e23c317a3a9ae47a9be564c6ba4d69c1, type: 2}
+  - {fileID: 11400000, guid: 2256c82ad87334de0877ad279c216997, type: 2}
+  - {fileID: 11400000, guid: 2256c82ad87334de0877ad279c216997, type: 2}
+  hand: {fileID: 612567013}
+  field: {fileID: 525751833}
+  cardPrefab: {fileID: 1990719698581586055, guid: 0430be0f47751466dadbda96f680c8fc, type: 3}
   manaCost: 0
   defaultManaCost: 0
 --- !u!1 &865767655
@@ -1633,8 +1650,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d189eb11205674784939b2f065706ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deck: 
-  heroHp: 0
+  decklist:
+  - {fileID: 11400000, guid: 570463d79b7ee4c7399e6943692bb269, type: 2}
+  - {fileID: 11400000, guid: c03bd46f24f3544078fe43ff150bc9b3, type: 2}
+  - {fileID: 11400000, guid: 9b2fe6fd4ba8347d48ace3acab7d8ba5, type: 2}
+  - {fileID: 11400000, guid: 1f4cec41a11ff476397ab2ac3e2e283f, type: 2}
+  - {fileID: 11400000, guid: 5cac7458d46324cc498d46b579ccff30, type: 2}
+  - {fileID: 11400000, guid: e23c317a3a9ae47a9be564c6ba4d69c1, type: 2}
+  - {fileID: 11400000, guid: 1f4cec41a11ff476397ab2ac3e2e283f, type: 2}
+  - {fileID: 11400000, guid: 570463d79b7ee4c7399e6943692bb269, type: 2}
+  - {fileID: 11400000, guid: 774f44c793fdb4009b33d9a81b9d88ed, type: 2}
+  - {fileID: 11400000, guid: 774f44c793fdb4009b33d9a81b9d88ed, type: 2}
+  - {fileID: 11400000, guid: 570463d79b7ee4c7399e6943692bb269, type: 2}
+  - {fileID: 11400000, guid: 1f4cec41a11ff476397ab2ac3e2e283f, type: 2}
+  - {fileID: 11400000, guid: 774f44c793fdb4009b33d9a81b9d88ed, type: 2}
+  - {fileID: 11400000, guid: 774f44c793fdb4009b33d9a81b9d88ed, type: 2}
+  - {fileID: 11400000, guid: 1f4cec41a11ff476397ab2ac3e2e283f, type: 2}
+  hand: {fileID: 1370786128}
+  field: {fileID: 52817232}
+  cardPrefab: {fileID: 1990719698581586055, guid: 0430be0f47751466dadbda96f680c8fc, type: 3}
   manaCost: 0
   defaultManaCost: 0
 --- !u!1 &1370786127
@@ -2121,20 +2155,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc5711fd02052424ea8801f3ead0d1b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerHandTransform: {fileID: 1370786128}
-  PlayerFieldTransform: {fileID: 52817232}
-  EnemyHandTransform: {fileID: 612567013}
-  EnemyFieldTransform: {fileID: 525751833}
   playerHeroTransform: {fileID: 1299748758}
   enemyHeroTransform: {fileID: 800135141}
-  cardPrefab: {fileID: 1990719698581586055, guid: 0430be0f47751466dadbda96f680c8fc, type: 3}
   isplayerTurn: 0
   heroTransform: {fileID: 1299748758}
   enemyTransform: {fileID: 800135141}
   enemyAI: {fileID: 800135144}
   uiManager: {fileID: 1528718296}
-  player: {fileID: 1299748761}
-  enemy: {fileID: 800135145}
+  Player: {fileID: 1299748761}
+  Enemy: {fileID: 800135145}
 --- !u!4 &1865965299
 Transform:
   m_ObjectHideFlags: 0
