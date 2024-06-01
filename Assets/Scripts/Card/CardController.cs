@@ -20,7 +20,7 @@ public class CardController : MonoBehaviour
     {
         view = GetComponent<CardView>();
         movement = GetComponent<CardMovement>();
-        gameManager = GameManager.instance;
+        gameManager = GameManager.I;
     }
     public void Init(int cardID, bool isPlayer)
     {

@@ -18,7 +18,7 @@ public class AttackedHero : MonoBehaviour, IDropHandler
         }
 
         //敵フィールドにシールドカードがあると攻撃できない
-        CardController[] enemyFieldCards = GameManager.instance.GetEnemyFieldCards(attacker.model.isPlayerCard);
+        CardController[] enemyFieldCards = GameManager.I.GetEnemyFieldCards(attacker.model.isPlayerCard);
         if (Array.Exists(enemyFieldCards, card => card.model.ability == ABILITY.SHIELD))
         {
             return;
@@ -27,8 +27,8 @@ public class AttackedHero : MonoBehaviour, IDropHandler
         if (attacker.model.canAttack)
         {
             //attacked to hero
-            GameManager.instance.AttackToHero(attacker);
-            GameManager.instance.CheckHeroHP();
+            GameManager.I.AttackToHero(attacker);
+            GameManager.I.CheckHeroHP();
         }
 
     }

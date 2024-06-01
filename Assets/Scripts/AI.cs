@@ -8,7 +8,7 @@ public class AI : MonoBehaviour
     GameManager gameManager;
     private void Start()
     {
-        gameManager = GameManager.instance;
+        gameManager = GameManager.I;
     }
 
 

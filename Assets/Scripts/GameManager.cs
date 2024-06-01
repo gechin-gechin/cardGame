@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     public Transform PlayerHandTransform,
                     PlayerFieldTransform,
@@ -28,15 +28,6 @@ public class GameManager : MonoBehaviour
 
     //TIME
     int timeCount;
-    //シングルトン化（どこからでもアクセスできるようにする）
-    public static GameManager instance;
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-    }
 
 
     void Start()

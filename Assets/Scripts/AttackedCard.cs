@@ -20,7 +20,7 @@ public class AttackedCard : MonoBehaviour, IDropHandler
         }
 
         //敵フィールドにシールドカードがあれば、シールドカード以外は攻撃できない
-        CardController[] enemyFieldCards = GameManager.instance.GetEnemyFieldCards(attacker.model.isPlayerCard);
+        CardController[] enemyFieldCards = GameManager.I.GetEnemyFieldCards(attacker.model.isPlayerCard);
         if (Array.Exists(enemyFieldCards, card => card.model.ability == ABILITY.SHIELD)&&defender.model.ability!=ABILITY.SHIELD)
         {
             return;
@@ -33,7 +33,7 @@ public class AttackedCard : MonoBehaviour, IDropHandler
         if(attacker.model.canAttack)
         {
             //battle
-            GameManager.instance.CardsBattle(attacker, defender);
+            GameManager.I.CardsBattle(attacker, defender);
         }
         
     }
