@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using R3;   //UniRxから書き換え
+using R3;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -13,7 +13,7 @@ public class GameManager : Singleton<GameManager>
 
     //other scripts
     [SerializeField] AI enemyAI;
-    [SerializeField] UIManager uiManager;
+    [SerializeField]private UIManager UI;
 
     public GamePlayerManager Player;
     public GamePlayerManager Enemy;
@@ -30,7 +30,11 @@ public class GameManager : Singleton<GameManager>
     void Start()
     {
         StartGame();
-        timeCount.Subscribe(time => uiManager.UpdateTime(time)).AddTo(this);
+        timeCount.Subscribe(time => UI.UpdateTime(time)).AddTo(this);
+        UI.TurnEndButton.onClick.AddListener(()=> {
+            if (isplayerTurn)
+                ChangeTurn();
+            });
     }
 
     void StartGame()
@@ -40,7 +44,7 @@ public class GameManager : Singleton<GameManager>
         timeCount.Value =  20;
         isplayerTurn = true;
         TurnCalc();
-        uiManager.HideResultPanel();
+        UI.HideResultPanel();
     }
     
 
@@ -74,7 +78,7 @@ public class GameManager : Singleton<GameManager>
     {
         foreach (CardController card in fieldCardList)
         {
-            card.SetCanAttack(canAttack);
+            card.model.canAttack.Value = canAttack;
         }
     }
 
@@ -98,42 +102,18 @@ public class GameManager : Singleton<GameManager>
     public void AttackToHero(CardController attacker)
     {
         //shujinko ja nai kara
-        gamePlayer(!attacker.model.isPlayerCard).TakeDamage(attacker.model.at);
-        attacker.SetCanAttack(false);
+        gamePlayer(!attacker.model.isPlayerCard).TakeDamage(attacker.model.At.CurrentValue);
+        attacker.model.canAttack.Value = false;
     }
     public void HealToHero(CardController healer)
     {
-        gamePlayer(healer.model.isPlayerCard).TakeHeal(healer.model.at);
-    }
-
-    
-    public void ReduceManaCost(int cost, bool isPlayerCard)
-    {
-        gamePlayer(isPlayerCard).ReduceManaCost(cost);
+        gamePlayer(healer.model.isPlayerCard).TakeHeal(healer.model.At.CurrentValue);
     }
 
     public void ShowResultPanel()
     {
         StopAllCoroutines();
-        uiManager.ShowResultPanel(Player.HP.CurrentValue);
-    }
-
-    public void OnClickTurnENdButton()
-    {
-        if (isplayerTurn)
-        {
-            ChangeTurn();
-        }
-    }
-    // tekinoka-do
-    public CardController[] GetEnemyFieldCards(bool isPlayer)
-    {
-        return gamePlayer(!isPlayer).GetFieldCards();
-    }
-    //mikatanoka-do
-    public CardController[] GetFriendFieldCards(bool isPlayer)
-    {
-        return gamePlayer(isPlayer).GetFieldCards();
+        UI.ShowResultPanel(Player.HP.CurrentValue);
     }
 
     public void ChangeTurn()

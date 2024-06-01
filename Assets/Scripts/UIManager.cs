@@ -5,10 +5,12 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] GameObject resultPanel;
-    [SerializeField] Text resultText;
+    [SerializeField] private GameObject resultPanel;
+    [SerializeField] private Text resultText;
+    [SerializeField] private Text timeCountText;
+    [SerializeField] private Button turnEndButton;
 
-    [SerializeField] Text timeCountText;
+    public Button TurnEndButton { get => turnEndButton;private set => turnEndButton = value; }
 
     public void HideResultPanel()
     {

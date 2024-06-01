@@ -2,25 +2,26 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using R3;
+using R3.Triggers;
 
 public class CardController : MonoBehaviour
 {
-    CardView view;          //　見かけ(view)に関することを操作
-    public CardModel model;        //　データ(model)に関することを操作
-    public CardMovement movement;  //　移動(movement)に関することを操作
+    private CardView view;          //　見かけ(view)に関することを操作
+    public CardModel model { get; private set; }       //　データ(model)に関することを操作
+    public CardMovement movement { get; private set; }  //　移動(movement)に関することを操作
 
-    GameManager gameManager;
     // spell dato true
-    public bool IsSpell
-    {
-        get { return model.spell != SPELL.NONE; }
-    }
+    public bool IsSpell=> model.spell != SPELL.NONE;
+    //use cost propaty
+    private Subject<int> useThis = new Subject<int>();
+    public Observable<int> UseThis => useThis;
 
+    //INITIALIZE
     private void Awake()
     {
         view = GetComponent<CardView>();
         movement = GetComponent<CardMovement>();
-        gameManager = GameManager.I;
     }
     public void Init(CardEntity entity, bool isPlayer)
     {
@@ -31,12 +32,11 @@ public class CardController : MonoBehaviour
     public void Attack(CardController enemyCard)
     {
         model.Attack(enemyCard);
-        SetCanAttack(false);
+        model.canAttack.Value = false;
     }
     public void Heal(CardController friendCard)
     {
         model.Heal(friendCard);
-        friendCard.RefreshView();
     }
     public void DestroyCard(CardController destroyCard)
     {
@@ -47,35 +47,25 @@ public class CardController : MonoBehaviour
     {
         if (model.isPlayerCard)
         {
-            gameManager.Player.DrawCard();
+            GameManager.I.Player.DrawCard();
         }
         else
         {
-            gameManager.Enemy.DrawCard();
+            GameManager.I.Enemy.DrawCard();
         }
-    }
-    public void RefreshView()
-    {
-        view.Refresh(model);
     }
     public void Show()
     {
         view.Show();
     }
 
-    public void SetCanAttack(bool canAtk)
-    {
-        model.canAttack = canAtk;
-        view.SetActiveSelectablePanel(canAtk);
-    }
-
     public void OnField()
     {
-        gameManager.ReduceManaCost(model.cost, model.isPlayerCard);//コストを支払う
+        useThis.OnNext(model.cost);//コストを支払う
         model.isFieldCard = true;//フィールドカードする
         if (model.ability == ABILITY.INIT_ATTACKABLE)//疾走
         {
-            SetCanAttack(true);
+            model.canAttack.Value = true;
         }
         if (model.cip != CIP.NONE)
         {
@@ -85,13 +75,8 @@ public class CardController : MonoBehaviour
 
     public IEnumerator CheakAlive()
     {
-        RefreshView();
         yield return new WaitForSeconds(0.25f);
-        if (model.isAlive)
-        {
-            RefreshView();
-        }
-        else
+        if (!model.isAlive)
         {
             if (model.pig != PIG.NONE)
             {
@@ -109,8 +94,10 @@ public class CardController : MonoBehaviour
             case CIP.ALL_DELETE:
                 //破壊カードを取得
                 //相手フィールド全て
-                CardController[] enemycards = gameManager.GetEnemyFieldCards(this.model.isPlayerCard);
-                CardController[] destroyCard = Array.FindAll(gameManager.GetFriendFieldCards(this.model.isPlayerCard), card => card != this);
+                CardController[] enemycards = GameManager.I.gamePlayer(!this.model.isPlayerCard).GetFieldCards();
+                CardController[] destroyCard = Array.FindAll(
+                    GameManager.I.gamePlayer(!this.model.isPlayerCard).GetFieldCards(),
+                    card => card != this);
                 //破壊
                 foreach (CardController Cards in destroyCard)
                 {
@@ -158,7 +145,8 @@ public class CardController : MonoBehaviour
             case SPELL.DAMAGE_ENEMY_CARD:
             case SPELL.DAMAGE_ENEMY_CARDS:
             case SPELL.DESTROY_ENEMY_CARD:
-                CardController[] cards = gameManager.GetEnemyFieldCards(this.model.isPlayerCard);
+                //相手のフィールドカードを取得
+                CardController[] cards = GameManager.I.gamePlayer(!this.model.isPlayerCard).GetFieldCards();
                 if (cards.Length > 0)
                 {
                     return true;
@@ -167,7 +155,8 @@ public class CardController : MonoBehaviour
             //味方が必要な場合
             case SPELL.HEAL_FRIEND_CARD:
             case SPELL.HEAL_FRIEND_CARDS:
-                CardController[] friendCards = gameManager.GetFriendFieldCards(this.model.isPlayerCard);
+                //味方のフィールドカードを取得
+                CardController[] friendCards = GameManager.I.gamePlayer(this.model.isPlayerCard).GetFieldCards();
                 if (friendCards.Length > 0)
                 {
                     return true;
@@ -209,9 +198,10 @@ public class CardController : MonoBehaviour
                 break;
             case SPELL.DAMAGE_ENEMY_CARDS:
                 //相手フィールド全てに攻撃する
-                CardController[]cards= gameManager.GetEnemyFieldCards(this.model.isPlayerCard);
+                //相手のフィールドカードを取得
+                CardController[] cards = GameManager.I.gamePlayer(!this.model.isPlayerCard).GetFieldCards();
                 //回ってる途中に削除されると怖いから二回呼ぶ
-                foreach(CardController enemyCard in cards)
+                foreach (CardController enemyCard in cards)
                 {
                     Attack(enemyCard);
                 }
@@ -222,7 +212,7 @@ public class CardController : MonoBehaviour
                 break;
             case SPELL.DAMAGE_ENEMY_HERO:
                 // tekihero
-                gameManager.AttackToHero(this);
+                GameManager.I.AttackToHero(this);
                 break;
             case SPELL.HEAL_FRIEND_CARD:
                 if (target == null)
@@ -236,14 +226,14 @@ public class CardController : MonoBehaviour
                 Heal(target);
                 break;
             case SPELL.HEAL_FRIEND_CARDS:
-                CardController[] friendCards = gameManager.GetFriendFieldCards(this.model.isPlayerCard);
+                CardController[] friendCards = GameManager.I.gamePlayer(this.model.isPlayerCard).GetFieldCards();
                 foreach(CardController friendCard in friendCards)
                 {
                     Heal(friendCard);
                 }
                 break;
             case SPELL.HEAL_FRIEND_HERO:
-                gameManager.HealToHero(this);
+                GameManager.I.HealToHero(this);
                 break;
             case SPELL.DRAW_CARD:
                 DrawCard1();
@@ -270,7 +260,7 @@ public class CardController : MonoBehaviour
             case SPELL.NONE:
                 return;
         }
-        gameManager.ReduceManaCost(model.cost, model.isPlayerCard);//コストを支払う
+        useThis.OnNext(model.cost);//コストを支払う
         StartCoroutine(Trash(this.gameObject));
     }
 

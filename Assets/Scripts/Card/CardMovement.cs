@@ -24,7 +24,7 @@ public class CardMovement : MonoBehaviour,IDragHandler,IBeginDragHandler,IEndDra
         {
             isDraggable = true;
         }
-        else if (card.model.isPlayerCard && GameManager.I.isplayerTurn && card.model.isFieldCard && card.model.canAttack)
+        else if (card.model.isPlayerCard && GameManager.I.isplayerTurn && card.model.isFieldCard && card.model.canAttack.Value)
         {
             isDraggable = true;
         }

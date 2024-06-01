@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using R3;
 
 public class CardModel
 {
     public string name;
-    public int hp;
-    public int at;
+    private ReactiveProperty<int> hp = new ReactiveProperty<int>();
+    public ReadOnlyReactiveProperty<int> HP => hp;
+    private ReactiveProperty<int> at = new ReactiveProperty<int>();
+    public ReadOnlyReactiveProperty<int> At => at;
     public int cost;
     public Sprite icon;
     public ABILITY ability;
@@ -15,7 +18,7 @@ public class CardModel
     public SP_ABILITY spAbility;
     public SPELL spell;
     public bool isAlive;
-    public bool canAttack;
+    public ReactiveProperty<bool> canAttack = new ReactiveProperty<bool>();
     public bool isFieldCard;
     public bool isPlayerCard;
 
@@ -23,8 +26,8 @@ public class CardModel
     {
         CardEntity cardEntity = entity;
         name = cardEntity.Name;
-        hp = cardEntity.HP;
-        at = cardEntity.At;
+        hp.Value = cardEntity.HP;
+        at.Value = cardEntity.At;
         cost = cardEntity.Cost;
         icon = cardEntity.Icon;
         cip = cardEntity.Cip;
@@ -38,26 +41,26 @@ public class CardModel
 
      void Damage(int dmg)
     {
-        hp -= dmg;
-        if (hp <= 0)
+        hp.Value -= dmg;
+        if (hp.Value <= 0)
         {
-            hp = 0;
+            hp.Value = 0;
             isAlive = false;
         }
     }
 
     void recoveryHP(int point)
     {
-        hp += point;
+        hp.Value += point;
     }
 
     public void Attack(CardController card)
     {
-        card.model.Damage(at);
+        card.model.Damage(at.Value);
     }
     public void Heal(CardController card)
     {
-        card.model.recoveryHP(at);
+        card.model.recoveryHP(at.Value);
     }
     public void DestroyCard(CardController card)
     {

@@ -59,6 +59,9 @@ public class GamePlayerManager : MonoBehaviour
     {
         CardController card = Instantiate(cardPrefab, hand, false);
         card.Init(entity, isPlayer);
+        card.UseThis.Subscribe(cost => {
+            manaCost.Value -= cost;
+        }).AddTo(card);
     }
 
     public void IncreaseManaCost()
@@ -100,10 +103,5 @@ public class GamePlayerManager : MonoBehaviour
     public void TakeDamage(int strength)
     {
         hp.Value -= strength;
-    }
-
-    public void ReduceManaCost(int cost)
-    {
-        manaCost.Value -= cost;
     }
 }

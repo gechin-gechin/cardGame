@@ -51,11 +51,11 @@ public class AI : MonoBehaviour
         
         /*攻撃*/
         //攻撃可能カードがあれば攻撃を繰り返す。
-        while (Array.Exists(enemyFieldCardList, card => card.model.canAttack))　//Array.Find(これの中から,これ（新しいりすと）にします=>こんな感じのものを探してきて);
+        while (Array.Exists(enemyFieldCardList, card => card.model.canAttack.Value))　//Array.Find(これの中から,これ（新しいりすと）にします=>こんな感じのものを探してきて);
         {
             //Debug.Log("攻撃！");
             //攻撃可能カードを取得
-            CardController[] enemyCanAttackCardList = Array.FindAll(enemyFieldCardList, card => card.model.canAttack);
+            CardController[] enemyCanAttackCardList = Array.FindAll(enemyFieldCardList, card => card.model.canAttack.Value);
             //自分側のフィールドのカードリストを取得
             CardController[] playerFieldCardList = GameManager.I.Player.GetFieldCards();
 
@@ -102,11 +102,11 @@ public class AI : MonoBehaviour
         {
             //単体
             case SPELL.DAMAGE_ENEMY_CARD:
-                target = GameManager.I.GetEnemyFieldCards(card.model.isPlayerCard)[0];
+                target = GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards()[0];
                 movePosition = target.transform;
                 break;
             case SPELL.HEAL_FRIEND_CARD:
-                target = GameManager.I.GetFriendFieldCards(card.model.isPlayerCard)[0];
+                target = GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards()[0];
                 movePosition = target.transform;
                 break;
             //全体
@@ -125,24 +125,22 @@ public class AI : MonoBehaviour
                 break;
             //Draw
             case SPELL.DRAW_CARD:
-                movePosition = GameManager.I.Enemy.Field;
-                break;
             case SPELL.DRAW_2CARD:
                 movePosition = GameManager.I.Enemy.Field;
                 break;
             //Destroy
             case SPELL.DESTROY_ENEMY_CARD:
-                target = GameManager.I.GetEnemyFieldCards(card.model.isPlayerCard)[0];
+                target = GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards()[0];
                 movePosition = target.transform;
                 break;
         }
         if (card.model.spell == SPELL.HEAL_FRIEND_CARD)
         {
-            target = GameManager.I.GetFriendFieldCards(card.model.isPlayerCard)[0];
+            target = GameManager.I.gamePlayer(card.model.isPlayerCard).GetFieldCards()[0];
         }
         if (card.model.spell == SPELL.DAMAGE_ENEMY_CARD||card.model.spell==SPELL.DESTROY_ENEMY_CARD)
         {
-            target = GameManager.I.GetEnemyFieldCards(card.model.isPlayerCard)[0];
+            target = GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards()[0];
         }
         //ターゲット　それぞれのフィールド
         StartCoroutine(card.movement.MoveToField(movePosition));
