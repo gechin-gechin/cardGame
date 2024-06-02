@@ -23,7 +23,7 @@ public class GamePlayerManager : MonoBehaviour
     public ReadOnlyReactiveProperty<int> ManaCost => manaCost;
 
     //Propaty
-    public Transform Field { get => field; private set => field = value; }
+    public Transform Field { get => field; private set => field = value; }//koko to ai
     public Transform Icon { get => icon; private set => icon = value; }
 
     public int defaultManaCost;

@@ -27,6 +27,7 @@ public class CardController : MonoBehaviour
     {
         model = new CardModel(entity, isPlayer);
         view.SetCard(model);
+        movement.Init(model);
     }
 
     public void Attack(CardController enemyCard)
