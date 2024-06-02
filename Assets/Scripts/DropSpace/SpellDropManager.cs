@@ -4,21 +4,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 //攻撃された側が攻撃処理を行う
-public class SpellDropManager : MonoBehaviour, IDropHandler
+public class SpellDropManager : BaseDropSpace
 {
-    public void OnDrop(PointerEventData eventData)
+    protected override void process(CardController card)
     {
-        //SPELLカードを選択
-        CardController spellCard = eventData.pointerDrag.GetComponent<CardController>();
-        //targetカードを選択
+        //分岐に使うため、nullも許容？？？
         CardController target = GetComponent<CardController>();
-        if (spellCard == null)
+        if (card.CanUseSpell())
         {
-            return;
-        }
-        if (spellCard.CanUseSpell())
-        {
-            spellCard.UseSpellTo(target);
+            card.UseSpellTo(target);
         }
     }
 }

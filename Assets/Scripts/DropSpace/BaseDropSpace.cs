@@ -9,6 +9,8 @@ using R3.Triggers;
 
 abstract public class BaseDropSpace : MonoBehaviour
 {
+    private CardController card = null;
+
     private void Awake()
     {
         GetComponent<ObservableDropTrigger>().OnDropAsObservable()
@@ -18,7 +20,7 @@ abstract public class BaseDropSpace : MonoBehaviour
 
     private void OnDrop(PointerEventData e)
     {
-        CardController card = e.pointerDrag.GetComponent<CardController>();
+        card = e.pointerDrag.GetComponent<CardController>();
         if(card != null)
         {
             process(card);
@@ -28,5 +30,10 @@ abstract public class BaseDropSpace : MonoBehaviour
     protected virtual void process(CardController card)
     {
 
+    }
+
+    protected CardController[] GetEnemyCards()
+    {
+        return GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards();
     }
 }
