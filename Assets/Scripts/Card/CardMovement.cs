@@ -9,13 +9,12 @@ using R3.Triggers;
 
 public class CardMovement : MonoBehaviour
 {
-    //kimarimonku
-    public Transform defaultParent { get; set; }
-    // ObservableEventTriggerをオブジェクトに追加
+    private CardModel model;
     private ObservableEventTrigger trigger = null;
 
-    public bool isDraggable;
-    private CardModel model;
+    public Transform defaultParent { get; set; }
+    public bool isDraggable { get; set; }
+
 
     public void Init(CardModel _model)
     {
@@ -27,7 +26,7 @@ public class CardMovement : MonoBehaviour
         trigger.OnBeginDragAsObservable()
             .Do(_ => isDraggable = ResetIsDraggable())
             .Where(_=> isDraggable)
-            .Subscribe(e => OnBeginDrag(e)).AddTo(this);
+            .Subscribe(_ => OnBeginDrag()).AddTo(this);
         //ドラッグ中
         trigger.OnDragAsObservable()
             .Where(_ => isDraggable)
@@ -35,7 +34,7 @@ public class CardMovement : MonoBehaviour
         //ドラッグ終わり
         trigger.OnEndDragAsObservable()
             .Where(_ => isDraggable)
-            .Subscribe(e => OnEndDrag(e)).AddTo(this);
+            .Subscribe(_ => OnEndDrag()).AddTo(this);
     }
 
     private bool ResetIsDraggable()
@@ -50,13 +49,11 @@ public class CardMovement : MonoBehaviour
         {
             return true;
         }
-
         return false;
     }
 
-    private void OnBeginDrag(PointerEventData eventData)
+    private void OnBeginDrag()
     {
-        
         if (!isDraggable)
         {
             return;
@@ -69,14 +66,14 @@ public class CardMovement : MonoBehaviour
     }
 
     //camera yoh
-    private void OnDrag(PointerEventData eventData)
+    private void OnDrag(PointerEventData e)
     {
-        Vector3 TargetPos = Camera.main.ScreenToWorldPoint(eventData.position);
+        Vector3 TargetPos = Camera.main.ScreenToWorldPoint(e.position);
         TargetPos.z = 0;
         transform.position = TargetPos;
     }
 
-    private void OnEndDrag(PointerEventData eventData)
+    private void OnEndDrag()
     {
         transform.SetParent(defaultParent, false);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
