@@ -10,7 +10,7 @@ public static class PIGData
         switch (card.model.pig)
         {
             case PIG.DRAW1:
-                card.DrawCard();
+                card.DrowCard();
                 return;
             case PIG.NONE:
                 return;

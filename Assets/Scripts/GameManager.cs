@@ -5,43 +5,39 @@ using R3;
 
 public class GameManager : Singleton<GameManager>
 {
-    // whose turn?
-    public bool isplayerTurn { get; private set;}
-
-    public Transform heroTransform;
-    [SerializeField] Transform enemyTransform;
-
-    //other scripts
-    [SerializeField] AI enemyAI;
-    [SerializeField]private UIManager UI;
-
-    public GamePlayerManager Player;
-    public GamePlayerManager Enemy;
-    public GamePlayerManager gamePlayer(bool isPlayer)
+    [SerializeField] private GamePlayerManager player = null;
+    [SerializeField] private GamePlayerManager enemy = null;
+    private GamePlayerManager gamePlayer(bool isPlayer)
     {
-        return isPlayer ? Player : Enemy;
+        return isPlayer ? player : enemy;
     }
 
-
+    //other scripts
+    [SerializeField] private AI enemyAI;
+    [SerializeField] private UIManager UI;
+    // whose turn?
+    public bool isplayerTurn { get; private set; }
     //TIME
     private ReactiveProperty<int> timeCount = new ReactiveProperty<int>();
 
 
     void Start()
     {
-        StartGame();
         timeCount.Subscribe(time => UI.UpdateTime(time)).AddTo(this);
         UI.TurnEndButton.onClick.AddListener(()=> {
             if (isplayerTurn)
                 ChangeTurn();
             });
+        enemyAI.Init(player, enemy);
         enemyAI.TurnEnd += ChangeTurn;
+
+        StartGame();
     }
 
     void StartGame()
     {
-        Player.Init(true,8);
-        Enemy.Init(false,7);
+        player.Init(true,8);
+        enemy.Init(false,7);
         timeCount.Value =  20;
         isplayerTurn = true;
         TurnCalc();
@@ -73,8 +69,8 @@ public class GameManager : Singleton<GameManager>
     private void ChangeTurn()
     {
         isplayerTurn = !isplayerTurn;
-        Player.ChangeTurn(isplayerTurn);
-        Enemy.ChangeTurn(isplayerTurn);
+        player.ChangeTurn(isplayerTurn);
+        enemy.ChangeTurn(isplayerTurn);
         TurnCalc();
     }
 
@@ -102,13 +98,27 @@ public class GameManager : Singleton<GameManager>
     public void ShowResultPanel()
     {
         StopAllCoroutines();
-        UI.ShowResultPanel(Player.HP.CurrentValue);
+        UI.ShowResultPanel(player.HP.CurrentValue);
     }
 
     public void Restart()
     {
-        Player.Restart();
-        Enemy.Restart();
+        player.Restart();
+        enemy.Restart();
         StartGame();
+    }
+
+    public CardController[] GetFieldCards(bool isPlayer)
+    {
+        return gamePlayer(isPlayer).GetFieldCards();
+    }
+    public int GetPlayerManaCost()
+    {
+        return player.ManaCost.CurrentValue;
+    }
+
+    public void DrowCard(bool isPlayer)
+    {
+        gamePlayer(isPlayer).DrowCard();
     }
 }

@@ -5,25 +5,34 @@ using UnityEngine;
 
 public class AI : MonoBehaviour
 {
+    private GamePlayerManager player = null;
+    private GamePlayerManager enemy = null;
     public Action TurnEnd;
+
+    public void Init(GamePlayerManager p, GamePlayerManager e)
+    {
+        player = p;
+        enemy = e;
+    }
+
     public IEnumerator EnemyrTurn()
     {
         Debug.Log("enemy turn");
         //相手側のフィールドカードを攻撃表示にする。
-        CardController[] enemyFieldCardList = GameManager.I.Enemy.GetFieldCards();
+        CardController[] enemyFieldCardList = enemy.GetFieldCards();
         yield return new WaitForSeconds(0.5f);
         /*場にカードを出す*/
         //手札のリストを取得
-        CardController[] handcardList = GameManager.I.Enemy.GetHandCards();
+        CardController[] handcardList = enemy.GetHandCards();
         //条件：モンスターカードならコストのみ
         //条件：スペルカードはコストと使用可能かどうか CanSpellUse
         //コスト以下のカードがあれば、カードをフィールドに出し続ける。 モンスターでなければ
         while (Array.Exists(handcardList, card =>
-        (card.model.cost <= GameManager.I.Enemy.ManaCost.CurrentValue)//コスト以下で勝つ
+        (card.model.cost <= enemy.ManaCost.CurrentValue)//コスト以下で勝つ
         && (!card.IsSpell||(card.IsSpell&&card.CanUseSpell()))))//スペルじゃない＝モンスター　あるいは　使用可能なスペルカード
         {
             //その中から出せるカードを取得
-            CardController[] selectableHandCardList = Array.FindAll(handcardList, card =>(card.model.cost <= GameManager.I.Enemy.ManaCost.CurrentValue) && (!card.IsSpell || (card.IsSpell && card.CanUseSpell())));
+            CardController[] selectableHandCardList = Array.FindAll(handcardList, card =>(card.model.cost <= enemy.ManaCost.CurrentValue) && (!card.IsSpell || (card.IsSpell && card.CanUseSpell())));
 
             //場に出すカードを選択
             CardController selectCard = selectableHandCardList[0];
@@ -38,12 +47,12 @@ public class AI : MonoBehaviour
             else//違ったらモンスタなので移動
             {
                 //カードを移動
-                StartCoroutine(selectCard.movement.MoveToField(GameManager.I.Enemy.Field));
+                StartCoroutine(selectCard.movement.MoveToField(enemy.Field));
                 selectCard.OnField();
             }
             //１まい無くした状態にする
             yield return new WaitForSeconds(0.5f);
-            handcardList = GameManager.I.Enemy.GetFieldCards();
+            handcardList = enemy.GetFieldCards();
         }
 
 
@@ -57,7 +66,7 @@ public class AI : MonoBehaviour
             //攻撃可能カードを取得
             CardController[] enemyCanAttackCardList = Array.FindAll(enemyFieldCardList, card => card.model.canAttack.Value);
             //自分側のフィールドのカードリストを取得
-            CardController[] playerFieldCardList = GameManager.I.Player.GetFieldCards();
+            CardController[] playerFieldCardList = player.GetFieldCards();
 
             //アタッカーカードを選択
             CardController attacker = enemyCanAttackCardList[0];
@@ -80,12 +89,12 @@ public class AI : MonoBehaviour
             else
             {
                 //Debug.Log("プレイヤーに");
-                StartCoroutine(attacker.movement.MoveToTarget(GameManager.I.heroTransform));
+                StartCoroutine(attacker.movement.MoveToTarget(player.Icon));//motoha GameManager.I.heroTransform
                 yield return new WaitForSeconds(0.25f);
                 GameManager.I.AttackToHero(attacker);
                 yield return new WaitForSeconds(0.25f);
             }
-            enemyFieldCardList = GameManager.I.Enemy.GetFieldCards();
+            enemyFieldCardList = enemy.GetFieldCards();
             yield return new WaitForSeconds(0.5f);
         }
 
@@ -102,45 +111,45 @@ public class AI : MonoBehaviour
         {
             //単体
             case SPELL.DAMAGE_ENEMY_CARD:
-                target = GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards()[0];
+                target = player.GetFieldCards()[0];
                 movePosition = target.transform;
                 break;
             case SPELL.HEAL_FRIEND_CARD:
-                target = GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards()[0];
+                target = player.GetFieldCards()[0];
                 movePosition = target.transform;
                 break;
             //全体
             case SPELL.DAMAGE_ENEMY_CARDS:
-                movePosition = GameManager.I.Player.Field;
+                movePosition = player.Field;
                 break;
             case SPELL.HEAL_FRIEND_CARDS:
-                movePosition = GameManager.I.Enemy.Field;
+                movePosition = enemy.Field;
                 break;
             //HERO
             case SPELL.DAMAGE_ENEMY_HERO:
-                movePosition = GameManager.I.Player.Icon;
+                movePosition = player.Icon;
                 break;
             case SPELL.HEAL_FRIEND_HERO:
-                movePosition = GameManager.I.Enemy.Icon;
+                movePosition = enemy.Icon;
                 break;
             //Draw
             case SPELL.DRAW_CARD:
             case SPELL.DRAW_2CARD:
-                movePosition = GameManager.I.Enemy.Field;
+                movePosition = enemy.Field;
                 break;
             //Destroy
             case SPELL.DESTROY_ENEMY_CARD:
-                target = GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards()[0];
+                target = player.GetFieldCards()[0];
                 movePosition = target.transform;
                 break;
         }
         if (card.model.spell == SPELL.HEAL_FRIEND_CARD)
         {
-            target = GameManager.I.gamePlayer(card.model.isPlayerCard).GetFieldCards()[0];
+            target = enemy.GetFieldCards()[0];
         }
         if (card.model.spell == SPELL.DAMAGE_ENEMY_CARD||card.model.spell==SPELL.DESTROY_ENEMY_CARD)
         {
-            target = GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards()[0];
+            target = player.GetFieldCards()[0];
         }
         //ターゲット　それぞれのフィールド
         StartCoroutine(card.movement.MoveToField(movePosition));

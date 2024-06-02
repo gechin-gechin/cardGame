@@ -41,7 +41,7 @@ public class CardMovement : MonoBehaviour
     {
         //カードのコストとPlayerのManaコストを比較
         bool shareFrag = model.isPlayerCard && GameManager.I.isplayerTurn;
-        if (!model.isFieldCard && shareFrag && model.cost <= GameManager.I.Player.ManaCost.CurrentValue)
+        if (!model.isFieldCard && shareFrag && model.cost <= GameManager.I.GetPlayerManaCost())
         {
             return true;
         }

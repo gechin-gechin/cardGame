@@ -8,7 +8,7 @@ public class GamePlayerManager : MonoBehaviour
     private bool isPlayer = false;
     //Deck
     [SerializeField]private List<CardEntity> decklist = new List<CardEntity>();//motomoto
-    public List<CardEntity> Deck { get; private set; }//yamafuda
+    private List<CardEntity> deck = new List<CardEntity>();//yamafuda
     //Hand
     [SerializeField] private Transform icon = null;
     [SerializeField] private Transform hand = null;
@@ -22,15 +22,15 @@ public class GamePlayerManager : MonoBehaviour
     private ReactiveProperty<int> manaCost = new ReactiveProperty<int>();
     public ReadOnlyReactiveProperty<int> ManaCost => manaCost;
 
-    //Propaty
+    //Propaty AIでしか使っていない
     public Transform Field { get => field; private set => field = value; }//koko to ai
     public Transform Icon { get => icon; private set => icon = value; }
 
-    public int defaultManaCost;
+    private int defaultManaCost = 0;
 
     public void Init(bool isplayer,int mana)
     {
-        this.Deck = this.decklist;
+        this.deck = this.decklist;
         this.isPlayer = isplayer;
 
         hp.Value = 10;
@@ -39,19 +39,19 @@ public class GamePlayerManager : MonoBehaviour
         //3mai kubaru
         for (int i = 0; i < 3; i++)
         {
-            DrawCard();
+            DrowCard();
         }
     }
 
     //カードをひく
-    public void DrawCard()
+    public void DrowCard()
     {
-        if (Deck.Count == 0)
+        if (deck.Count == 0)
         {
             return;
         }
-        CardEntity entity = Deck[0];
-        Deck.RemoveAt(0);
+        CardEntity entity = deck[0];
+        deck.RemoveAt(0);
         CreateCard(entity, hand);
     }
 
@@ -111,7 +111,7 @@ public class GamePlayerManager : MonoBehaviour
         if (isplayerTurn==isPlayer)
         {
             IncreaseManaCost();
-            DrawCard();
+            DrowCard();
             SettingCanAttackView(true);
         }
         else

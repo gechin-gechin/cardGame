@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using R3;
+using R3.Triggers;
+using DG.Tweening;
+[RequireComponent(typeof(ObservableEventTrigger))]
 
 public class CardView : MonoBehaviour
 {
@@ -14,7 +17,6 @@ public class CardView : MonoBehaviour
     [SerializeField] private GameObject selectablePanale;
     [SerializeField] private GameObject shieldPanel;
     [SerializeField] private GameObject  UraPanel;
-
 
     public void SetCard(CardModel cardModel)
     {
@@ -39,6 +41,18 @@ public class CardView : MonoBehaviour
             hpText.gameObject.SetActive(false);
             atText.gameObject.SetActive(false);
         }
+        setTrigger();
+    }
+
+    private void setTrigger()
+    {
+        ObservableEventTrigger trigger = GetComponent<ObservableEventTrigger>();
+        trigger?.OnPointerDownAsObservable()
+            .Subscribe(_ => transform.DOScale(new Vector3(1.2f,1.2f,1.0f),0.2f))
+            .AddTo(this);
+        trigger?.OnPointerUpAsObservable()
+            .Subscribe(_ => transform.DOScale(new Vector3(1.0f, 1.0f, 1.0f), 0.1f))
+            .AddTo(this);
     }
 
     public void Show()

@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using R3;
 using R3.Triggers;
 
-[RequireComponent(typeof(ObservableDropTrigger))]
+[RequireComponent(typeof(ObservableEventTrigger))]
 
 abstract public class BaseDropSpace : MonoBehaviour
 {
@@ -13,7 +13,7 @@ abstract public class BaseDropSpace : MonoBehaviour
 
     private void Awake()
     {
-        GetComponent<ObservableDropTrigger>().OnDropAsObservable()
+        GetComponent<ObservableEventTrigger>().OnDropAsObservable()
             .Subscribe(e => OnDrop(e))
             .AddTo(this);
     }
@@ -34,6 +34,6 @@ abstract public class BaseDropSpace : MonoBehaviour
 
     protected CardController[] GetEnemyCards()
     {
-        return GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards();
+        return GameManager.I.GetFieldCards(!card.model.isPlayerCard);
     }
 }

@@ -39,7 +39,7 @@ public class CardModel
         isPlayerCard = isPlayer;
     }
 
-     void Damage(int dmg)
+    private void Damage(int dmg)
     {
         hp.Value -= dmg;
         if (hp.Value <= 0)
@@ -48,8 +48,7 @@ public class CardModel
             isAlive = false;
         }
     }
-
-    void recoveryHP(int point)
+    private void recoveryHP(int point)
     {
         hp.Value += point;
     }
