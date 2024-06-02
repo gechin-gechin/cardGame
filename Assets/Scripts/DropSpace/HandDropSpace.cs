@@ -2,17 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HandDropSpace : MonoBehaviour
+public class HandDropSpace : BaseDropSpace
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void process(CardController card)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        base.process(card);
+        return;
     }
 }

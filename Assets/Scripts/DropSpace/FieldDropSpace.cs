@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FieldDropSpace : MonoBehaviour
+public class FieldDropSpace : BaseDropSpace
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void process(CardController card)
     {
-        
-    }
+        if (!card.movement.isDraggable)//ドラッグできるか
+        {
+            return;
+        }
+        if (card.IsSpell)
+        {
+            return;
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        card.movement.defaultParent = this.transform;//親を移動
+        if (card.model.isFieldCard)//フィールドカードなのか
+        {
+            return;
+        }
+        card.OnField();
     }
 }
