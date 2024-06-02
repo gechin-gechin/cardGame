@@ -104,4 +104,27 @@ public class GamePlayerManager : MonoBehaviour
     {
         hp.Value -= strength;
     }
+
+    public void ChangeTurn(bool isplayerTurn)
+    {
+        //case myturn
+        if (isplayerTurn==isPlayer)
+        {
+            IncreaseManaCost();
+            DrawCard();
+            SettingCanAttackView(true);
+        }
+        else
+        {
+            SettingCanAttackView(false);
+        }
+    }
+
+    private void SettingCanAttackView(bool canAttack)
+    {
+        foreach (CardController card in this.GetFieldCards())
+        {
+            card.model.canAttack.Value = canAttack;
+        }
+    }
 }

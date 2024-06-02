@@ -5,12 +5,12 @@ using UnityEngine;
 
 public class AI : MonoBehaviour
 {
+    public Action TurnEnd;
     public IEnumerator EnemyrTurn()
     {
         Debug.Log("enemy turn");
         //相手側のフィールドカードを攻撃表示にする。
         CardController[] enemyFieldCardList = GameManager.I.Enemy.GetFieldCards();
-        GameManager.I.SettingCanAttackView(enemyFieldCardList, true);
         yield return new WaitForSeconds(0.5f);
         /*場にカードを出す*/
         //手札のリストを取得
@@ -91,7 +91,7 @@ public class AI : MonoBehaviour
 
         yield return new WaitForSeconds(1);
         //ターンエンド
-        GameManager.I.ChangeTurn();
+        TurnEnd();
     }
 
     IEnumerator CastSpellOf(CardController card)

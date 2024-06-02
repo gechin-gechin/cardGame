@@ -35,6 +35,7 @@ public class GameManager : Singleton<GameManager>
             if (isplayerTurn)
                 ChangeTurn();
             });
+        enemyAI.TurnEnd += ChangeTurn;
     }
 
     void StartGame()
@@ -53,11 +54,7 @@ public class GameManager : Singleton<GameManager>
     {
         StopAllCoroutines();
         StartCoroutine(CountDownTime());
-        if (isplayerTurn)
-        {
-            PlayerTurn();
-        }
-        else
+        if (!isplayerTurn)
         {
             StartCoroutine(enemyAI.EnemyrTurn());
         }
@@ -73,20 +70,12 @@ public class GameManager : Singleton<GameManager>
         }
         ChangeTurn();
     }
-
-    public void SettingCanAttackView(CardController[] fieldCardList,bool canAttack)
+    private void ChangeTurn()
     {
-        foreach (CardController card in fieldCardList)
-        {
-            card.model.canAttack.Value = canAttack;
-        }
-    }
-
-    private void PlayerTurn()
-    {
-        Debug.Log("player turn");
-        //フィールドカードを攻撃表示にする。
-        SettingCanAttackView(Player.GetFieldCards(), true);
+        isplayerTurn = !isplayerTurn;
+        Player.ChangeTurn(isplayerTurn);
+        Enemy.ChangeTurn(isplayerTurn);
+        TurnCalc();
     }
 
     //Battle!
@@ -114,25 +103,6 @@ public class GameManager : Singleton<GameManager>
     {
         StopAllCoroutines();
         UI.ShowResultPanel(Player.HP.CurrentValue);
-    }
-
-    public void ChangeTurn()
-    {
-        SettingCanAttackView(Player.GetFieldCards(), false);
-        SettingCanAttackView(Enemy.GetFieldCards(), false);
-        isplayerTurn = !isplayerTurn;
-        //draw
-        if (isplayerTurn)
-        {
-            Player.IncreaseManaCost();
-            Player.DrawCard();
-        }
-        else
-        {
-            Enemy.IncreaseManaCost();
-            Enemy.DrawCard();
-        }
-        TurnCalc();
     }
 
     public void Restart()
