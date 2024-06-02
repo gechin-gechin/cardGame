@@ -2,24 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using R3;
 
 public class CardView : MonoBehaviour
 {
-    [SerializeField] Text nameText;
-    [SerializeField] Text hpText;
-    [SerializeField] Text atText;
-    [SerializeField] Text costText;
-    [SerializeField] Image iconImage;
-    [SerializeField] GameObject selectablePanale;
-    [SerializeField] GameObject shieldPanel;
-    [SerializeField] GameObject  UraPanel;
+    [SerializeField] private Text nameText;
+    [SerializeField] private Text hpText;
+    [SerializeField] private Text atText;
+    [SerializeField] private Text costText;
+    [SerializeField] private Image iconImage;
+    [SerializeField] private GameObject selectablePanale;
+    [SerializeField] private GameObject shieldPanel;
+    [SerializeField] private GameObject  UraPanel;
 
 
     public void SetCard(CardModel cardModel)
     {
         nameText.text = cardModel.name;
-        hpText.text = cardModel.hp.ToString();
-        atText.text = cardModel.at.ToString();
+        cardModel.HP.Subscribe(hp => hpText.text = hp.ToString()).AddTo(this);
+        cardModel.At.Subscribe(at => atText.text = at.ToString()).AddTo(this);
+        cardModel.canAttack.Subscribe(flag => selectablePanale.SetActive(flag)).AddTo(this);
         costText.text = cardModel.cost.ToString();
         iconImage.sprite = cardModel.icon;
         UraPanel.SetActive(!cardModel.isPlayerCard);
@@ -42,16 +44,5 @@ public class CardView : MonoBehaviour
     public void Show()
     {
         UraPanel.SetActive(false);
-    }
-
-    public void Refresh(CardModel cardModel)
-    {
-        hpText.text = cardModel.hp.ToString();
-        atText.text = cardModel.at.ToString();
-    }
-    
-    public void SetActiveSelectablePanel(bool flag)
-    {
-        selectablePanale.SetActive(flag);
     }
 }

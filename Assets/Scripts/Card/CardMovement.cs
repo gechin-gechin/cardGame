@@ -3,35 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
+using R3;
+using R3.Triggers;
+[RequireComponent(typeof(ObservableEventTrigger))]
 
-public class CardMovement : MonoBehaviour,IDragHandler,IBeginDragHandler,IEndDragHandler
+public class CardMovement : MonoBehaviour
 {
-    //kimarimonku
-    public Transform defaultParent;
+    private CardModel model;
+    private ObservableEventTrigger trigger = null;
 
-    public bool isDraggable;
+    public Transform defaultParent { get; set; }
+    public bool isDraggable { get; set; }
 
-    private void Start()
+
+    public void Init(CardModel _model)
     {
+        //初期化
+        model = _model;
         defaultParent = transform.parent;
+        trigger = GetComponent<ObservableEventTrigger>();
+        //ドラッグ開始
+        trigger.OnBeginDragAsObservable()
+            .Do(_ => isDraggable = ResetIsDraggable())
+            .Where(_=> isDraggable)
+            .Subscribe(_ => OnBeginDrag()).AddTo(this);
+        //ドラッグ中
+        trigger.OnDragAsObservable()
+            .Where(_ => isDraggable)
+            .Subscribe(e => OnDrag(e)).AddTo(this);
+        //ドラッグ終わり
+        trigger.OnEndDragAsObservable()
+            .Where(_ => isDraggable)
+            .Subscribe(_ => OnEndDrag()).AddTo(this);
     }
 
-    public void OnBeginDrag(PointerEventData eventData)
+    private bool ResetIsDraggable()
     {
         //カードのコストとPlayerのManaコストを比較
-        CardController card = GetComponent<CardController>();
-        if (card.model.isPlayerCard && GameManager.instance.isplayerTurn && !card.model.isFieldCard && card.model.cost <= GameManager.instance.player.manaCost)
+        bool shareFrag = model.isPlayerCard && GameManager.I.isplayerTurn;
+        if (!model.isFieldCard && shareFrag && model.cost <= GameManager.I.Player.ManaCost.CurrentValue)
         {
-            isDraggable = true;
+            return true;
         }
-        else if (card.model.isPlayerCard && GameManager.instance.isplayerTurn && card.model.isFieldCard && card.model.canAttack)
+        else if (model.isFieldCard && shareFrag && model.canAttack.Value)
         {
-            isDraggable = true;
+            return true;
         }
-        else
-        {
-            isDraggable = false;
-        }
+        return false;
+    }
+
+    private void OnBeginDrag()
+    {
         if (!isDraggable)
         {
             return;
@@ -44,27 +66,21 @@ public class CardMovement : MonoBehaviour,IDragHandler,IBeginDragHandler,IEndDra
     }
 
     //camera yoh
-    public void OnDrag(PointerEventData eventData)
+    private void OnDrag(PointerEventData e)
     {
-        if (!isDraggable)
-        {
-            return;
-        }
-        Vector3 TargetPos = Camera.main.ScreenToWorldPoint(eventData.position);
+        Vector3 TargetPos = Camera.main.ScreenToWorldPoint(e.position);
         TargetPos.z = 0;
         transform.position = TargetPos;
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    private void OnEndDrag()
     {
-        if (!isDraggable)
-        {
-            return;
-        }
         transform.SetParent(defaultParent, false);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
     }
 
+
+    //AI
     public IEnumerator MoveToField(Transform field)
     {
         //一度親をCanvasに変更する

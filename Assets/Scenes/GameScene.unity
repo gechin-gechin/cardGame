@@ -214,8 +214,9 @@ GameObject:
   - component: {fileID: 52817235}
   - component: {fileID: 52817234}
   - component: {fileID: 52817233}
-  - component: {fileID: 52817236}
   - component: {fileID: 52817237}
+  - component: {fileID: 52817239}
+  - component: {fileID: 52817238}
   m_Layer: 5
   m_Name: PlayerField
   m_TagString: Untagged
@@ -306,19 +307,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 52817231}
   m_CullTransparentMesh: 1
---- !u!114 &52817236
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 52817231}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94b6dc1d324e649e4a99317dcc0e67e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 1
 --- !u!114 &52817237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,6 +317,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f402b5157f0134415a8ad3c96cbaff86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &52817238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52817231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6bf1ad675e1e45449a3df7483cc70d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &52817239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52817231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175863aed172cdf47a35bdce36b9f67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &72884252
@@ -343,7 +355,7 @@ GameObject:
   - component: {fileID: 72884255}
   - component: {fileID: 72884254}
   m_Layer: 5
-  m_Name: EnemyCost
+  m_Name: CostText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -361,11 +373,11 @@ RectTransform:
   m_LocalScale: {x: 1.00008, y: 1.00008, z: 1.00008}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1528718295}
+  m_Father: {fileID: 800135141}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 738, y: 126}
+  m_AnchoredPosition: {x: 1581, y: -34}
   m_SizeDelta: {x: 160, y: 62}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &72884254
@@ -629,6 +641,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -710,6 +723,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1 &525751832
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,7 +894,7 @@ GameObject:
   - component: {fileID: 540932145}
   - component: {fileID: 540932144}
   m_Layer: 5
-  m_Name: icon
+  m_Name: iconImg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1014,7 +1071,7 @@ GameObject:
   - component: {fileID: 685963043}
   - component: {fileID: 685963042}
   m_Layer: 5
-  m_Name: icon
+  m_Name: iconImg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1090,6 +1147,8 @@ GameObject:
   - component: {fileID: 800135143}
   - component: {fileID: 800135144}
   - component: {fileID: 800135145}
+  - component: {fileID: 800135147}
+  - component: {fileID: 800135146}
   m_Layer: 5
   m_Name: Enemy
   m_TagString: Untagged
@@ -1112,6 +1171,7 @@ RectTransform:
   - {fileID: 225024893}
   - {fileID: 1003230352}
   - {fileID: 540932143}
+  - {fileID: 72884253}
   m_Father: {fileID: 1528718295}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1163,10 +1223,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d189eb11205674784939b2f065706ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deck: 
-  heroHp: 0
-  manaCost: 0
+  decklist:
+  - {fileID: 11400000, guid: e0af5c49ea8b948a6aa0bd79474ee580, type: 2}
+  - {fileID: 11400000, guid: 774f44c793fdb4009b33d9a81b9d88ed, type: 2}
+  - {fileID: 11400000, guid: e0af5c49ea8b948a6aa0bd79474ee580, type: 2}
+  - {fileID: 11400000, guid: e0af5c49ea8b948a6aa0bd79474ee580, type: 2}
+  - {fileID: 11400000, guid: e0af5c49ea8b948a6aa0bd79474ee580, type: 2}
+  - {fileID: 11400000, guid: e0af5c49ea8b948a6aa0bd79474ee580, type: 2}
+  - {fileID: 11400000, guid: c03bd46f24f3544078fe43ff150bc9b3, type: 2}
+  - {fileID: 11400000, guid: c03bd46f24f3544078fe43ff150bc9b3, type: 2}
+  - {fileID: 11400000, guid: c03bd46f24f3544078fe43ff150bc9b3, type: 2}
+  - {fileID: 11400000, guid: c03bd46f24f3544078fe43ff150bc9b3, type: 2}
+  - {fileID: 11400000, guid: e23c317a3a9ae47a9be564c6ba4d69c1, type: 2}
+  - {fileID: 11400000, guid: e23c317a3a9ae47a9be564c6ba4d69c1, type: 2}
+  - {fileID: 11400000, guid: e23c317a3a9ae47a9be564c6ba4d69c1, type: 2}
+  - {fileID: 11400000, guid: 2256c82ad87334de0877ad279c216997, type: 2}
+  - {fileID: 11400000, guid: 2256c82ad87334de0877ad279c216997, type: 2}
+  icon: {fileID: 540932143}
+  hand: {fileID: 612567013}
+  field: {fileID: 525751833}
+  cardPrefab: {fileID: 1990719698581586055, guid: 0430be0f47751466dadbda96f680c8fc, type: 3}
   defaultManaCost: 0
+--- !u!114 &800135146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800135140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13874c2be6f1640aa9642e662af7de99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpText: {fileID: 1003230353}
+  manaCostText: {fileID: 72884254}
+--- !u!114 &800135147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800135140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce46e299d3e3c4be1bb4d2247b23f6e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 800135145}
+  UI: {fileID: 800135146}
 --- !u!1 &865767655
 GameObject:
   m_ObjectHideFlags: 0
@@ -1258,7 +1363,7 @@ GameObject:
   - component: {fileID: 1003230354}
   - component: {fileID: 1003230353}
   m_Layer: 5
-  m_Name: HP
+  m_Name: HPText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1493,7 +1598,7 @@ GameObject:
   - component: {fileID: 1163501709}
   - component: {fileID: 1163501708}
   m_Layer: 5
-  m_Name: HP
+  m_Name: HPText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1572,6 +1677,8 @@ GameObject:
   - component: {fileID: 1299748760}
   - component: {fileID: 1299748759}
   - component: {fileID: 1299748761}
+  - component: {fileID: 1299748763}
+  - component: {fileID: 1299748762}
   m_Layer: 5
   m_Name: Hero
   m_TagString: Untagged
@@ -1594,6 +1701,7 @@ RectTransform:
   - {fileID: 2075215156}
   - {fileID: 1163501707}
   - {fileID: 685963041}
+  - {fileID: 1388314253}
   m_Father: {fileID: 1528718295}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1633,10 +1741,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d189eb11205674784939b2f065706ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deck: 
-  heroHp: 0
-  manaCost: 0
+  decklist:
+  - {fileID: 11400000, guid: 570463d79b7ee4c7399e6943692bb269, type: 2}
+  - {fileID: 11400000, guid: c03bd46f24f3544078fe43ff150bc9b3, type: 2}
+  - {fileID: 11400000, guid: 9b2fe6fd4ba8347d48ace3acab7d8ba5, type: 2}
+  - {fileID: 11400000, guid: 1f4cec41a11ff476397ab2ac3e2e283f, type: 2}
+  - {fileID: 11400000, guid: 5cac7458d46324cc498d46b579ccff30, type: 2}
+  - {fileID: 11400000, guid: e23c317a3a9ae47a9be564c6ba4d69c1, type: 2}
+  - {fileID: 11400000, guid: 1f4cec41a11ff476397ab2ac3e2e283f, type: 2}
+  - {fileID: 11400000, guid: 570463d79b7ee4c7399e6943692bb269, type: 2}
+  - {fileID: 11400000, guid: 774f44c793fdb4009b33d9a81b9d88ed, type: 2}
+  - {fileID: 11400000, guid: 774f44c793fdb4009b33d9a81b9d88ed, type: 2}
+  - {fileID: 11400000, guid: 570463d79b7ee4c7399e6943692bb269, type: 2}
+  - {fileID: 11400000, guid: 1f4cec41a11ff476397ab2ac3e2e283f, type: 2}
+  - {fileID: 11400000, guid: 774f44c793fdb4009b33d9a81b9d88ed, type: 2}
+  - {fileID: 11400000, guid: 774f44c793fdb4009b33d9a81b9d88ed, type: 2}
+  - {fileID: 11400000, guid: 1f4cec41a11ff476397ab2ac3e2e283f, type: 2}
+  icon: {fileID: 685963041}
+  hand: {fileID: 1370786128}
+  field: {fileID: 52817232}
+  cardPrefab: {fileID: 1990719698581586055, guid: 0430be0f47751466dadbda96f680c8fc, type: 3}
   defaultManaCost: 0
+--- !u!114 &1299748762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299748757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13874c2be6f1640aa9642e662af7de99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpText: {fileID: 1163501708}
+  manaCostText: {fileID: 1388314254}
+--- !u!114 &1299748763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1299748757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce46e299d3e3c4be1bb4d2247b23f6e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 1299748761}
+  UI: {fileID: 1299748762}
 --- !u!1 &1370786127
 GameObject:
   m_ObjectHideFlags: 0
@@ -1649,6 +1802,7 @@ GameObject:
   - component: {fileID: 1370786131}
   - component: {fileID: 1370786130}
   - component: {fileID: 1370786129}
+  - component: {fileID: 1370786133}
   - component: {fileID: 1370786132}
   m_Layer: 5
   m_Name: PlayerHand
@@ -1749,10 +1903,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 1370786127}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94b6dc1d324e649e4a99317dcc0e67e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 21e4e2646a5764cc7bc540da5734b1ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+--- !u!114 &1370786133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370786127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175863aed172cdf47a35bdce36b9f67b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1379082320
 GameObject:
   m_ObjectHideFlags: 0
@@ -1814,7 +1979,7 @@ GameObject:
   - component: {fileID: 1388314255}
   - component: {fileID: 1388314254}
   m_Layer: 5
-  m_Name: PlayerCost
+  m_Name: CostText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1832,11 +1997,11 @@ RectTransform:
   m_LocalScale: {x: 1.00008, y: 1.00008, z: 1.00008}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1528718295}
+  m_Father: {fileID: 1299748758}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 722.1202, y: -199.7}
+  m_AnchoredPosition: {x: 1565.1201, y: -39.69998}
   m_SizeDelta: {x: 160, y: 62}
   m_Pivot: {x: 0.40075126, y: 0.5}
 --- !u!114 &1388314254
@@ -2063,8 +2228,6 @@ RectTransform:
   - {fileID: 800135141}
   - {fileID: 154526832}
   - {fileID: 865767658}
-  - {fileID: 1388314253}
-  - {fileID: 72884253}
   - {fileID: 1025676983}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2087,11 +2250,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resultPanel: {fileID: 1025676982}
   resultText: {fileID: 1435716283}
-  playerHeroHpText: {fileID: 1163501708}
-  EnemyHeroHpText: {fileID: 1003230353}
-  playerManaCostText: {fileID: 1388314254}
-  enemyManaCostText: {fileID: 72884254}
   timeCountText: {fileID: 865767656}
+  turnEndButton: {fileID: 154526833}
 --- !u!1 &1865965297
 GameObject:
   m_ObjectHideFlags: 0
@@ -2121,20 +2281,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc5711fd02052424ea8801f3ead0d1b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerHandTransform: {fileID: 1370786128}
-  PlayerFieldTransform: {fileID: 52817232}
-  EnemyHandTransform: {fileID: 612567013}
-  EnemyFieldTransform: {fileID: 525751833}
-  playerHeroTransform: {fileID: 1299748758}
-  enemyHeroTransform: {fileID: 800135141}
-  cardPrefab: {fileID: 1990719698581586055, guid: 0430be0f47751466dadbda96f680c8fc, type: 3}
-  isplayerTurn: 0
   heroTransform: {fileID: 1299748758}
   enemyTransform: {fileID: 800135141}
   enemyAI: {fileID: 800135144}
-  uiManager: {fileID: 1528718296}
-  player: {fileID: 1299748761}
-  enemy: {fileID: 800135145}
+  UI: {fileID: 1528718296}
+  Player: {fileID: 1299748761}
+  Enemy: {fileID: 800135145}
 --- !u!4 &1865965299
 Transform:
   m_ObjectHideFlags: 0

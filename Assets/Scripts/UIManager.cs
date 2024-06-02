@@ -5,16 +5,12 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] GameObject resultPanel;
-    [SerializeField] Text resultText;
+    [SerializeField] private GameObject resultPanel;
+    [SerializeField] private Text resultText;
+    [SerializeField] private Text timeCountText;
+    [SerializeField] private Button turnEndButton;
 
-    [SerializeField] Text playerHeroHpText;
-    [SerializeField] Text EnemyHeroHpText;
-
-    [SerializeField] Text playerManaCostText;
-    [SerializeField] Text enemyManaCostText;
-
-    [SerializeField] Text timeCountText;
+    public Button TurnEndButton { get => turnEndButton;private set => turnEndButton = value; }
 
     public void HideResultPanel()
     {
@@ -23,17 +19,6 @@ public class UIManager : MonoBehaviour
     public void UpdateTime(int timeCount)
     {
         timeCountText.text = timeCount.ToString();
-    }
-
-    public void ShowHeroHP(int playerHeroHp, int enemyHeroHp)
-    {
-        playerHeroHpText.text = playerHeroHp.ToString();
-        EnemyHeroHpText.text = enemyHeroHp.ToString();
-    }
-    public void ShowManaCost(int playerManaCost, int enemyManaCost)
-    {
-        playerManaCostText.text = playerManaCost.ToString();
-        enemyManaCostText.text = enemyManaCost.ToString();
     }
     public void ShowResultPanel(int heroHP)
     {
