@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Threading;
+using Cysharp.Threading.Tasks;
 using R3;
 
 public class GameManager : Singleton<GameManager>
@@ -18,27 +21,37 @@ public class GameManager : Singleton<GameManager>
     // whose turn?
     public bool isplayerTurn { get; private set; }
     //TIME
-    private ReactiveProperty<int> timeCount = new ReactiveProperty<int>();
+    private int timeCount = 20;
 
-
-    void Start()
+    private void Start()
     {
-        timeCount.Subscribe(time => UI.UpdateTime(time)).AddTo(this);
-        UI.TurnEndButton.onClick.AddListener(()=> {
-            if (isplayerTurn)
-                ChangeTurn();
-            });
+        //共通の初期化
+        UI.TurnEndButton.onClick.AsObservable()
+            .Where(_ => isplayerTurn)
+            .Subscribe(_ => ChangeTurn()).AddTo(this);
+            
         enemyAI.Init(player, enemy);
-        enemyAI.TurnEnd += ChangeTurn;
+        enemyAI.TurnEnd.Subscribe(_=>ChangeTurn()).AddTo(this);
 
+        //timer
+        Observable.Interval(TimeSpan.FromSeconds(1), destroyCancellationToken)
+            .Subscribe(_ =>
+            {
+                timeCount--;
+                UI.UpdateTime(timeCount);
+                if(timeCount <= 0)
+                    ChangeTurn();
+            }).AddTo(this);
+
+        //リセット時の初期化
         StartGame();
     }
 
-    void StartGame()
+    private void StartGame()
     {
         player.Init(true,8);
         enemy.Init(false,7);
-        timeCount.Value =  20;
+        timeCount =  20;
         isplayerTurn = true;
         TurnCalc();
         UI.HideResultPanel();
@@ -48,23 +61,11 @@ public class GameManager : Singleton<GameManager>
     //turn no shori
     private void TurnCalc()
     {
-        StopAllCoroutines();
-        StartCoroutine(CountDownTime());
+        timeCount = 20;
         if (!isplayerTurn)
         {
             StartCoroutine(enemyAI.EnemyrTurn());
         }
-    }
-
-    private IEnumerator CountDownTime()
-    {
-        timeCount.Value = 20;
-        while (timeCount.Value >0)
-        {
-            yield return new WaitForSeconds(1);
-            timeCount.Value--;
-        }
-        ChangeTurn();
     }
     private void ChangeTurn()
     {

@@ -2,12 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using R3;
 
 public class AI : MonoBehaviour
 {
     private GamePlayerManager player = null;
     private GamePlayerManager enemy = null;
-    public Action TurnEnd;
+    private Subject<Unit> turnEnd = new Subject<Unit>();
+    public Observable<Unit> TurnEnd => turnEnd;
 
     public void Init(GamePlayerManager p, GamePlayerManager e)
     {
@@ -100,7 +102,7 @@ public class AI : MonoBehaviour
 
         yield return new WaitForSeconds(1);
         //ターンエンド
-        TurnEnd();
+        turnEnd.OnNext(Unit.Default);
     }
 
     IEnumerator CastSpellOf(CardController card)
