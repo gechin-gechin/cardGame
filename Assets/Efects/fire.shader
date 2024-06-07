@@ -15,7 +15,7 @@ Shader "Unlit/fire"
 		SubShader {
 			Pass {
 				CGPROGRAM
-
+				
 				#pragma vertex vert
 				#pragma fragment frag
 				#pragma target 2.0
@@ -53,7 +53,7 @@ Shader "Unlit/fire"
 					o.vertex = UnityObjectToClipPos(v.vertex);
 					o.color = v.color;
 					o.texcoord = TRANSFORM_TEX(v.texcoord, _MainTex);
-					o.texcoord2.xy = v.texcoord.zw; // Copy TEXCOORD0.zw
+					o.texcoord2.xy = v.texcoord.zw; //ここでTexcode0.zをrexcode1.xに変えている
 					UNITY_TRANSFER_FOG(o,o.vertex);
 					return o;
 				}

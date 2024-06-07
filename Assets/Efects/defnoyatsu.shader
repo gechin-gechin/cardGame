@@ -7,7 +7,7 @@ Shader "Unlit/defnoyatsu"
     SubShader
     {
         Tags { "RenderType"="Opaque" }
-        LOD 100
+        LOD 100//C#側で切り替えられる、Shader.globalMaximumLOD = 100;
 
         Pass
         {
@@ -38,8 +38,8 @@ Shader "Unlit/defnoyatsu"
             v2f vert (appdata v)
             {
                 v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.vertex = UnityObjectToClipPos(v.vertex);//同次座標において、オブジェクト空間からカメラのクリップ空間へ点を変換
+                o.uv = TRANSFORM_TEX(v.uv, _MainTex);//
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
