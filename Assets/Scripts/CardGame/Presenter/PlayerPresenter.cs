@@ -7,17 +7,27 @@ namespace CardGame
     public class PlayerPresenter : IDisposable
     {
         private CompositeDisposable _disposables;
+        private ICardProvider _cardProvider;
 
-        public PlayerPresenter()
+        public PlayerPresenter(ICardProvider cardProvider)
         {
             _disposables = new();
+            _cardProvider = cardProvider;
         }
 
         public void Bind(Player model, IPlayerView view)
         {
             view.OnTurnEnd += model.TurnEnd;
 
-            model.Hand.ObserveAdd().Subscribe(c => view.DrowCard(c.Value)).AddTo(_disposables);
+            model.Hand.ObserveAdd().Subscribe(c =>
+            {
+                if (c == null)
+                {
+                    return;
+                }
+                var cv = _cardProvider.Get(c.Value);
+                view.DrowCard(cv);
+            }).AddTo(_disposables);
         }
 
         public void Dispose()

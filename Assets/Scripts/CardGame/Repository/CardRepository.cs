@@ -19,7 +19,7 @@ namespace CardGame
             //エンティティを取ってくる
             var e = _entities.Where(e => e.ID == id).FirstOrDefault();
             //ゆくゆくは翻訳家を通す
-            var c = new Card(e.ID, e.Name, e.Cost);
+            var c = new Card(e.ID, e.Name, e.Cost, e.Power, e.Sprite_);
             return c;
         }
     }

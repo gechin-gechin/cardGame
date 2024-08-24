@@ -10,12 +10,14 @@ namespace CardGame
     public interface IPlayerView
     {
         Action OnTurnEnd { get; set; }
-        void DrowCard(Card card);
+        void DrowCard(CardView cardview);
     }
     public class PlayerView : MonoBehaviour, IPlayerView
     {
         public Action OnTurnEnd { get; set; }
 
+        [SerializeField] private Transform _hand;
+        [Header("input")]
         [SerializeField] private InputActionReference _turnend_ref;
         [SerializeField] private Button _turnend_button;
 
@@ -26,13 +28,12 @@ namespace CardGame
             _turnend_button.onClick.AddListener(() => OnTurnEnd?.Invoke());
         }
 
-        public void DrowCard(Card card)
+        public void DrowCard(CardView card)
         {
-            if (card == null)
-            {
-                return;
-            }
-            Debug.Log("drow : " + card.Name);
+            card.transform.SetParent(_hand);
+            card.transform.localScale = Vector3.one;
+            card.transform.localPosition = Vector3.zero;
+            Debug.Log("drow : " + card);
         }
     }
 }
