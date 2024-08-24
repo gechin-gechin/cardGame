@@ -80,9 +80,9 @@ public class CardController : MonoBehaviour
         model.DestroyCard(destroyCard);
     }
     // 一枚カードをひく
-    public void DrawCard()
+    public void DrowCard()
     {
-        GameManager.I.gamePlayer(model.isPlayerCard).DrawCard();
+        GameManager.I.DrowCard(model.isPlayerCard);
     }
 
     /*SPELL*/

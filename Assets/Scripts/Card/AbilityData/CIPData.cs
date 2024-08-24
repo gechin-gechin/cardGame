@@ -13,9 +13,9 @@ public class CIPData
             case CIP.ALL_DELETE:
                 //破壊カードを取得
                 //相手フィールド全て
-                CardController[] enemycards = GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards();
+                CardController[] enemycards = GameManager.I.GetFieldCards(!card.model.isPlayerCard);
                 CardController[] destroyCard = Array.FindAll(
-                    GameManager.I.gamePlayer(!card.model.isPlayerCard).GetFieldCards(),
+                    GameManager.I.GetFieldCards(!card.model.isPlayerCard),
                     _card => _card != card);
                 //破壊
                 foreach (CardController Cards in destroyCard)

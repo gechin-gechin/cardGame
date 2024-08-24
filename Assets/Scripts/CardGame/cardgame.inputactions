@@ -1,0 +1,34 @@
+{
+    "name": "cardgame",
+    "maps": [
+        {
+            "name": "def",
+            "id": "f46b692d-5469-4a82-a5e7-2c573df23e63",
+            "actions": [
+                {
+                    "name": "TurnEnd",
+                    "type": "Button",
+                    "id": "ea0fbcc4-5f19-4a25-8562-3e43521295bb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ab2ee02a-7cc0-4181-b538-26abab5d9958",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "TurnEnd",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

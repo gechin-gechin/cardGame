@@ -1,0 +1,21 @@
+{
+    "name": "CardGame",
+    "rootNamespace": "",
+    "references": [
+        "R3.Unity",
+        "Unity.InputSystem",
+        "Unity.TextMeshPro",
+        "UniTask",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

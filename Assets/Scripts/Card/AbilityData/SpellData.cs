@@ -13,7 +13,7 @@ public static class SpellData
             case SPELL.DAMAGE_ENEMY_CARDS:
             case SPELL.DESTROY_ENEMY_CARD:
                 //相手のフィールドカードを取得
-                CardController[] cards = GameManager.I.gamePlayer(!model.isPlayerCard).GetFieldCards();
+                CardController[] cards = GameManager.I.GetFieldCards(!model.isPlayerCard);
                 if (cards.Length > 0)
                 {
                     return true;
@@ -23,7 +23,7 @@ public static class SpellData
             case SPELL.HEAL_FRIEND_CARD:
             case SPELL.HEAL_FRIEND_CARDS:
                 //味方のフィールドカードを取得
-                CardController[] friendCards = GameManager.I.gamePlayer(model.isPlayerCard).GetFieldCards();
+                CardController[] friendCards = GameManager.I.GetFieldCards(model.isPlayerCard);
                 if (friendCards.Length > 0)
                 {
                     return true;
@@ -63,7 +63,7 @@ public static class SpellData
             case SPELL.DAMAGE_ENEMY_CARDS:
                 //相手フィールド全てに攻撃する
                 //相手のフィールドカードを取得
-                CardController[] cards = GameManager.I.gamePlayer(!user.model.isPlayerCard).GetFieldCards();
+                CardController[] cards = GameManager.I.GetFieldCards(!user.model.isPlayerCard);
                 //回ってる途中に削除されると怖いから二回呼ぶ
                 foreach (CardController enemyCard in cards)
                 {
@@ -90,7 +90,7 @@ public static class SpellData
                 user.Heal(target);
                 break;
             case SPELL.HEAL_FRIEND_CARDS:
-                CardController[] friendCards = GameManager.I.gamePlayer(user.model.isPlayerCard).GetFieldCards();
+                CardController[] friendCards = GameManager.I.GetFieldCards(user.model.isPlayerCard);
                 foreach (CardController friendCard in friendCards)
                 {
                     user.Heal(friendCard);
@@ -100,12 +100,12 @@ public static class SpellData
                 GameManager.I.HealToHero(user);
                 break;
             case SPELL.DRAW_CARD:
-                user.DrawCard();
+                user.DrowCard();
                 break;
             case SPELL.DRAW_2CARD:
                 for (int i = 0; i < 2; i++)
                 {
-                    user.DrawCard();
+                    user.DrowCard();
                 }
                 break;
             case SPELL.DESTROY_ENEMY_CARD:
