@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CardGame
 {
-    public class LeaderPresenter : MonoBehaviour
+    public class LeaderPresenter
     {
 
     }
