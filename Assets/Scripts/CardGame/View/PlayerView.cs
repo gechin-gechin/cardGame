@@ -10,6 +10,7 @@ namespace CardGame
     public interface IPlayerView
     {
         Action OnTurnEnd { get; set; }
+        void DrowCard(Card card);
     }
     public class PlayerView : MonoBehaviour, IPlayerView
     {
@@ -23,6 +24,15 @@ namespace CardGame
             //_turnend_ref.action.performed += (e) => OnTurnEnd?.Invoke();
             _turnend_ref.action.performed += (e) => Debug.Log("Enter");
             _turnend_button.onClick.AddListener(() => OnTurnEnd?.Invoke());
+        }
+
+        public void DrowCard(Card card)
+        {
+            if (card == null)
+            {
+                return;
+            }
+            Debug.Log("drow : " + card.Name);
         }
     }
 }

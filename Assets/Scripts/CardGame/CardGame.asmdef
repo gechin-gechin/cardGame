@@ -6,7 +6,6 @@
         "Unity.InputSystem",
         "Unity.TextMeshPro",
         "UniTask",
-        "ObservableCollections",
         "Unity.Addressables",
         "Unity.ResourceManager"
     ],
