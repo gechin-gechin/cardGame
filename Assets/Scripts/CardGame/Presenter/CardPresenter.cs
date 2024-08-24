@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CardGame
 {
-    public class Initializer : MonoBehaviour
+    public class CardPresenter
     {
 
     }
