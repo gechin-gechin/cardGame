@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 491cf379ba68f4d1cb6c0044bbfe8e41
+  m_SerializeEntries:
+  - m_GUID: 39e91b1f2ca774d178262333bca2b43d
+    m_Address: Assets/Data/Card/2_jibnyan.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 12914a17c0f344e578aea87141496bc5
+    m_Address: Assets/Data/Card/1_pikachu.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 39a4708cd78914469b57818267405468
+    m_Address: Assets/Data/Card/0_slime.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: cd2470c599bc841a29e477a97c0ebda3, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: a351a1d5005ba4b13bef150d0996d91e, type: 2}
+    - {fileID: 11400000, guid: 6606d08529fa74337854fd7b0304aeea, type: 2}

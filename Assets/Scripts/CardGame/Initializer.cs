@@ -13,12 +13,14 @@ namespace CardGame
 
         private CompositeDisposable _disposables;
 
-        private void Awake()
+        private async void Awake()
         {
             _disposables = new();
             //model
             var player = new Player();
             var enemy = new Player();
+            await player.CreateDeck();
+            await enemy.CreateDeck();
             var main = new Main(player, enemy);
             //model AddTo
             main.AddTo(_disposables);

@@ -5,7 +5,10 @@
         "R3.Unity",
         "Unity.InputSystem",
         "Unity.TextMeshPro",
-        "UniTask"
+        "UniTask",
+        "ObservableCollections",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
