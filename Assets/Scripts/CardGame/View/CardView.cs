@@ -11,7 +11,7 @@ namespace CardGame
     public interface ICardView
     {
         Action OnRelease { get; set; }
-        Action OnUse { get; set; }
+        Func<bool> TryUse { get; set; }
         void Init(string name, int cost, Sprite sprite);
         void SetPower(int value);
     }
@@ -19,7 +19,7 @@ namespace CardGame
     public class CardView : PooledObject<CardView>, ICardView
     {
         public Action OnRelease { get; set; }
-        public Action OnUse { get; set; }
+        public Func<bool> TryUse { get; set; }
         [SerializeField] CardMovement _movement;
         [SerializeField] private TMP_Text _nameText;
         [SerializeField] private TMP_Text _costText;
@@ -35,6 +35,8 @@ namespace CardGame
             _movement.Init();
             _movement.IsDraggable = true;
             _movement.OnEnd += EndDrag;
+            _movement.transform.localPosition = Vector3.zero;
+            _movement.transform.localScale = Vector3.one;
         }
 
         public void SetPower(int value)
@@ -47,6 +49,8 @@ namespace CardGame
         {
             OnRelease?.Invoke();
             ReleaseToPool();
+            TryUse = null;
+            OnRelease = null;
         }
 
         //購読の破棄
@@ -57,10 +61,17 @@ namespace CardGame
 
         private void EndDrag()
         {
-            if (_movement.transform.localPosition.y > 500)
+            if (_movement.transform.localPosition.y > 100)
             {
-                OnUse?.Invoke();
-                Release();
+                var b = TryUse.Invoke();
+                if (b)
+                {
+                    Release();
+                }
+                else
+                {
+                    _movement.transform.DOLocalMove(Vector3.zero, 0.15f);
+                }
             }
             else
             {

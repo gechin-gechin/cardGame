@@ -56,8 +56,19 @@ namespace CardGame
                 Debug.Log("deck out");
             }
             var c = _deck[_deck.Count - 1];
+            c.TryUse += () => TryUseHandCard(c);
             _deck.RemoveAt(_deck.Count - 1);
             Hand.Add(c);
+        }
+
+        public bool TryUseHandCard(Card card)
+        {
+            if (card.Cost < 2)
+            {
+                Hand.Remove(card);
+                return true;
+            }
+            return false;
         }
 
         public void TimeOver()

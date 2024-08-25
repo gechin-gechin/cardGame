@@ -18,6 +18,7 @@ namespace CardGame
             CompositeDisposable cd = new();
             view.Init(model.Name, model.Cost, model.Sprite_);
             model.Power.Subscribe(v => view.SetPower(v)).AddTo(cd);
+            view.TryUse += () => model.TryUse.Invoke();
             view.OnRelease += () => cd.Dispose();
         }
 

@@ -28,6 +28,9 @@ namespace CardGame
                 var cv = _cardProvider.Get(c.Value);
                 view.DrowCard(cv);
             }).AddTo(_disposables);
+            model.Hand.ObserveCountChanged()
+                .Subscribe(c => view.SetHandCount(c))
+                .AddTo(_disposables);
         }
 
         public void Dispose()
