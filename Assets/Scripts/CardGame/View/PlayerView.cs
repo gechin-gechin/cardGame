@@ -13,6 +13,8 @@ namespace CardGame
         Action OnTurnEnd { get; set; }
         void DrowCard(CardView cardview);
         void SetHandCount(int count);
+        void SetMana(int num);
+        void SetMaxMana(int num);
     }
     public class PlayerView : MonoBehaviour, IPlayerView
     {
@@ -21,6 +23,8 @@ namespace CardGame
         [SerializeField] private Transform _hand;
         [Header("text")]
         [SerializeField] private TMP_Text _handcountText;
+        [SerializeField] private TMP_Text _manaText;
+        [SerializeField] private TMP_Text _maxManaText;
         [Header("input")]
         [SerializeField] private InputActionReference _turnend_ref;
         [SerializeField] private Button _turnend_button;
@@ -37,12 +41,20 @@ namespace CardGame
             card.transform.SetParent(_hand);
             card.transform.localScale = Vector3.one;
             card.transform.localPosition = Vector3.zero;
-            Debug.Log("drow : " + card);
         }
 
         public void SetHandCount(int c)
         {
             _handcountText.text = "Hand : " + c.ToString();
+        }
+
+        public void SetMana(int num)
+        {
+            _manaText.text = num.ToString();
+        }
+        public void SetMaxMana(int num)
+        {
+            _maxManaText.text = num.ToString();
         }
     }
 }

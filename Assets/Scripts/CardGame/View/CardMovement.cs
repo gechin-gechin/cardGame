@@ -47,7 +47,6 @@ namespace CardGame
         private void BeginDrag()
         {
             _canvasGroup.blocksRaycasts = false;
-            Debug.Log("begin drag");
             OnBegin?.Invoke();
         }
 

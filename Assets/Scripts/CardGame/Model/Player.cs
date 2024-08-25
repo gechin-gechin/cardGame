@@ -21,16 +21,22 @@ namespace CardGame
         public Action OnTurnEnd { get; set; }
         private List<Card> _deck;
         public ObservableList<Card> Hand;
+        private ReactiveProperty<int> _mana;
+        public ReadOnlyReactiveProperty<int> Mana => _mana;
+
+        private ReactiveProperty<int> _maxMana;
+        public ReadOnlyReactiveProperty<int> MaxMana => _maxMana;
 
         public Player()
         {
             _deck = new();
             Hand = new();
+            _mana = new(0);
+            _maxMana = new(0);
         }
 
         public async UniTask CreateDeck()
         {
-            _deck = new();
             var cardRepository = new CardRepository();
             //int[] _decklist = new int[40];
             int[] _decklist = { 0, 0, 0, 0, 1, 1, 1, 2, 2, 0, 1, 0, 2 };
@@ -45,7 +51,8 @@ namespace CardGame
 
         public void StartTurn()
         {
-            Debug.Log("startturn");
+            _maxMana.Value++;
+            _mana.Value = _maxMana.Value;
             Drow();
         }
 
@@ -63,8 +70,9 @@ namespace CardGame
 
         public bool TryUseHandCard(Card card)
         {
-            if (card.Cost < 2)
+            if (card.Cost <= _mana.Value)
             {
+                _mana.Value -= card.Cost;
                 Hand.Remove(card);
                 return true;
             }
@@ -84,7 +92,8 @@ namespace CardGame
 
         public void Dispose()
         {
-
+            _mana.Dispose();
+            _maxMana.Dispose();
         }
     }
 }

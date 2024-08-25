@@ -18,6 +18,8 @@ namespace CardGame
         public void Bind(Player model, IPlayerView view)
         {
             view.OnTurnEnd += model.TurnEnd;
+            model.Mana.Subscribe(n => view.SetMana(n)).AddTo(_disposables);
+            model.MaxMana.Subscribe(n => view.SetMaxMana(n)).AddTo(_disposables);
 
             model.Hand.ObserveAdd().Subscribe(c =>
             {
