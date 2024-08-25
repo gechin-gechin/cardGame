@@ -14,14 +14,16 @@ namespace CardGame
         private ReactiveProperty<int> _power;
         public ReadOnlyReactiveProperty<int> Power => _power;
         public Sprite Sprite_ { get; private set; }
+        public CardKind Kind { get; private set; }
 
         public Func<bool> TryUse;
 
-        public Card(int id, string name, int cost, int power, Sprite sprite)
+        public Card(int id, string name, int cost, CardKind kind, int power, Sprite sprite)
         {
             ID = id;
             Name = name;
             Cost = cost;
+            Kind = kind;
             _power = new(power);
             Sprite_ = sprite;
         }

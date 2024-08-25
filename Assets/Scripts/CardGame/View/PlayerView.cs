@@ -12,6 +12,7 @@ namespace CardGame
     {
         Action OnTurnEnd { get; set; }
         void DrowCard(CardView cardview);
+        void SummonFollower(FollowerView followerView);
         void SetHandCount(int count);
         void SetMana(int num);
         void SetMaxMana(int num);
@@ -21,6 +22,7 @@ namespace CardGame
         public Action OnTurnEnd { get; set; }
 
         [SerializeField] private Transform _hand;
+        [SerializeField] private Transform _field;
         [Header("text")]
         [SerializeField] private TMP_Text _handcountText;
         [SerializeField] private TMP_Text _manaText;
@@ -41,6 +43,13 @@ namespace CardGame
             card.transform.SetParent(_hand);
             card.transform.localScale = Vector3.one;
             card.transform.localPosition = Vector3.zero;
+        }
+
+        public void SummonFollower(FollowerView follower)
+        {
+            follower.transform.SetParent(_field);
+            follower.transform.localScale = Vector3.one;
+            follower.transform.localPosition = Vector3.zero;
         }
 
         public void SetHandCount(int c)

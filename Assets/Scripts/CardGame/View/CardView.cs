@@ -61,7 +61,7 @@ namespace CardGame
 
         private void EndDrag()
         {
-            if (_movement.transform.localPosition.y > 100)
+            if (_movement.transform.localPosition.y > 100 && TryUse != null)
             {
                 var b = TryUse.Invoke();
                 if (b)

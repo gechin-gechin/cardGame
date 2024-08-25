@@ -10,7 +10,10 @@ namespace CardGame
         [SerializeField] private MainView _mainView;
         [SerializeField] private PlayerView _playerView;
         [SerializeField] private PlayerView _enemyView;
+        [Header("provider")]
         [SerializeField] private CardProvider _cardProvider;
+        [SerializeField] private FollowerProvider _followerProvider;
+
         private CompositeDisposable _disposables;
 
         private async void Awake()
@@ -23,6 +26,7 @@ namespace CardGame
             await enemy.CreateDeck();
             var main = new Main(player, enemy);
             _cardProvider.Init(8);
+            _followerProvider.Init(6);
             //model AddTo
             main.AddTo(_disposables);
             player.AddTo(_disposables);
@@ -38,7 +42,7 @@ namespace CardGame
             mp.Bind(main, _mainView);
             mp.AddTo(_disposables);
             //player
-            var pp = new PlayerPresenter(_cardProvider);
+            var pp = new PlayerPresenter(_cardProvider, _followerProvider);
             pp.Bind(player, _playerView);
             pp.Bind(enemy, _enemyView);
             pp.AddTo(_disposables);

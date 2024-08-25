@@ -566,6 +566,7 @@ GameObject:
   - component: {fileID: 7574743774385722284}
   - component: {fileID: 3807191562249724097}
   - component: {fileID: 7883568362130763802}
+  - component: {fileID: 955078368683295029}
   m_Layer: 5
   m_Name: battleZone
   m_TagString: Untagged
@@ -630,6 +631,32 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &955078368683295029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6570156025377298988}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_Spacing: 10
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 1
+  m_ChildScaleHeight: 1
+  m_ReverseArrangement: 0
 --- !u!1 &6640921280742464075
 GameObject:
   m_ObjectHideFlags: 0
@@ -686,6 +713,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hand: {fileID: 7537100545995935643}
+  _field: {fileID: 7574743774385722284}
   _handcountText: {fileID: 8486648517427985171}
   _manaText: {fileID: 6457830053016541416}
   _maxManaText: {fileID: 5054797912553832220}

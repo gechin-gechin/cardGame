@@ -21,6 +21,7 @@ namespace CardGame
         public Action OnTurnEnd { get; set; }
         private List<Card> _deck;
         public ObservableList<Card> Hand;
+        public ObservableList<Follower> Field;
         private ReactiveProperty<int> _mana;
         public ReadOnlyReactiveProperty<int> Mana => _mana;
 
@@ -31,6 +32,7 @@ namespace CardGame
         {
             _deck = new();
             Hand = new();
+            Field = new();
             _mana = new(0);
             _maxMana = new(0);
         }
@@ -63,7 +65,7 @@ namespace CardGame
                 Debug.Log("deck out");
             }
             var c = _deck[_deck.Count - 1];
-            c.TryUse += () => TryUseHandCard(c);
+            c.TryUse = () => TryUseHandCard(c);
             _deck.RemoveAt(_deck.Count - 1);
             Hand.Add(c);
         }
@@ -73,6 +75,11 @@ namespace CardGame
             if (card.Cost <= _mana.Value)
             {
                 _mana.Value -= card.Cost;
+                if (card.Kind == CardKind.FOLLOWER)
+                {
+                    var f = CardToFollower(card);
+                    Field.Add(f);
+                }
                 Hand.Remove(card);
                 return true;
             }
@@ -94,6 +101,15 @@ namespace CardGame
         {
             _mana.Dispose();
             _maxMana.Dispose();
+        }
+
+        private Follower CardToFollower(Card card)
+        {
+            return new Follower(
+                card.Name,
+                card.Power.CurrentValue,
+                card.Sprite_
+            );
         }
     }
 }

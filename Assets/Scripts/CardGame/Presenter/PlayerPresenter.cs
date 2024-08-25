@@ -8,11 +8,13 @@ namespace CardGame
     {
         private CompositeDisposable _disposables;
         private ICardProvider _cardProvider;
+        private IFollowerProvider _followerProvider;
 
-        public PlayerPresenter(ICardProvider cardProvider)
+        public PlayerPresenter(ICardProvider cardProvider, IFollowerProvider followerProvider)
         {
             _disposables = new();
             _cardProvider = cardProvider;
+            _followerProvider = followerProvider;
         }
 
         public void Bind(Player model, IPlayerView view)
@@ -33,6 +35,16 @@ namespace CardGame
             model.Hand.ObserveCountChanged()
                 .Subscribe(c => view.SetHandCount(c))
                 .AddTo(_disposables);
+
+            model.Field.ObserveAdd().Subscribe(f =>
+            {
+                if (f == null)
+                {
+                    return;
+                }
+                var fv = _followerProvider.Get(f.Value);
+                view.SummonFollower(fv);
+            }).AddTo(_disposables);
         }
 
         public void Dispose()

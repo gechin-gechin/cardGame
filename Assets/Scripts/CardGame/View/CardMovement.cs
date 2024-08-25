@@ -22,6 +22,7 @@ namespace CardGame
         private Camera _camera;
 
         public bool IsDraggable { get; set; }
+        private bool _isDraging = false;//２回呼ばれるのを防止
         public void Init()
         {
             _camera = Camera.main;
@@ -48,6 +49,8 @@ namespace CardGame
         {
             _canvasGroup.blocksRaycasts = false;
             OnBegin?.Invoke();
+
+            _isDraging = true;
         }
 
         private void Drag(PointerEventData e)
@@ -61,7 +64,11 @@ namespace CardGame
         private void EndDrag()
         {
             _canvasGroup.blocksRaycasts = true;
-            OnEnd?.Invoke();
+            if (_isDraging)
+            {
+                _isDraging = false;
+                OnEnd?.Invoke();
+            }
         }
     }
 }
