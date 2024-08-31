@@ -14,7 +14,7 @@ namespace CardGame
         {
             _translator = new();
         }
-        public async UniTask<Card> Get(int id)
+        public async UniTask<Card> GetByID(int id)
         {
             if (_entities == null)
             {

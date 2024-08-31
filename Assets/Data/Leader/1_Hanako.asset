@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fc133f4c3ab0455a97c080d413639f0, type: 3}
+  m_Name: 1_Hanako
+  m_EditorClassIdentifier: 
+  _id: 1
+  _name: Hanako
+  _chara_sprite: {fileID: 21300000, guid: f02cd9c6b95cc4748bbd9e3b3b041767, type: 3}
+  _stages:
+  - RequireExp: 2
+    MaxCost: 4
+  - RequireExp: 2
+    MaxCost: 7
+  - RequireExp: 2
+    MaxCost: 10
+  _colors: 04000000

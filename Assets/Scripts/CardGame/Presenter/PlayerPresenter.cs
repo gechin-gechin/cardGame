@@ -1,6 +1,7 @@
 using System;
 using R3;
 using ObservableCollections;
+using Cysharp.Threading.Tasks;
 
 namespace CardGame
 {
@@ -9,12 +10,15 @@ namespace CardGame
         private CompositeDisposable _disposables;
         private ICardProvider _cardProvider;
         private IFollowerProvider _followerProvider;
+        private LeaderPresenter _leaderPresenter;
 
         public PlayerPresenter(ICardProvider cardProvider, IFollowerProvider followerProvider)
         {
             _disposables = new();
             _cardProvider = cardProvider;
             _followerProvider = followerProvider;
+            _leaderPresenter = new();
+            _leaderPresenter.AddTo(_disposables);
         }
 
         public void Bind(Player model, IPlayerView view)
@@ -44,6 +48,11 @@ namespace CardGame
                 }
                 var fv = _followerProvider.Get(f.Value);
                 view.SummonFollower(fv);
+            }).AddTo(_disposables);
+
+            model.Leader_.Subscribe(l =>
+            {
+                _leaderPresenter.Bind(l, view.ILeaderView_);
             }).AddTo(_disposables);
         }
 

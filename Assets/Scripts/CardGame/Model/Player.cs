@@ -27,24 +27,43 @@ namespace CardGame
 
         private ReactiveProperty<int> _maxMana;
         public ReadOnlyReactiveProperty<int> MaxMana => _maxMana;
+        private ReactiveProperty<Leader> _leader;
+        public ReadOnlyReactiveProperty<Leader> Leader_ => _leader;
 
-        public Player()
+        //repository
+        private CardRepository _cardRepository;
+        private LeaderRepository _leaderRepository;
+
+        private CompositeDisposable _disposables;
+
+        public Player(CardRepository cardRepository, LeaderRepository leaderRepository)
         {
             _deck = new();
             Hand = new();
             Field = new();
             _mana = new(0);
             _maxMana = new(0);
+
+            _disposables = new();
+
+            _cardRepository = cardRepository;
+            _leaderRepository = leaderRepository;
+        }
+        public async UniTask CreateLeader()
+        {
+            int id = 0;
+            var l = await _leaderRepository.GetByID(id);
+            _leader = new(l);
+            _leader.Value.MaxCost.Subscribe(mc => _maxMana.Value = mc).AddTo(_disposables);
         }
 
         public async UniTask CreateDeck()
         {
-            var cardRepository = new CardRepository();
             //int[] _decklist = new int[40];
             int[] _decklist = { 0, 0, 0, 0, 1, 1, 1, 2, 2, 0, 1, 0, 2 };
             foreach (int id in _decklist)
             {
-                var c = await cardRepository.Get(id);
+                var c = await _cardRepository.GetByID(id);
                 Debug.Log("deck add " + c.Name);
                 _deck.Add(c);
             }
@@ -53,7 +72,6 @@ namespace CardGame
 
         public void StartTurn()
         {
-            _maxMana.Value++;
             _mana.Value = _maxMana.Value;
             Drow();
         }
@@ -72,6 +90,7 @@ namespace CardGame
 
         public bool TryUseHandCard(Card card)
         {
+            _leader.Value.GetExp(1);
             if (card.Cost <= _mana.Value)
             {
                 _mana.Value -= card.Cost;
@@ -101,6 +120,9 @@ namespace CardGame
         {
             _mana.Dispose();
             _maxMana.Dispose();
+            _leader.Dispose();
+
+            _disposables.Dispose();
         }
 
         private Follower CardToFollower(Card card)

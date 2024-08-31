@@ -35,6 +35,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - Card
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b394e69edad84bf1beaa013f2273fcb
+    m_Address: Assets/Data/Leader/0_Tarou.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Leader
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80b269b23a1c7484184ebae5d363084e
+    m_Address: Assets/Data/Leader/1_Hanako.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Leader
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: cd2470c599bc841a29e477a97c0ebda3, type: 2}
   m_SchemaSet:

@@ -11,6 +11,7 @@ namespace CardGame
     public interface IPlayerView
     {
         Action OnTurnEnd { get; set; }
+        ILeaderView ILeaderView_ { get; }
         void DrowCard(CardView cardview);
         void SummonFollower(FollowerView followerView);
         void SetHandCount(int count);
@@ -30,6 +31,9 @@ namespace CardGame
         [Header("input")]
         [SerializeField] private InputActionReference _turnend_ref;
         [SerializeField] private Button _turnend_button;
+        [Header("Leader")]
+        [SerializeField] private LeaderView _leaderView;
+        public ILeaderView ILeaderView_ => _leaderView;
 
         public void Init()
         {
@@ -43,6 +47,7 @@ namespace CardGame
             card.transform.SetParent(_hand);
             card.transform.localScale = Vector3.one;
             card.transform.localPosition = Vector3.zero;
+            card.transform.localRotation = default;
         }
 
         public void SummonFollower(FollowerView follower)

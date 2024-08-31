@@ -19,9 +19,14 @@ namespace CardGame
         private async void Awake()
         {
             _disposables = new();
+            //repository
+            var leaderRepo = new LeaderRepository();
+            var cardRepo = new CardRepository();
             //model
-            var player = new Player();
-            var enemy = new Player();
+            var player = new Player(cardRepo, leaderRepo);
+            var enemy = new Player(cardRepo, leaderRepo);
+            await player.CreateLeader();
+            await enemy.CreateLeader();
             await player.CreateDeck();
             await enemy.CreateDeck();
             var main = new Main(player, enemy);

@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: 491cf379ba68f4d1cb6c0044bbfe8e41
   m_currentHash:
     serializedVersion: 2
-    Hash: 519d7e1ed2b2a86803b634bdd4fa5526
+    Hash: a654e159d60c6c4b1f39699049a0fa98
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_BundleLocalCatalog: 0
@@ -88,6 +88,7 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - Card
+    - Leader
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 5ad8a080c3b68449dbf2e3e7c024e864, type: 2}

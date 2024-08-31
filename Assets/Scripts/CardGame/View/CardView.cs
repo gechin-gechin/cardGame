@@ -26,6 +26,7 @@ namespace CardGame
         [SerializeField] private TMP_Text _powerText;
         [SerializeField] private Image _image;
 
+        //これ自体のtransformの初期化はplayerviewがやっている
         public void Init(string name, int cost, Sprite sprite)
         {
             _nameText.text = name;

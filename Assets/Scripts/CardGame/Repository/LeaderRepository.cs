@@ -1,18 +1,28 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 
-public class Repositor : MonoBehaviour
+namespace CardGame
 {
-    // Start is called before the first frame update
-    void Start()
+    public class LeaderRepository
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private List<LeaderEntity> _entities;
+        private LeaderTranslator _translator;
+        public LeaderRepository()
+        {
+            _translator = new();
+        }
+        public async UniTask<Leader> GetByID(int id)
+        {
+            if (_entities == null)
+            {
+                var sol = new ScriptableObjectLoader<LeaderEntity>();
+                _entities = await sol.LoadAll("Leader");
+            }
+            //エンティティを取ってくる
+            var e = _entities.Where(e => e.ID == id).FirstOrDefault();
+            //ゆくゆくは翻訳家を通す
+            return _translator.EntityToLeader(e);
+        }
     }
 }
