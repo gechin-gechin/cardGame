@@ -47,6 +47,18 @@ MonoBehaviour:
     m_SerializedLabels:
     - Leader
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd8f35b1a6caa407cbbde6c87aa2ee37
+    m_Address: Assets/Data/Card/3_Coins.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07ee6782b26b74fa79cada9f8dc5d55d
+    m_Address: Assets/Data/Card/4_Yama.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: cd2470c599bc841a29e477a97c0ebda3, type: 2}
   m_SchemaSet:

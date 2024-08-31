@@ -6,16 +6,17 @@ using UnityEngine.UI;
 
 namespace CardGame
 {
-    public interface IFollowerView
+    public interface ITrapView
     {
         void Init(string name, Sprite sprite);
-        void SetPower(int num);
+        void SetLife(int num);
     }
-    public class FollowerView : PooledObject<FollowerView>, IFollowerView
+    public class TrapView : PooledObject<TrapView>, ITrapView
     {
+
         [SerializeField] private Image _image;
         [SerializeField] private TMP_Text _nameText;
-        [SerializeField] private TMP_Text _powerText;
+        [SerializeField] private TMP_Text _lifeText;
 
         public void Init(string name, Sprite sprite)
         {
@@ -23,11 +24,10 @@ namespace CardGame
             _image.sprite = sprite;
         }
 
-        public void SetPower(int num)
+        public void SetLife(int num)
         {
-            _powerText.text = num.ToString();
+            _lifeText.text = num.ToString();
         }
-
         //破壊時にはPooledObjectのRelease()を呼ぶ
     }
 }

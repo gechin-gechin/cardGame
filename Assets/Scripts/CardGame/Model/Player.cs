@@ -22,6 +22,7 @@ namespace CardGame
         private List<Card> _deck;
         public ObservableList<Card> Hand;
         public ObservableList<Follower> Field;
+        public ObservableList<Trap> TrapZone;
         private ReactiveProperty<int> _mana;
         public ReadOnlyReactiveProperty<int> Mana => _mana;
 
@@ -41,6 +42,7 @@ namespace CardGame
             _deck = new();
             Hand = new();
             Field = new();
+            TrapZone = new();
             _mana = new(0);
             _maxMana = new(0);
 
@@ -60,7 +62,7 @@ namespace CardGame
         public async UniTask CreateDeck()
         {
             //int[] _decklist = new int[40];
-            int[] _decklist = { 0, 0, 0, 0, 1, 1, 1, 2, 2, 0, 1, 0, 2 };
+            int[] _decklist = { 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4 };
             foreach (int id in _decklist)
             {
                 var c = await _cardRepository.GetByID(id);
@@ -93,14 +95,25 @@ namespace CardGame
             _leader.Value.GetExp(1);
             if (card.Cost <= _mana.Value)
             {
-                _mana.Value -= card.Cost;
-                if (card.Kind == CardKind.FOLLOWER)
+                switch (card.Kind)
                 {
-                    var f = CardToFollower(card);
-                    Field.Add(f);
+                    case CardKind.FOLLOWER:
+                        _mana.Value -= card.Cost;
+                        var f = CardToFollower(card);
+                        Field.Add(f);
+                        Hand.Remove(card);
+                        return true;
+                    case CardKind.SPELL:
+                        return false;//未実装
+                    case CardKind.TRAP:
+                        _mana.Value -= card.Cost;
+                        var t = CardToTrap(card);
+                        TrapZone.Add(t);
+                        Hand.Remove(card);
+                        return true;
+                    default:
+                        break;
                 }
-                Hand.Remove(card);
-                return true;
             }
             return false;
         }
@@ -127,11 +140,24 @@ namespace CardGame
 
         private Follower CardToFollower(Card card)
         {
-            return new Follower(
+            var f = new Follower(
                 card.Name,
                 card.Power.CurrentValue,
                 card.Sprite_
             );
+            f.AddTo(_disposables);
+            return f;
+        }
+
+        private Trap CardToTrap(Card card)
+        {
+            var t = new Trap(
+                card.Name,
+                card.Power.CurrentValue,
+                card.Sprite_
+            );
+            t.AddTo(_disposables);
+            return t;
         }
     }
 }

@@ -2,6 +2,7 @@ public enum CardKind
 {
     FOLLOWER,
     SPELL,
+    TRAP,
 }
 
 public enum CardCol

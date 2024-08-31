@@ -14,6 +14,7 @@ namespace CardGame
         ILeaderView ILeaderView_ { get; }
         void DrowCard(CardView cardview);
         void SummonFollower(FollowerView followerView);
+        void SetTrap(TrapView trapView);
         void SetHandCount(int count);
         void SetMana(int num);
         void SetMaxMana(int num);
@@ -24,6 +25,7 @@ namespace CardGame
 
         [SerializeField] private Transform _hand;
         [SerializeField] private Transform _field;
+        [SerializeField] private Transform _trapZone;
         [Header("text")]
         [SerializeField] private TMP_Text _handcountText;
         [SerializeField] private TMP_Text _manaText;
@@ -69,6 +71,13 @@ namespace CardGame
         public void SetMaxMana(int num)
         {
             _maxManaText.text = num.ToString();
+        }
+
+        public void SetTrap(TrapView trap)
+        {
+            trap.transform.SetParent(_trapZone);
+            trap.transform.localScale = Vector3.one;
+            trap.transform.localPosition = Vector3.zero;
         }
     }
 }
