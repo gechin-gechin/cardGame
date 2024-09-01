@@ -65,6 +65,10 @@ namespace CardGame
                 view.SetTrap(tv);
             }).AddTo(_disposables);
 
+            model.Trash.ObserveCountChanged()
+                .Subscribe(n => view.SetTrashCount(n))
+                .AddTo(_disposables);
+
             model.Leader_.Subscribe(l =>
             {
                 _leaderPresenter.Bind(l, view.ILeaderView_);

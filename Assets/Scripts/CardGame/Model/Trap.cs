@@ -6,6 +6,7 @@ namespace CardGame
 {
     public class Trap : IDisposable
     {
+        public Action OnDead;
         public int PlayerID { get; private set; }
         public string Name { get; private set; }
         public Sprite Sprite_ { get; private set; }
@@ -20,6 +21,15 @@ namespace CardGame
             Name = name;
             _life = new(life);
             Sprite_ = sprite;
+        }
+
+        public void TakeDamage(int num)
+        {
+            _life.Value -= num;
+            if (_life.Value <= 0)
+            {
+                OnDead?.Invoke();
+            }
         }
 
         public void Dispose()

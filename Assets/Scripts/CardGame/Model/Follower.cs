@@ -8,6 +8,7 @@ namespace CardGame
 {
     public class Follower : IDisposable
     {
+        public Action OnDead;
         public int PlayerID { get; private set; }
         public string Name { get; private set; }
         public Sprite Sprite_ { get; private set; }
@@ -41,7 +42,7 @@ namespace CardGame
         {
             if (isdead)
             {
-                //sinndatoki
+                OnDead?.Invoke();
             }
             else
             {
@@ -51,7 +52,10 @@ namespace CardGame
 
         public void EndBattle(bool isdead)
         {
-
+            if (isdead)
+            {
+                OnDead?.Invoke();
+            }
         }
     }
 }

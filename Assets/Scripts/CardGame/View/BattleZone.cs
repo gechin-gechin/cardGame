@@ -32,9 +32,14 @@ namespace CardGame
                         OnEndBattle?.Invoke(true);
                         a.OnEndAttack?.Invoke(false);
                     }
-                    else
+                    else if (a.Power < _power)
                     {
                         OnEndBattle?.Invoke(false);
+                        a.OnEndAttack?.Invoke(true);
+                    }
+                    else
+                    {
+                        OnEndBattle?.Invoke(true);
                         a.OnEndAttack?.Invoke(true);
                     }
                 }

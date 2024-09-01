@@ -19,6 +19,7 @@ namespace CardGame
             view.OnEndBattle = model.EndBattle;
             model.Power.Subscribe(p => view.SetPower(p)).AddTo(cd);
             model.IsAttackAble.Subscribe(f => view.SetIsAttackAble(f)).AddTo(cd);
+            model.OnDead += () => view?.Release();
             view.OnRelease = () => cd.Dispose();
         }
 

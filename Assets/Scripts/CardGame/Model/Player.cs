@@ -24,6 +24,7 @@ namespace CardGame
         public ObservableList<Card> Hand;
         public ObservableList<Follower> Field;
         public ObservableList<Trap> TrapZone;
+        public ObservableList<Card> Trash;
         private ReactiveProperty<int> _mana;
         public ReadOnlyReactiveProperty<int> Mana => _mana;
 
@@ -45,6 +46,7 @@ namespace CardGame
             Hand = new();
             Field = new();
             TrapZone = new();
+            Trash = new();
             _mana = new(0);
             _maxMana = new(0);
 
@@ -107,6 +109,7 @@ namespace CardGame
                         _mana.Value -= card.Cost;
                         var f = CardToFollower(card);
                         Field.Add(f);
+                        f.OnDead += () => Field.Remove(f);
                         Hand.Remove(card);
                         return true;
                     case CardKind.SPELL:
@@ -115,6 +118,7 @@ namespace CardGame
                         _mana.Value -= card.Cost;
                         var t = CardToTrap(card);
                         TrapZone.Add(t);
+                        t.OnDead += () => TrapZone.Remove(t);
                         Hand.Remove(card);
                         return true;
                     default:
@@ -144,6 +148,11 @@ namespace CardGame
             _disposables.Dispose();
         }
 
+        private void AddTrash(Card card)
+        {
+            Trash.Add(card);
+        }
+
         private Follower CardToFollower(Card card)
         {
             var f = new Follower(
@@ -153,6 +162,7 @@ namespace CardGame
                 card.Sprite_
             );
             f.AddTo(_disposables);
+            f.OnDead += () => AddTrash(card);
             return f;
         }
 
@@ -165,6 +175,7 @@ namespace CardGame
                 card.Sprite_
             );
             t.AddTo(_disposables);
+            t.OnDead += () => AddTrash(card);
             return t;
         }
     }

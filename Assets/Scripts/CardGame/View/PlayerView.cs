@@ -18,6 +18,7 @@ namespace CardGame
         void SetHandCount(int count);
         void SetMana(int num);
         void SetMaxMana(int num);
+        void SetTrashCount(int num);
     }
     public class PlayerView : MonoBehaviour, IPlayerView
     {
@@ -30,6 +31,7 @@ namespace CardGame
         [SerializeField] private TMP_Text _handcountText;
         [SerializeField] private TMP_Text _manaText;
         [SerializeField] private TMP_Text _maxManaText;
+        [SerializeField] private TMP_Text _trashText;
         [Header("input")]
         [SerializeField] private InputActionReference _turnend_ref;
         [SerializeField] private Button _turnend_button;
@@ -78,6 +80,11 @@ namespace CardGame
             trap.transform.SetParent(_trapZone);
             trap.transform.localScale = Vector3.one;
             trap.transform.localPosition = Vector3.zero;
+        }
+
+        public void SetTrashCount(int num)
+        {
+            _trashText.text = "trash: " + num.ToString();
         }
     }
 }

@@ -16,8 +16,12 @@ namespace CardGame
 
         public void Bind(Trap model, ITrapView view)
         {
+            CompositeDisposable cd = new();
             view.Init(model.PlayerID, model.Name, model.Sprite_);
-            model.Life.Subscribe(p => view.SetLife(p)).AddTo(_disposables);
+            model.Life.Subscribe(p => view.SetLife(p)).AddTo(cd);
+            view.OnTakeDamage = model.TakeDamage;
+            model.OnDead += () => view?.Release();
+            view.OnRelease = () => cd.Dispose();
         }
 
         public void Dispose()
