@@ -12,6 +12,7 @@ namespace CardGame
     {
         Action OnRelease { get; set; }
         Action<bool> OnEndAttack { get; set; }//isdead
+        Action<bool> OnEndBattle { get; set; }
         void Init(int playerID, string name, Sprite sprite);
         void SetPower(int num);
         void SetIsAttackAble(bool value);
@@ -21,6 +22,7 @@ namespace CardGame
     {
         public Action OnRelease { get; set; }
         public Action<bool> OnEndAttack { get; set; }
+        public Action<bool> OnEndBattle { get; set; }
         [SerializeField] private Image _image;
         [SerializeField] private TMP_Text _nameText;
         [SerializeField] private TMP_Text _powerText;
@@ -31,6 +33,7 @@ namespace CardGame
         [SerializeField] private Outline _outline;
         [Header("battle")]
         [SerializeField] private AttackZone _attackZone;
+        [SerializeField] private BattleZone _battleZone;
 
         //一度しか呼ばれたくない
         private void Awake()
@@ -44,6 +47,7 @@ namespace CardGame
                 _lineRenderer.enabled = false;
                 _sentan_img.color = Vector4.zero;
             };
+            _battleZone.OnEndBattle = (f) => OnEndBattle?.Invoke(f);
             _cardMovement.Init();
             Observable.EveryValueChanged(_cardMovement.transform, t => t.localPosition)
                 //.Where(_ => _cardMovement.IsDraggable)
@@ -71,6 +75,7 @@ namespace CardGame
             _sentan_img.color = Vector4.zero;
 
             _attackZone.SetPlayerID(playerID);
+            _battleZone.Init(playerID);
             _cardMovement.IsDraggable = false;
         }
 
@@ -78,6 +83,7 @@ namespace CardGame
         {
             _powerText.text = num.ToString();
             _attackZone.SetPower(num);
+            _battleZone.SetPower(num);
         }
 
         public void SetIsAttackAble(bool value)

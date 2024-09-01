@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using R3;
-using UnityEngine;
 
 namespace CardGame
 {
@@ -19,6 +16,7 @@ namespace CardGame
             CompositeDisposable cd = new();
             view.Init(model.PlayerID, model.Name, model.Sprite_);
             view.OnEndAttack = model.EndAttack;
+            view.OnEndBattle = model.EndBattle;
             model.Power.Subscribe(p => view.SetPower(p)).AddTo(cd);
             model.IsAttackAble.Subscribe(f => view.SetIsAttackAble(f)).AddTo(cd);
             view.OnRelease = () => cd.Dispose();

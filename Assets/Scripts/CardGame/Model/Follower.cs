@@ -48,5 +48,10 @@ namespace CardGame
                 _isAttackAble.Value = false;
             }
         }
+
+        public void EndBattle(bool isdead)
+        {
+
+        }
     }
 }

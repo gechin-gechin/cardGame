@@ -1767,6 +1767,7 @@ MonoBehaviour:
   _sentan_img: {fileID: 890613454}
   _outline: {fileID: 1424047449}
   _attackZone: {fileID: 2141191169}
+  _battleZone: {fileID: 2141191170}
 --- !u!114 &1248945225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3539,6 +3540,8 @@ GameObject:
   - component: {fileID: 2141191168}
   - component: {fileID: 2141191167}
   - component: {fileID: 2141191169}
+  - component: {fileID: 2141191171}
+  - component: {fileID: 2141191170}
   m_Layer: 5
   m_Name: Move
   m_TagString: Follower
@@ -3650,6 +3653,32 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7a745be8db69940e884fd749341a2c72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2141191170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141191162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5c5c7f52ea114ba08a1601afce211ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _tags:
+  - Follower
+--- !u!114 &2141191171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141191162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175863aed172cdf47a35bdce36b9f67b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &3840578704837159206
