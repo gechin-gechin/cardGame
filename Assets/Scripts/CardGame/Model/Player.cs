@@ -66,7 +66,7 @@ namespace CardGame
             foreach (int id in _decklist)
             {
                 var c = await _cardRepository.GetByID(id);
-                Debug.Log("deck add " + c.Name);
+                //Debug.Log("deck add " + c.Name);
                 _deck.Add(c);
             }
             _deck = _deck.OrderBy(c => Guid.NewGuid()).ToList();

@@ -16,6 +16,7 @@ namespace CardGame
 
         public Follower(string name, int power, Sprite sprite)
         {
+            _disposables = new();
             Name = name;
             _power = new(power);
             Sprite_ = sprite;
