@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using R3;
@@ -9,52 +10,95 @@ namespace CardGame
 {
     public interface IFollowerView
     {
-        void Init(string name, Sprite sprite);
+        Action OnRelease { get; set; }
+        Action<bool> OnEndAttack { get; set; }//isdead
+        void Init(int playerID, string name, Sprite sprite);
         void SetPower(int num);
+        void SetIsAttackAble(bool value);
+        void Release();
     }
     public class FollowerView : PooledObject<FollowerView>, IFollowerView
     {
+        public Action OnRelease { get; set; }
+        public Action<bool> OnEndAttack { get; set; }
         [SerializeField] private Image _image;
         [SerializeField] private TMP_Text _nameText;
         [SerializeField] private TMP_Text _powerText;
         [Header("yajirushi")]
         [SerializeField] private CardMovement _cardMovement;
         [SerializeField] private LineRenderer _lineRenderer;
-        [SerializeField] private GameObject _sentan_obj;
+        [SerializeField] private Image _sentan_img;
+        [SerializeField] private Outline _outline;
+        [Header("battle")]
+        [SerializeField] private AttackZone _attackZone;
 
         //一度しか呼ばれたくない
         private void Awake()
         {
-            Debug.Log("awake");
+            _attackZone.OnEndAttack = (f) =>
+            {
+                this.OnEndAttack?.Invoke(f);
+                //Dropが成功するとEndが呼ばれないため
+                _cardMovement.transform.localPosition = Vector3.zero;
+                _cardMovement.SetBlocksRaycasts(true);
+                _lineRenderer.enabled = false;
+                _sentan_img.color = Vector4.zero;
+            };
             _cardMovement.Init();
-            _cardMovement.IsDraggable = true;
             Observable.EveryValueChanged(_cardMovement.transform, t => t.localPosition)
+                //.Where(_ => _cardMovement.IsDraggable)
+                //.Where(_ => _lineRenderer.enabled)
                 .Subscribe(pos => _lineRenderer.SetPosition(1, pos))
                 .AddTo(this);
             _cardMovement.OnBegin += () =>
             {
-                _lineRenderer.gameObject.SetActive(true);
-                _sentan_obj.SetActive(true);
+                _lineRenderer.enabled = true;
+                _sentan_img.color = Vector4.one;
             };
             _cardMovement.OnEnd += () =>
             {
                 _cardMovement.transform.localPosition = Vector3.zero;
-                _lineRenderer.gameObject.SetActive(false);
-                _sentan_obj.SetActive(false);
+                _lineRenderer.enabled = false;
+                _sentan_img.color = Vector4.zero;
             };
         }
 
-        public void Init(string name, Sprite sprite)
+        public void Init(int playerID, string name, Sprite sprite)
         {
             _nameText.text = name;
             _image.sprite = sprite;
-            _lineRenderer.gameObject.SetActive(false);
-            _sentan_obj.SetActive(false);
+            _lineRenderer.enabled = false;
+            _sentan_img.color = Vector4.zero;
+
+            _attackZone.SetPlayerID(playerID);
+            _cardMovement.IsDraggable = false;
         }
 
         public void SetPower(int num)
         {
             _powerText.text = num.ToString();
+            _attackZone.SetPower(num);
+        }
+
+        public void SetIsAttackAble(bool value)
+        {
+            _cardMovement.IsDraggable = value;
+            //見た目でわかるもの
+            _outline.enabled = value;
+            _attackZone.SetIsAttackAble(value);
+        }
+
+        public void Release()
+        {
+            OnRelease?.Invoke();
+            ReleaseToPool();
+            OnRelease = null;
+        }
+
+        //購読の破棄
+        private void OnDestroy()
+        {
+            OnRelease?.Invoke();
         }
     }
 }

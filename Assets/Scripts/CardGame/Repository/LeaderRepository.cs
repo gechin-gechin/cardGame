@@ -12,7 +12,7 @@ namespace CardGame
         {
             _translator = new();
         }
-        public async UniTask<Leader> GetByID(int id)
+        public async UniTask<Leader> GetByID(int leaderID, int playerID)
         {
             if (_entities == null)
             {
@@ -20,9 +20,9 @@ namespace CardGame
                 _entities = await sol.LoadAll("Leader");
             }
             //エンティティを取ってくる
-            var e = _entities.Where(e => e.ID == id).FirstOrDefault();
+            var e = _entities.Where(e => e.ID == leaderID).FirstOrDefault();
             //ゆくゆくは翻訳家を通す
-            return _translator.EntityToLeader(e);
+            return _translator.EntityToLeader(playerID, e);
         }
     }
 }

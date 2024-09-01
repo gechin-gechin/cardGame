@@ -16,8 +16,12 @@ namespace CardGame
 
         public void Bind(Follower model, IFollowerView view)
         {
-            view.Init(model.Name, model.Sprite_);
-            model.Power.Subscribe(p => view.SetPower(p)).AddTo(_disposables);
+            CompositeDisposable cd = new();
+            view.Init(model.PlayerID, model.Name, model.Sprite_);
+            view.OnEndAttack = model.EndAttack;
+            model.Power.Subscribe(p => view.SetPower(p)).AddTo(cd);
+            model.IsAttackAble.Subscribe(f => view.SetIsAttackAble(f)).AddTo(cd);
+            view.OnRelease = () => cd.Dispose();
         }
 
         public void Dispose()

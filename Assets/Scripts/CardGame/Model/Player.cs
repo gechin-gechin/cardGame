@@ -18,6 +18,7 @@ namespace CardGame
 
     public class Player : IPlayer, IDisposable
     {
+        public int PlayerID { get; private set; }
         public Action OnTurnEnd { get; set; }
         private List<Card> _deck;
         public ObservableList<Card> Hand;
@@ -37,8 +38,9 @@ namespace CardGame
 
         private CompositeDisposable _disposables;
 
-        public Player(CardRepository cardRepository, LeaderRepository leaderRepository)
+        public Player(int id, CardRepository cardRepository, LeaderRepository leaderRepository)
         {
+            PlayerID = id;
             _deck = new();
             Hand = new();
             Field = new();
@@ -54,7 +56,7 @@ namespace CardGame
         public async UniTask CreateLeader()
         {
             int id = 0;
-            var l = await _leaderRepository.GetByID(id);
+            var l = await _leaderRepository.GetByID(id, PlayerID);
             _leader = new(l);
             _leader.Value.MaxCost.Subscribe(mc => _maxMana.Value = mc).AddTo(_disposables);
         }
@@ -75,6 +77,10 @@ namespace CardGame
         public void StartTurn()
         {
             _mana.Value = _maxMana.Value;
+            foreach (var f in Field)
+            {
+                f.SetIsAttackAble(true);
+            }
             Drow();
         }
 
@@ -141,6 +147,7 @@ namespace CardGame
         private Follower CardToFollower(Card card)
         {
             var f = new Follower(
+                PlayerID,
                 card.Name,
                 card.Power.CurrentValue,
                 card.Sprite_
@@ -152,6 +159,7 @@ namespace CardGame
         private Trap CardToTrap(Card card)
         {
             var t = new Trap(
+                PlayerID,
                 card.Name,
                 card.Power.CurrentValue,
                 card.Sprite_

@@ -21,7 +21,7 @@ namespace CardGame
         private CanvasGroup _canvasGroup;
         private Camera _camera;
 
-        public bool IsDraggable { get; set; }
+        public bool IsDraggable { get; set; } = false;
         private bool _isDraging = false;//２回呼ばれるのを防止
         public void Init()
         {
@@ -69,6 +69,11 @@ namespace CardGame
                 _isDraging = false;
                 OnEnd?.Invoke();
             }
+        }
+        //Drop時に呼ばれなくてバグるため
+        public void SetBlocksRaycasts(bool value)
+        {
+            _canvasGroup.blocksRaycasts = value;
         }
     }
 }

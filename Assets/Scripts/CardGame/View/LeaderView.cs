@@ -10,7 +10,8 @@ namespace CardGame
 {
     public interface ILeaderView
     {
-        void Init(Sprite sprite, CardCol[] cardCols);
+        Action<int> OnTakeDamage { get; set; }
+        void Init(int playerID, Sprite sprite, CardCol[] cardCols);
         void SetName(string _name);
         void SetLife(int num);
         void SetLevel(int num);
@@ -20,20 +21,24 @@ namespace CardGame
 
     public class LeaderView : MonoBehaviour, ILeaderView
     {
+        public Action<int> OnTakeDamage { get; set; }
         [SerializeField] private TMP_Text _name_text;
         [SerializeField] private TMP_Text _life_text;
         [SerializeField] private TMP_Text _level_text;
         [SerializeField] private Image _chara_image;
         [SerializeField] private Image _base_img;
         [SerializeField] private Slider _exp_slider;
+        [SerializeField] private DamageZone _damageZone;
         private int _exp;
         private int _requireExp;
 
-        public void Init(Sprite sprite, CardCol[] cardCols)
+        public void Init(int playerID, Sprite sprite, CardCol[] cardCols)
         {
             _exp = 0;
             _requireExp = 0;
             _chara_image.sprite = sprite;
+            _damageZone.Init(playerID);
+            _damageZone.TakeDamage = (n) => OnTakeDamage?.Invoke(n);
         }
         public void SetName(string _name)
         {

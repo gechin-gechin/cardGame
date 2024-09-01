@@ -15,7 +15,8 @@ namespace CardGame
         }
         public void Bind(Leader model, ILeaderView view)
         {
-            view.Init(model.Chara_sprite, model.Colors);
+            view.Init(model.PlayerID, model.Chara_sprite, model.Colors);
+            view.OnTakeDamage = model.TakeDamage;
             model.Name.Subscribe(n => view.SetName(n)).AddTo(_disposables);
             model.Life.Subscribe(n => view.SetLife(n)).AddTo(_disposables);
             model.Level.Subscribe(n => view.SetLevel(n)).AddTo(_disposables);

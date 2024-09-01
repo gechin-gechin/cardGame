@@ -6,14 +6,16 @@ namespace CardGame
 {
     public class Trap : IDisposable
     {
-        public string Name { get; set; }
-        public Sprite Sprite_ { get; set; }
+        public int PlayerID { get; private set; }
+        public string Name { get; private set; }
+        public Sprite Sprite_ { get; private set; }
         private ReactiveProperty<int> _life;
         public ReadOnlyReactiveProperty<int> Life => _life;
         private CompositeDisposable _disposables;
 
-        public Trap(string name, int life, Sprite sprite)
+        public Trap(int playerID, string name, int life, Sprite sprite)
         {
+            PlayerID = playerID;
             _disposables = new();
             Name = name;
             _life = new(life);

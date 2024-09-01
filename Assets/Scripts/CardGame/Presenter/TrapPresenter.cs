@@ -16,7 +16,7 @@ namespace CardGame
 
         public void Bind(Trap model, ITrapView view)
         {
-            view.Init(model.Name, model.Sprite_);
+            view.Init(model.PlayerID, model.Name, model.Sprite_);
             model.Life.Subscribe(p => view.SetLife(p)).AddTo(_disposables);
         }
 

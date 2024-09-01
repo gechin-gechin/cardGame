@@ -26,9 +26,11 @@ namespace CardGame
         public Sprite Chara_sprite { get; private set; }
         private LeaderStage[] _stages;
         private LeaderStage _nowStage;
+        public int PlayerID { get; private set; }
 
-        public Leader(string name, Sprite chara, LeaderStage[] stages, CardCol[] colors)
+        public Leader(int playerID, string name, Sprite chara, LeaderStage[] stages, CardCol[] colors)
         {
+            PlayerID = playerID;
             _name = new(name + " lv0");
             _life = new(_startLife);
             _level = new(0);
@@ -58,6 +60,10 @@ namespace CardGame
                     _requireExp.Value = (_level.Value == _stages.Length - 1) ? -1 : _nowStage.RequireExp;
                 }
             }
+        }
+        public void TakeDamage(int num)
+        {
+            _life.Value -= num;
         }
 
         public void Dispose()

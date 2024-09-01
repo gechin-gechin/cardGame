@@ -8,7 +8,7 @@ namespace CardGame
 {
     public interface ITrapView
     {
-        void Init(string name, Sprite sprite);
+        void Init(int playerID, string name, Sprite sprite);
         void SetLife(int num);
     }
     public class TrapView : PooledObject<TrapView>, ITrapView
@@ -18,7 +18,7 @@ namespace CardGame
         [SerializeField] private TMP_Text _nameText;
         [SerializeField] private TMP_Text _lifeText;
 
-        public void Init(string name, Sprite sprite)
+        public void Init(int playerID, string name, Sprite sprite)
         {
             _nameText.text = name;
             _image.sprite = sprite;
