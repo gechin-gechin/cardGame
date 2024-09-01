@@ -11,6 +11,7 @@ namespace CardGame
         public Action OnDead;
         public int PlayerID { get; private set; }
         public string Name { get; private set; }
+        public List<Ability> Abilities { get; private set; }
         public Sprite Sprite_ { get; private set; }
         private ReactiveProperty<int> _power;
         public ReadOnlyReactiveProperty<int> Power => _power;
@@ -26,6 +27,10 @@ namespace CardGame
             _power = new(power);
             _isAttackAble = new(false);
             Sprite_ = sprite;
+        }
+        public void SetAbility(List<Ability> abilities)
+        {
+            Abilities = abilities;
         }
 
         public void Dispose()

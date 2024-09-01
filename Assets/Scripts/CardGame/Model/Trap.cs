@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using R3;
+using System.Collections.Generic;
 
 namespace CardGame
 {
@@ -10,6 +11,7 @@ namespace CardGame
         public int PlayerID { get; private set; }
         public string Name { get; private set; }
         public Sprite Sprite_ { get; private set; }
+        public List<Ability> Abilities { get; private set; }
         private ReactiveProperty<int> _life;
         public ReadOnlyReactiveProperty<int> Life => _life;
         private CompositeDisposable _disposables;
@@ -21,6 +23,10 @@ namespace CardGame
             Name = name;
             _life = new(life);
             Sprite_ = sprite;
+        }
+        public void SetAbility(List<Ability> abilities)
+        {
+            Abilities = abilities;
         }
 
         public void TakeDamage(int num)

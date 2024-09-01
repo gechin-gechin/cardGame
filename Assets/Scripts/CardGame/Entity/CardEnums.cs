@@ -14,3 +14,19 @@ public enum CardCol
     RED,
     GREEN
 }
+
+public enum AbilityTiming
+{
+    TurnStart,
+    CIP,
+    Battle,
+    PIG,
+    TurnEnd,
+}
+
+public enum AbilityTarget
+{
+    PLAYER,
+    ENEMY,
+    BOTH
+}

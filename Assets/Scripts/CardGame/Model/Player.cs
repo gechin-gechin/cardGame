@@ -86,7 +86,7 @@ namespace CardGame
             Drow();
         }
 
-        private void Drow()
+        public void Drow()
         {
             if (_deck.Count <= 0)
             {
@@ -111,6 +111,15 @@ namespace CardGame
                         Field.Add(f);
                         f.OnDead += () => Field.Remove(f);
                         Hand.Remove(card);
+                        //CIP
+                        var absf = f.Abilities.Where(a => a.Timing == AbilityTiming.CIP).ToArray();
+                        if (absf != null)
+                        {
+                            foreach (var a in absf)
+                            {
+                                a.Process?.Invoke();
+                            }
+                        }
                         return true;
                     case CardKind.SPELL:
                         return false;//未実装
@@ -120,6 +129,15 @@ namespace CardGame
                         TrapZone.Add(t);
                         t.OnDead += () => TrapZone.Remove(t);
                         Hand.Remove(card);
+                        //CIP
+                        var abst = t.Abilities.Where(a => a.Timing == AbilityTiming.CIP).ToArray();
+                        if (abst != null)
+                        {
+                            foreach (var a in abst)
+                            {
+                                a.Process?.Invoke();
+                            }
+                        }
                         return true;
                     default:
                         break;
@@ -161,8 +179,37 @@ namespace CardGame
                 card.Power.CurrentValue,
                 card.Sprite_
             );
+            //能力
+            List<Ability> abilities = new();
+            foreach (var a in card.AbilitiesToPlayer)
+            {
+                var ab = new Ability(
+                    a.Timing,
+                    () => a.Process?.Invoke(this)
+                );
+                abilities.Add(ab);
+            }
+            foreach (var a in card.AbilitiesToFollower)
+            {
+                var ab = new Ability(
+                    a.Timing,
+                    () => a.Process?.Invoke(f)
+                );
+                abilities.Add(ab);
+            }
+            f.SetAbility(abilities);
+            //後処理
             f.AddTo(_disposables);
             f.OnDead += () => AddTrash(card);
+            //PIG
+            var absf = f.Abilities.Where(a => a.Timing == AbilityTiming.PIG).ToArray();
+            if (absf != null)
+            {
+                foreach (var a in absf)
+                {
+                    f.OnDead += () => a.Process?.Invoke();
+                }
+            }
             return f;
         }
 
@@ -174,9 +221,43 @@ namespace CardGame
                 card.Power.CurrentValue,
                 card.Sprite_
             );
+            //能力
+            List<Ability> abilities = new();
+            foreach (var a in card.AbilitiesToPlayer)
+            {
+                var ab = new Ability(
+                    a.Timing,
+                    () => a.Process?.Invoke(this)
+                );
+                abilities.Add(ab);
+            }
+            foreach (var a in card.AbilitiesToTrap)
+            {
+                var ab = new Ability(
+                    a.Timing,
+                    () => a.Process?.Invoke(t)
+                );
+                abilities.Add(ab);
+            }
+            t.SetAbility(abilities);
             t.AddTo(_disposables);
             t.OnDead += () => AddTrash(card);
+            //PIG
+            var abst = t.Abilities.Where(a => a.Timing == AbilityTiming.PIG).ToArray();
+            if (abst != null)
+            {
+                foreach (var a in abst)
+                {
+                    t.OnDead += () => a.Process?.Invoke();
+                }
+            }
             return t;
+        }
+
+        private Action UseableAbility()
+        {
+            Action act = null;
+            return act;
         }
     }
 }

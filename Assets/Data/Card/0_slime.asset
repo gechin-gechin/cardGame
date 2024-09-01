@@ -15,5 +15,10 @@ MonoBehaviour:
   _id: 0
   _name: slime
   _cost: 1
+  _kind: 0
   _power: 1000
   _sprite: {fileID: 21300000, guid: 46b44d74a88a7425ba843a3264944bd9, type: 3}
+  _abilitiesToPlayer:
+  - {fileID: 11400000, guid: 09b38ab5d2ab746b1aa999836941d699, type: 2}
+  _abilitiesToFollower: []
+  _abilitiesToTrap: []

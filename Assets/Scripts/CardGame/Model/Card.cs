@@ -16,9 +16,14 @@ namespace CardGame
         public Sprite Sprite_ { get; private set; }
         public CardKind Kind { get; private set; }
 
+        public AbilityEntity<Player>[] AbilitiesToPlayer { get; private set; }
+        public AbilityEntity<Follower>[] AbilitiesToFollower { get; private set; }
+        public AbilityEntity<Trap>[] AbilitiesToTrap { get; private set; }
+
         public Func<bool> TryUse;
 
-        public Card(int id, string name, int cost, CardKind kind, int power, Sprite sprite)
+        public Card(int id, string name, int cost, CardKind kind, int power, Sprite sprite,
+        AbilityEntity<Player>[] abilitiesToPlayer, AbilityEntity<Follower>[] abilitiesToFollower, AbilityEntity<Trap>[] abilitiesToTrap)
         {
             ID = id;
             Name = name;
@@ -26,6 +31,10 @@ namespace CardGame
             Kind = kind;
             _power = new(power);
             Sprite_ = sprite;
+
+            AbilitiesToPlayer = abilitiesToPlayer;
+            AbilitiesToFollower = abilitiesToFollower;
+            AbilitiesToTrap = abilitiesToTrap;
         }
     }
 }

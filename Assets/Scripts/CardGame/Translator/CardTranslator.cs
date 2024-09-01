@@ -14,7 +14,10 @@ namespace CardGame
                 entity.Cost,
                 entity.Kind,
                 entity.Power,
-                entity.Sprite_
+                entity.Sprite_,
+                entity.AbilitiesToPlayer,
+                entity.AbilitiesToFollower,
+                entity.AbilitiesToTrap
             );
         }
     }
