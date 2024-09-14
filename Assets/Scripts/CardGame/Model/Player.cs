@@ -14,10 +14,12 @@ namespace CardGame
         void StartTurn();
         void TimeOver();
         Action OnTurnEnd { get; set; }
+        public Action<string> OnMessage { get; set; }
     }
 
     public sealed partial class Player : IPlayer, IDisposable
     {
+        public Action<string> OnMessage { get; set; }//いずれはenumで指定
         public int PlayerID { get; private set; }
         public Player Enemy { get; private set; }
         public Action OnTurnEnd { get; set; }
@@ -91,6 +93,7 @@ namespace CardGame
 
         public void StartTurn()
         {
+            OnMessage?.Invoke("turn changed");
             _mana.Value = _maxMana.Value;
             foreach (var f in Field)
             {
