@@ -11,9 +11,9 @@ namespace CardGame
     public interface IFollowerView
     {
         Action OnRelease { get; set; }
-        Action<bool> OnEndAttack { get; set; }//isdead
-        Action<bool> OnEndBattle { get; set; }
-        void Init(int playerID, string name, Sprite sprite);
+        Action OnEndAttack { get; set; }
+        Action<int> OnBattle { get; set; }
+        void Init(int playerID, int initID, string name, Sprite sprite);
         void SetPower(int num);
         void SetIsAttackAble(bool value);
         void Release();
@@ -21,8 +21,8 @@ namespace CardGame
     public class FollowerView : PooledObject<FollowerView>, IFollowerView
     {
         public Action OnRelease { get; set; }
-        public Action<bool> OnEndAttack { get; set; }
-        public Action<bool> OnEndBattle { get; set; }
+        public Action OnEndAttack { get; set; }
+        public Action<int> OnBattle { get; set; }
         [SerializeField] private Image _image;
         [SerializeField] private TMP_Text _nameText;
         [SerializeField] private TMP_Text _powerText;
@@ -38,16 +38,16 @@ namespace CardGame
         //一度しか呼ばれたくない
         private void Awake()
         {
-            _attackZone.OnEndAttack = (f) =>
+            _attackZone.OnEndAttack = () =>
             {
-                this.OnEndAttack?.Invoke(f);
+                OnEndAttack?.Invoke();
                 //Dropが成功するとEndが呼ばれないため
                 _cardMovement.transform.localPosition = Vector3.zero;
                 _cardMovement.SetBlocksRaycasts(true);
                 _lineRenderer.enabled = false;
                 _sentan_img.color = Vector4.zero;
             };
-            _battleZone.OnEndBattle = (f) => OnEndBattle?.Invoke(f);
+            _battleZone.OnBattle = (id) => OnBattle?.Invoke(id);
             _cardMovement.Init();
             Observable.EveryValueChanged(_cardMovement.transform, t => t.localPosition)
                 //.Where(_ => _cardMovement.IsDraggable)
@@ -67,14 +67,14 @@ namespace CardGame
             };
         }
 
-        public void Init(int playerID, string name, Sprite sprite)
+        public void Init(int playerID, int initID, string name, Sprite sprite)
         {
             _nameText.text = name;
             _image.sprite = sprite;
             _lineRenderer.enabled = false;
             _sentan_img.color = Vector4.zero;
 
-            _attackZone.SetPlayerID(playerID);
+            _attackZone.SetIDs(playerID, initID);
             _battleZone.Init(playerID);
             _cardMovement.IsDraggable = false;
         }
@@ -82,8 +82,6 @@ namespace CardGame
         public void SetPower(int num)
         {
             _powerText.text = num.ToString();
-            _attackZone.SetPower(num);
-            _battleZone.SetPower(num);
         }
 
         public void SetIsAttackAble(bool value)

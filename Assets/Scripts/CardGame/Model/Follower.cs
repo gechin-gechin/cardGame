@@ -9,7 +9,9 @@ namespace CardGame
     public class Follower : IDisposable
     {
         public Action OnDead;
+        public Action<int> OnBattle;//enemyinitid
         public int PlayerID { get; private set; }
+        public int InitID { get; private set; }
         public string Name { get; private set; }
         public List<Ability> Abilities { get; private set; }
         public Sprite Sprite_ { get; private set; }
@@ -19,9 +21,10 @@ namespace CardGame
         public ReadOnlyReactiveProperty<bool> IsAttackAble => _isAttackAble;
         private CompositeDisposable _disposables;
 
-        public Follower(int playerID, string name, int power, Sprite sprite)
+        public Follower(int playerID, int initID, string name, int power, Sprite sprite)
         {
             PlayerID = playerID;
+            InitID = initID;
             _disposables = new();
             Name = name;
             _power = new(power);
@@ -43,24 +46,14 @@ namespace CardGame
             _isAttackAble.Value = value;
         }
 
-        public void EndAttack(bool isdead)
+        public void EndAttack()
         {
-            if (isdead)
-            {
-                OnDead?.Invoke();
-            }
-            else
-            {
-                _isAttackAble.Value = false;
-            }
+            _isAttackAble.Value = false;
         }
 
-        public void EndBattle(bool isdead)
+        public void Dead()
         {
-            if (isdead)
-            {
-                OnDead?.Invoke();
-            }
+            OnDead?.Invoke();
         }
     }
 }

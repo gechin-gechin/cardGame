@@ -14,9 +14,9 @@ namespace CardGame
         public void Bind(Follower model, IFollowerView view)
         {
             CompositeDisposable cd = new();
-            view.Init(model.PlayerID, model.Name, model.Sprite_);
+            view.Init(model.PlayerID, model.InitID, model.Name, model.Sprite_);
             view.OnEndAttack = model.EndAttack;
-            view.OnEndBattle = model.EndBattle;
+            view.OnBattle = (id) => model.OnBattle?.Invoke(id);
             model.Power.Subscribe(p => view.SetPower(p)).AddTo(cd);
             model.IsAttackAble.Subscribe(f => view.SetIsAttackAble(f)).AddTo(cd);
             model.OnDead += () => view?.Release();

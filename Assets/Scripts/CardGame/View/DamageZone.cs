@@ -5,7 +5,7 @@ namespace CardGame
 {
     public class DamageZone : BaseDropZone
     {
-        public Action<int> TakeDamage;
+        public Action<int> TakeDamage;//initid
         private int _playerID;
 
         public void Init(int playerID)
@@ -20,8 +20,8 @@ namespace CardGame
             {
                 if (a.PlayerID != _playerID && a.IsAttackAble)
                 {
-                    TakeDamage?.Invoke(a.Power);
-                    a.OnEndAttack?.Invoke(false);//死んでないからfalse
+                    TakeDamage?.Invoke(a.InitID);
+                    a.OnEndAttack?.Invoke();
                 }
             }
         }

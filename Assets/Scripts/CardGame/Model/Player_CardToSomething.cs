@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using R3;
+using UnityEngine;
 
 namespace CardGame
 {
@@ -12,10 +13,13 @@ namespace CardGame
         {
             var f = new Follower(
                 PlayerID,
+                GetInitID(),
                 card.Name,
                 card.Power.CurrentValue,
                 card.Sprite_
             );
+            //バトル
+            f.OnBattle = (id) => FollowerBattle(f, id);
             //能力
             List<Ability> abilities = new();
             foreach (var a in card.AbilitiesToPlayer)
@@ -58,6 +62,8 @@ namespace CardGame
                 card.Power.CurrentValue,
                 card.Sprite_
             );
+            //damage
+            t.GetEnemyFollower = Enemy.GetFieldFollower;
             //能力
             List<Ability> abilities = new();
             foreach (var a in card.AbilitiesToPlayer)

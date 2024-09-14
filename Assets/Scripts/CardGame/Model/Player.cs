@@ -39,6 +39,12 @@ namespace CardGame
         private LeaderRepository _leaderRepository;
 
         private CompositeDisposable _disposables;
+        private int _initID = 0;
+        private int GetInitID()
+        {
+            _initID++;
+            return _initID;
+        }
 
         public Player(int id)
         {
@@ -65,6 +71,7 @@ namespace CardGame
         {
             int id = 0;
             var l = await _leaderRepository.GetByID(id, PlayerID);
+            l.GetEnemyFollower = Enemy.GetFieldFollower;
             _leader = new(l);
             _leader.Value.MaxCost.Subscribe(mc => _maxMana.Value = mc).AddTo(_disposables);
         }
@@ -177,12 +184,30 @@ namespace CardGame
             Trash.Add(card);
         }
 
-
-
-        private Action UseableAbility()
+        //battle
+        public Follower GetFieldFollower(int initID)
         {
-            Action act = null;
-            return act;
+            return Field.Where(f => f.InitID == initID).FirstOrDefault();
+        }
+
+        private void FollowerBattle(Follower myFollower, int enemyInitID)
+        {
+            Debug.Log("battle");
+            var enemyFollower = Enemy.GetFieldFollower(enemyInitID);
+            //todo: nullcheck
+            if (myFollower.Power.CurrentValue > enemyFollower.Power.CurrentValue)
+            {
+                enemyFollower.Dead();
+            }
+            else if (myFollower.Power.CurrentValue < enemyFollower.Power.CurrentValue)
+            {
+                myFollower.Dead();
+            }
+            else
+            {
+                myFollower.Dead();
+                enemyFollower.Dead();
+            }
         }
     }
 }
