@@ -24,8 +24,10 @@ namespace CardGame
             var leaderRepo = new LeaderRepository();
             var cardRepo = new CardRepository();
             //model
-            var player = new Player(0, cardRepo, leaderRepo);
-            var enemy = new Player(1, cardRepo, leaderRepo);
+            var player = new Player(0);
+            var enemy = new Player(1);
+            player.SetEnemy(enemy);
+            enemy.SetEnemy(player);
             await player.CreateLeader();
             await enemy.CreateLeader();
             await player.CreateDeck();

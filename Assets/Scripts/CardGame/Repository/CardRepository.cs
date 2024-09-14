@@ -8,11 +8,14 @@ namespace CardGame
 {
     public class CardRepository
     {
-        private List<CardEntity> _entities;
-        private CardTranslator _translator;
+        private static List<CardEntity> _entities;
+        private static CardTranslator _translator;
         public CardRepository()
         {
-            _translator = new();
+            if (_translator == null)
+            {
+                _translator = new();
+            }
         }
         public async UniTask<Card> GetByID(int id)
         {

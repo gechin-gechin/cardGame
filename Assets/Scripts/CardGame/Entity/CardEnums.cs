@@ -19,6 +19,7 @@ public enum AbilityTiming
 {
     TurnStart,
     CIP,
+    Attack,
     Battle,
     PIG,
     TurnEnd,

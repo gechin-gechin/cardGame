@@ -12,6 +12,7 @@ namespace CardGame
         [SerializeField] private int _num;
 
         public override AbilityTiming Timing => _timing;
+        public override AbilityTarget Target => AbilityTarget.PLAYER;
 
         public override Action<Player> Process => (player) =>
         {
