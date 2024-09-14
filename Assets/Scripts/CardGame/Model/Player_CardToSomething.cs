@@ -63,7 +63,7 @@ namespace CardGame
                 card.Sprite_
             );
             //damage
-            t.GetEnemyFollower = TryTakeDamge;
+            t.GetEnemyFollower = (initid) => TryTakeDamge(initid, t.IsBlocker.CurrentValue);
             //能力
             List<Ability> abilities = new();
             foreach (var a in card.AbilitiesToPlayer)

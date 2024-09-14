@@ -73,7 +73,7 @@ namespace CardGame
         {
             int id = 0;
             var l = await _leaderRepository.GetByID(id, PlayerID);
-            l.GetEnemyFollower = TryTakeDamge;
+            l.GetEnemyFollower = (initid) => TryTakeDamge(initid, false);
             _leader = new(l);
             _leader.Value.MaxCost.Subscribe(mc => _maxMana.Value = mc).AddTo(_disposables);
         }
@@ -201,11 +201,32 @@ namespace CardGame
             //そうじゃない場合enemyfollowerを再度攻撃可能にする
         }
 
-        private Follower TryTakeDamge(int enemyInitID)
+        //こちらは攻撃されている、isblockerは攻撃されているものがブロッカーかどうか
+        private Follower TryTakeDamge(int enemyInitID, bool isBlocker)
         {
             var enemyFollower = Enemy.GetFieldFollower(enemyInitID);
-            //シールドカードの有無を調べる
+            //自分がブロッカー以外
+            if (!isBlocker)
+            {
+                //他にブロッカーがいるか
+                if (IsHasBlocker())
+                {
+                    enemyFollower.SetIsAttackAble(true);
+                    OnMessage?.Invoke("exist blocker");
+                    return null;
+                }
+            }
             return enemyFollower;
+        }
+        private bool IsHasBlocker()
+        {
+            var fs = Field.Where(f => f.IsBlocker.CurrentValue).FirstOrDefault();
+            var ts = TrapZone.Where(t => t.IsBlocker.CurrentValue).FirstOrDefault();
+            if (fs != null || ts != null)
+            {
+                return true;
+            }
+            return false;
         }
 
         private void FollowerBattle(Follower myFollower, Follower enemyFollower)
