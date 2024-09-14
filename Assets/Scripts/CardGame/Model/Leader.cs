@@ -8,7 +8,7 @@ namespace CardGame
 {
     public class Leader : IDisposable
     {
-        public Func<int, Follower> GetEnemyFollower;
+        public Func<int, Follower> GetEnemyFollower;//nullの場合攻撃失敗
         private const int _startLife = 7777;
         private ReactiveProperty<string> _name;
         private ReactiveProperty<int> _life;
@@ -62,9 +62,14 @@ namespace CardGame
                 }
             }
         }
-        public void TakeDamage(int initId)
+        public void TakeDamage(int initID)
         {
-            _life.Value -= GetEnemyFollower(initId).Power.CurrentValue;
+            var enemy = GetEnemyFollower(initID);
+            if (enemy == null)
+            {
+                return;
+            }
+            _life.Value -= enemy.Power.CurrentValue;
         }
 
         public void Dispose()

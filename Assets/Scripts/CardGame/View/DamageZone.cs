@@ -20,8 +20,8 @@ namespace CardGame
             {
                 if (a.PlayerID != _playerID && a.IsAttackAble)
                 {
-                    TakeDamage?.Invoke(a.InitID);
                     a.OnEndAttack?.Invoke();
+                    TakeDamage?.Invoke(a.InitID);
                 }
             }
         }

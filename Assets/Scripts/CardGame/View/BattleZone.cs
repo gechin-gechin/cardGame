@@ -20,8 +20,8 @@ namespace CardGame
             {
                 if (a.PlayerID != _playerID && a.IsAttackAble)
                 {
-                    OnBattle?.Invoke(a.InitID);
                     a.OnEndAttack();
+                    OnBattle?.Invoke(a.InitID);
                 }
             }
         }

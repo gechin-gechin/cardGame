@@ -8,7 +8,7 @@ namespace CardGame
     public class Trap : IDisposable
     {
         public Action OnDead;
-        public Func<int, Follower> GetEnemyFollower;
+        public Func<int, Follower> GetEnemyFollower;//nullの場合攻撃失敗
         public int PlayerID { get; private set; }
         public string Name { get; private set; }
         public Sprite Sprite_ { get; private set; }
@@ -32,7 +32,12 @@ namespace CardGame
 
         public void TakeDamage(int initID)
         {
-            _life.Value -= GetEnemyFollower(initID).Power.CurrentValue;
+            var enemy = GetEnemyFollower(initID);
+            if (enemy == null)
+            {
+                return;
+            }
+            _life.Value -= enemy.Power.CurrentValue;
             if (_life.Value <= 0)
             {
                 OnDead?.Invoke();

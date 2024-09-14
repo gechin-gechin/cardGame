@@ -71,7 +71,7 @@ namespace CardGame
         {
             int id = 0;
             var l = await _leaderRepository.GetByID(id, PlayerID);
-            l.GetEnemyFollower = Enemy.GetFieldFollower;
+            l.GetEnemyFollower = TryTakeDamge;
             _leader = new(l);
             _leader.Value.MaxCost.Subscribe(mc => _maxMana.Value = mc).AddTo(_disposables);
         }
@@ -190,11 +190,23 @@ namespace CardGame
             return Field.Where(f => f.InitID == initID).FirstOrDefault();
         }
 
-        private void FollowerBattle(Follower myFollower, int enemyInitID)
+        private void TryBattle(Follower myFollower, int enemyInitID)
         {
-            Debug.Log("battle");
             var enemyFollower = Enemy.GetFieldFollower(enemyInitID);
-            //todo: nullcheck
+            FollowerBattle(myFollower, enemyFollower);
+            //シールドカードの有無を調べる
+            //そうじゃない場合enemyfollowerを再度攻撃可能にする
+        }
+
+        private Follower TryTakeDamge(int enemyInitID)
+        {
+            var enemyFollower = Enemy.GetFieldFollower(enemyInitID);
+            //シールドカードの有無を調べる
+            return enemyFollower;
+        }
+
+        private void FollowerBattle(Follower myFollower, Follower enemyFollower)
+        {
             if (myFollower.Power.CurrentValue > enemyFollower.Power.CurrentValue)
             {
                 enemyFollower.Dead();

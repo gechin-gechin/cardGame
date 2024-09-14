@@ -19,7 +19,7 @@ namespace CardGame
                 card.Sprite_
             );
             //バトル
-            f.OnBattle = (id) => FollowerBattle(f, id);
+            f.OnBattle = (id) => TryBattle(f, id);
             //能力
             List<Ability> abilities = new();
             foreach (var a in card.AbilitiesToPlayer)
@@ -63,7 +63,7 @@ namespace CardGame
                 card.Sprite_
             );
             //damage
-            t.GetEnemyFollower = Enemy.GetFieldFollower;
+            t.GetEnemyFollower = TryTakeDamge;
             //能力
             List<Ability> abilities = new();
             foreach (var a in card.AbilitiesToPlayer)
