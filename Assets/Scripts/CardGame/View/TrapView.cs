@@ -11,6 +11,7 @@ namespace CardGame
         Action OnRelease { get; set; }
         void Init(int playerID, string name, Sprite sprite);
         void SetLife(int num);
+        void SetIsBlocker(bool value);
         void Release();
     }
     public class TrapView : PooledObject<TrapView>, ITrapView
@@ -21,6 +22,8 @@ namespace CardGame
         [SerializeField] private TMP_Text _nameText;
         [SerializeField] private TMP_Text _lifeText;
         [SerializeField] private DamageZone _damageZone;
+        [Header("status")]
+        [SerializeField] private Image _blockerSign;
 
         public void Init(int playerID, string name, Sprite sprite)
         {
@@ -41,6 +44,11 @@ namespace CardGame
             OnRelease?.Invoke();
             ReleaseToPool();
             OnRelease = null;
+        }
+
+        public void SetIsBlocker(bool value)
+        {
+            _blockerSign.enabled = value;
         }
 
         //購読の破棄

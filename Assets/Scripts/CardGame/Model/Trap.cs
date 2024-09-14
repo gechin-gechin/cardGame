@@ -15,6 +15,8 @@ namespace CardGame
         public List<Ability> Abilities { get; private set; }
         private ReactiveProperty<int> _life;
         public ReadOnlyReactiveProperty<int> Life => _life;
+        private ReactiveProperty<bool> _isBlocker;
+        public ReadOnlyReactiveProperty<bool> IsBlocker => _isBlocker;
         private CompositeDisposable _disposables;
 
         public Trap(int playerID, string name, int life, Sprite sprite)
@@ -23,6 +25,7 @@ namespace CardGame
             _disposables = new();
             Name = name;
             _life = new(life);
+            _isBlocker = new(false);
             Sprite_ = sprite;
         }
         public void SetAbility(List<Ability> abilities)
@@ -42,6 +45,11 @@ namespace CardGame
             {
                 OnDead?.Invoke();
             }
+        }
+
+        public void SetIsBlocker(bool value)
+        {
+            _isBlocker.Value = value;
         }
 
         public void Dispose()

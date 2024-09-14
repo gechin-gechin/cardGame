@@ -16,6 +16,7 @@ namespace CardGame
         void Init(int playerID, int initID, string name, Sprite sprite);
         void SetPower(int num);
         void SetIsAttackAble(bool value);
+        void SetIsBlocker(bool value);
         void Release();
     }
     public class FollowerView : PooledObject<FollowerView>, IFollowerView
@@ -30,7 +31,9 @@ namespace CardGame
         [SerializeField] private CardMovement _cardMovement;
         [SerializeField] private LineRenderer _lineRenderer;
         [SerializeField] private Image _sentan_img;
+        [Header("status")]
         [SerializeField] private Outline _outline;
+        [SerializeField] private Image _blockerSign;
         [Header("battle")]
         [SerializeField] private AttackZone _attackZone;
         [SerializeField] private BattleZone _battleZone;
@@ -90,6 +93,11 @@ namespace CardGame
             //見た目でわかるもの
             _outline.enabled = value;
             _attackZone.SetIsAttackAble(value);
+        }
+
+        public void SetIsBlocker(bool value)
+        {
+            _blockerSign.enabled = value;
         }
 
         public void Release()

@@ -19,6 +19,9 @@ namespace CardGame
         public ReadOnlyReactiveProperty<int> Power => _power;
         private ReactiveProperty<bool> _isAttackAble;
         public ReadOnlyReactiveProperty<bool> IsAttackAble => _isAttackAble;
+        private ReactiveProperty<bool> _isBlocker;
+        public ReadOnlyReactiveProperty<bool> IsBlocker => _isBlocker;
+
         private CompositeDisposable _disposables;
 
         public Follower(int playerID, int initID, string name, int power, Sprite sprite)
@@ -29,6 +32,7 @@ namespace CardGame
             Name = name;
             _power = new(power);
             _isAttackAble = new(false);
+            _isBlocker = new(false);
             Sprite_ = sprite;
         }
         public void SetAbility(List<Ability> abilities)
@@ -38,12 +42,20 @@ namespace CardGame
 
         public void Dispose()
         {
+            _power.Dispose();
+            _isAttackAble.Dispose();
+            _isBlocker.Dispose();
             _disposables.Dispose();
         }
 
         public void SetIsAttackAble(bool value)
         {
             _isAttackAble.Value = value;
+        }
+
+        public void SetIsBlocker(bool value)
+        {
+            _isBlocker.Value = value;
         }
 
         public void EndAttack()

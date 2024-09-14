@@ -17,12 +17,14 @@ public enum CardCol
 
 public enum AbilityTiming
 {
+    Common,
     TurnStart,
     CIP,
     Attack,
     Battle,
     PIG,
     TurnEnd,
+    Always,
 }
 
 public enum AbilityTarget

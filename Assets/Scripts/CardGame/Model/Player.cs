@@ -124,8 +124,8 @@ namespace CardGame
                         Field.Add(f);
                         f.OnDead += () => Field.Remove(f);
                         Hand.Remove(card);
-                        //CIP
-                        var absf = f.Abilities.Where(a => a.Timing == AbilityTiming.CIP).ToArray();
+                        //CIPとcommon
+                        var absf = f.Abilities.Where(a => a.Timing == AbilityTiming.CIP || a.Timing == AbilityTiming.Common).ToArray();
                         if (absf != null)
                         {
                             foreach (var a in absf)
@@ -142,8 +142,8 @@ namespace CardGame
                         TrapZone.Add(t);
                         t.OnDead += () => TrapZone.Remove(t);
                         Hand.Remove(card);
-                        //CIP
-                        var abst = t.Abilities.Where(a => a.Timing == AbilityTiming.CIP).ToArray();
+                        //CIPとcommon
+                        var abst = t.Abilities.Where(a => a.Timing == AbilityTiming.CIP || a.Timing == AbilityTiming.Common).ToArray();
                         if (abst != null)
                         {
                             foreach (var a in abst)

@@ -19,6 +19,7 @@ namespace CardGame
             CompositeDisposable cd = new();
             view.Init(model.PlayerID, model.Name, model.Sprite_);
             model.Life.Subscribe(p => view.SetLife(p)).AddTo(cd);
+            model.IsBlocker.Subscribe(f => view.SetIsBlocker(f)).AddTo(cd);
             view.OnTakeDamage = model.TakeDamage;
             model.OnDead += () => view?.Release();
             view.OnRelease = () => cd.Dispose();

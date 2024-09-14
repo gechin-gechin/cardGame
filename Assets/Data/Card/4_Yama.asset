@@ -18,3 +18,7 @@ MonoBehaviour:
   _kind: 2
   _power: 5000
   _sprite: {fileID: 21300000, guid: 8ba9ca3d0504349ed9b43a82ad0bc961, type: 3}
+  _abilitiesToPlayer: []
+  _abilitiesToFollower: []
+  _abilitiesToTrap:
+  - {fileID: 11400000, guid: 5d096ad5c5a9145738e9b985540c4576, type: 2}
