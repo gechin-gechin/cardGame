@@ -75,7 +75,7 @@ namespace CardGame
         {
             int id = 0;
             var l = await _leaderRepository.GetByID(id, PlayerID);
-            l.GetEnemyFollower = (initid) => TryTakeDamge(initid, false);
+            l.GetEnemyFollower = (initid) => TryTakeDamge(initid, false, l.Name.CurrentValue);
             _leader = new(l);
             _leader.Value.MaxCost.Subscribe(mc => _maxMana.Value = mc).AddTo(_disposables);
         }
@@ -198,13 +198,22 @@ namespace CardGame
         private void TryBattle(Follower myFollower, int enemyInitID)
         {
             var enemyFollower = Enemy.GetFieldFollower(enemyInitID);
-            FollowerBattle(myFollower, enemyFollower);
-            //シールドカードの有無を調べる
-            //そうじゃない場合enemyfollowerを再度攻撃可能にする
+            //自分がブロッカー以外
+            if (!myFollower.IsBlocker.CurrentValue)
+            {
+                //他にブロッカーがいるか
+                if (IsHasBlocker())
+                {
+                    enemyFollower.SetIsAttackAble(true);
+                    OnMessage?.Invoke("exist blocker");
+                    return;
+                }
+            }
+            _ = FollowerBattle(myFollower, enemyFollower);
         }
 
         //こちらは攻撃されている、isblockerは攻撃されているものがブロッカーかどうか
-        private Follower TryTakeDamge(int enemyInitID, bool isBlocker)
+        private Follower TryTakeDamge(int enemyInitID, bool isBlocker, string myName)
         {
             var enemyFollower = Enemy.GetFieldFollower(enemyInitID);
             //自分がブロッカー以外
@@ -218,6 +227,7 @@ namespace CardGame
                     return null;
                 }
             }
+            OnDescription?.Invoke(enemyFollower.Name, myName + "に攻撃");
             return enemyFollower;
         }
         private bool IsHasBlocker()
@@ -231,20 +241,37 @@ namespace CardGame
             return false;
         }
 
-        private void FollowerBattle(Follower myFollower, Follower enemyFollower)
+        private async UniTask FollowerBattle(Follower f1, Follower f2)
         {
-            if (myFollower.Power.CurrentValue > enemyFollower.Power.CurrentValue)
+            OnDescription?.Invoke("battle", f1.Name + " vs " + f2.Name + " !");
+            //バトル時のアビリティ
+            f1.BattleFollower = f2;
+            f2.BattleFollower = f1;
+            var as1 = f1.Abilities.Where(a => a.Timing == AbilityTiming.Battle).ToArray();
+            var as2 = f2.Abilities.Where(a => a.Timing == AbilityTiming.Battle).ToArray();
+            if (as1 != null)
+                foreach (var a in as1)
+                    a.Process?.Invoke();
+            if (as2 != null)
+                foreach (var a in as2)
+                    a.Process?.Invoke();
+            f1.BattleFollower = null;
+            f2.BattleFollower = null;
+            //待機
+            await UniTask.WaitForSeconds(1f);
+            //実際のバトル
+            if (f1.Power.CurrentValue > f2.Power.CurrentValue)
             {
-                enemyFollower.Dead();
+                f2.Dead();
             }
-            else if (myFollower.Power.CurrentValue < enemyFollower.Power.CurrentValue)
+            else if (f1.Power.CurrentValue < f2.Power.CurrentValue)
             {
-                myFollower.Dead();
+                f1.Dead();
             }
             else
             {
-                myFollower.Dead();
-                enemyFollower.Dead();
+                f1.Dead();
+                f2.Dead();
             }
         }
     }

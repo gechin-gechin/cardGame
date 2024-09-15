@@ -10,6 +10,7 @@ namespace CardGame
     {
         public Action OnDead;
         public Action<int> OnBattle;//enemyinitid
+        public Follower BattleFollower;//battleの時以外はnullにする
         public int PlayerID { get; private set; }
         public int InitID { get; private set; }
         public string Name { get; private set; }
@@ -56,6 +57,11 @@ namespace CardGame
         public void SetIsBlocker(bool value)
         {
             _isBlocker.Value = value;
+        }
+
+        public void ChangePower(int amount)
+        {
+            _power.Value += amount;
         }
 
         public void EndAttack()
