@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c66eb9db73cd44fb91e5e218fa07dcb, type: 3}
   m_Name: BlockerTrap
   m_EditorClassIdentifier: 
+  _description: "\u30D6\u30ED\u30C3\u30AB\u30FC"

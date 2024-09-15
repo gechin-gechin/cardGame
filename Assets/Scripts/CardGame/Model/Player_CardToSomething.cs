@@ -26,7 +26,8 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () => a.Process?.Invoke(this)
+                    () => a.Process?.Invoke(this),
+                    a.Description
                 );
                 abilities.Add(ab);
             }
@@ -34,7 +35,8 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () => a.Process?.Invoke(f)
+                    () => a.Process?.Invoke(f),
+                    a.Description
                 );
                 abilities.Add(ab);
             }
@@ -70,7 +72,8 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () => a.Process?.Invoke(this)
+                    () => a.Process?.Invoke(this),
+                    a.Description
                 );
                 abilities.Add(ab);
             }
@@ -78,7 +81,8 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () => a.Process?.Invoke(t)
+                    () => a.Process?.Invoke(t),
+                    a.Description
                 );
                 abilities.Add(ab);
             }

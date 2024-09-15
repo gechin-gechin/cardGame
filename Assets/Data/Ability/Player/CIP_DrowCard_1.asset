@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9885f10e0c1a94d9ca9267350dcd5274, type: 3}
   m_Name: CIP_DrowCard_1
   m_EditorClassIdentifier: 
-  _timing: 1
+  _description: "\u51FA\u305F\u6642\uFF11\u30C9\u30ED\u30FC"
+  _timing: 2
   _num: 1

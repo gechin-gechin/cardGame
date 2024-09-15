@@ -9,10 +9,12 @@ namespace CardGame
     {
         public Action Process { get; private set; }
         public AbilityTiming Timing { get; private set; }
-        public Ability(AbilityTiming timing, Action process)
+        public string Description { get; private set; }
+        public Ability(AbilityTiming timing, Action process, string description)
         {
             Process = process;
             Timing = timing;
+            Description = description;
         }
     }
 }
