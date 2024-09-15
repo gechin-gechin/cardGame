@@ -51,6 +51,7 @@ namespace CardGame
                 foreach (var a in absf)
                 {
                     f.OnDead += () => a.Process?.Invoke();
+                    f.OnDead += () => OnDescription?.Invoke(f.Name, a.Description);
                 }
             }
             return f;
@@ -96,6 +97,7 @@ namespace CardGame
                 foreach (var a in abst)
                 {
                     t.OnDead += () => a.Process?.Invoke();
+                    t.OnDead += () => OnDescription?.Invoke(t.Name, a.Description);
                 }
             }
             return t;

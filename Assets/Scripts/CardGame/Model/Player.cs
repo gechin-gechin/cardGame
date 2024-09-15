@@ -15,11 +15,13 @@ namespace CardGame
         void TimeOver();
         Action OnTurnEnd { get; set; }
         public Action<string> OnMessage { get; set; }
+        public Action<string, string> OnDescription { get; set; }
     }
 
     public sealed partial class Player : IPlayer, IDisposable
     {
         public Action<string> OnMessage { get; set; }//いずれはenumで指定
+        public Action<string, string> OnDescription { get; set; }//name, desc
         public int PlayerID { get; private set; }
         public Player Enemy { get; private set; }
         public Action OnTurnEnd { get; set; }
@@ -134,6 +136,7 @@ namespace CardGame
                             foreach (var a in absf)
                             {
                                 a.Process?.Invoke();
+                                OnDescription?.Invoke(f.Name, a.Description);
                             }
                         }
                         return true;
@@ -152,6 +155,7 @@ namespace CardGame
                             foreach (var a in abst)
                             {
                                 a.Process?.Invoke();
+                                OnDescription?.Invoke(t.Name, a.Description);
                             }
                         }
                         return true;

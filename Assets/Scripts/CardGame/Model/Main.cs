@@ -10,6 +10,7 @@ namespace CardGame
     public class Main : IDisposable
     {
         public Action<string> OnMessage;
+        public Action<string, string> OnDescription;
 
         private IPlayer _player;
         private IPlayer _enemy;
@@ -37,6 +38,8 @@ namespace CardGame
             _enemy.OnTurnEnd += () => ChangeTurn(_player);
             _player.OnMessage = (str) => OnMessage?.Invoke(str);
             _enemy.OnMessage = (str) => OnMessage?.Invoke(str);
+            _player.OnDescription = (name, desc) => OnDescription?.Invoke(name, desc);
+            _enemy.OnDescription = (name, desc) => OnDescription?.Invoke(name, desc);
         }
 
         public void Start()

@@ -19,6 +19,7 @@ namespace CardGame
             model.CountDownTime.Subscribe(n => view.SetCountDownTime(n))
                 .AddTo(_disposables);
             model.OnMessage = view.SetMessage;
+            model.OnDescription = view.SetDesCription;
         }
 
         public void Dispose()

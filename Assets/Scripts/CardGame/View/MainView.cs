@@ -9,6 +9,7 @@ namespace CardGame
     {
         void SetCountDownTime(int num);
         void SetMessage(string text);
+        void SetDesCription(string cardName, string description);
     }
     public class MainView : MonoBehaviour, IMainView
     {
@@ -28,6 +29,11 @@ namespace CardGame
         public void SetMessage(string text)
         {
             _ = _centerMessage.Show(text);
+        }
+
+        public void SetDesCription(string cardName, string description)
+        {
+            Debug.Log(cardName + ": " + description);
         }
     }
 }
