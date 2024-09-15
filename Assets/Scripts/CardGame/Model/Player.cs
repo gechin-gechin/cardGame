@@ -136,7 +136,6 @@ namespace CardGame
                             foreach (var a in absf)
                             {
                                 a.Process?.Invoke();
-                                OnDescription?.Invoke(f.Name, a.Description);
                             }
                         }
                         return true;
@@ -155,7 +154,6 @@ namespace CardGame
                             foreach (var a in abst)
                             {
                                 a.Process?.Invoke();
-                                OnDescription?.Invoke(t.Name, a.Description);
                             }
                         }
                         return true;

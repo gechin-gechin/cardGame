@@ -26,7 +26,11 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () => a.Process?.Invoke(this),
+                    () =>
+                    {
+                        a.Process?.Invoke(this);
+                        OnDescription?.Invoke(f.Name, a.Description);
+                    },
                     a.Description
                 );
                 abilities.Add(ab);
@@ -35,7 +39,11 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () => a.Process?.Invoke(f),
+                    () =>
+                    {
+                        a.Process?.Invoke(f);
+                        OnDescription?.Invoke(f.Name, a.Description);
+                    },
                     a.Description
                 );
                 abilities.Add(ab);
@@ -51,7 +59,6 @@ namespace CardGame
                 foreach (var a in absf)
                 {
                     f.OnDead += () => a.Process?.Invoke();
-                    f.OnDead += () => OnDescription?.Invoke(f.Name, a.Description);
                 }
             }
             return f;
@@ -73,7 +80,11 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () => a.Process?.Invoke(this),
+                    () =>
+                    {
+                        a.Process?.Invoke(this);
+                        OnDescription?.Invoke(t.Name, a.Description);
+                    },
                     a.Description
                 );
                 abilities.Add(ab);
@@ -82,7 +93,11 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () => a.Process?.Invoke(t),
+                    () =>
+                    {
+                        a.Process?.Invoke(t);
+                        OnDescription?.Invoke(t.Name, a.Description);
+                    },
                     a.Description
                 );
                 abilities.Add(ab);
@@ -97,7 +112,6 @@ namespace CardGame
                 foreach (var a in abst)
                 {
                     t.OnDead += () => a.Process?.Invoke();
-                    t.OnDead += () => OnDescription?.Invoke(t.Name, a.Description);
                 }
             }
             return t;

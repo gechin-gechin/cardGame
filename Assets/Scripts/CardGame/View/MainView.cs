@@ -15,10 +15,12 @@ namespace CardGame
     {
         [SerializeField] private TMP_Text _timerTMP;
         [SerializeField] private CenterMessage _centerMessage;
+        [SerializeField] private DescriptionView _descriptionView;
 
         public void Init()
         {
             _centerMessage.Init();
+            _descriptionView.Init(3);
         }
 
         public void SetCountDownTime(int num)
@@ -33,7 +35,7 @@ namespace CardGame
 
         public void SetDesCription(string cardName, string description)
         {
-            Debug.Log(cardName + ": " + description);
+            _descriptionView.Set(cardName, description);
         }
     }
 }
