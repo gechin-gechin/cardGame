@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13037bf72f87541e4b803174a07d8b6b, type: 3}
+  m_Name: 7_driver
+  m_EditorClassIdentifier: 
+  _id: 7
+  _name: driver
+  _cost: 4
+  _kind: 0
+  _power: 5000
+  _sprite: {fileID: 21300000, guid: c4456baf156184092bb5445885d880fa, type: 3}
+  _abilitiesToPlayer: []
+  _abilitiesToFollower: []
+  _abilitiesToTrap:
+  - {fileID: 11400000, guid: 5d096ad5c5a9145738e9b985540c4576, type: 2}

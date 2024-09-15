@@ -59,6 +59,24 @@ MonoBehaviour:
     m_SerializedLabels:
     - Card
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f30d3211d57d249d883d954c69432328
+    m_Address: Assets/Data/Card/5_Dog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ed45f30022ef4ef48f17e1a26087937
+    m_Address: Assets/Data/Card/6_hacker.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ab7dd1f9b2f54a48aff519532c39e7f
+    m_Address: Assets/Data/Card/7_driver.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: cd2470c599bc841a29e477a97c0ebda3, type: 2}
   m_SchemaSet:

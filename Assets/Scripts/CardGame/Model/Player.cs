@@ -83,7 +83,7 @@ namespace CardGame
         public async UniTask CreateDeck()
         {
             //int[] _decklist = new int[40];
-            int[] _decklist = { 0, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4 };
+            int[] _decklist = { 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7 };
             foreach (int id in _decklist)
             {
                 var c = await _cardRepository.GetByID(id);
