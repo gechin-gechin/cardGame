@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using R3;
 
 namespace CardGame
@@ -20,7 +17,9 @@ namespace CardGame
             view.Init(model.PlayerID, model.Name, model.Sprite_);
             model.Life.Subscribe(p => view.SetLife(p)).AddTo(cd);
             model.IsBlocker.Subscribe(f => view.SetIsBlocker(f)).AddTo(cd);
+            model.IsSelectable.Subscribe(f => view.SetSelectable(f)).AddTo(cd);
             view.OnTakeDamage = model.TakeDamage;
+            view.OnSelect = () => model.OnSelect?.Invoke();
             model.OnDead += () => view?.Release();
             view.OnRelease = () => cd.Dispose();
         }

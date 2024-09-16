@@ -40,6 +40,8 @@ namespace CardGame
             _enemy.OnMessage = (str) => OnMessage?.Invoke(str);
             _player.OnDescription = (name, desc) => OnDescription?.Invoke(name, desc);
             _enemy.OnDescription = (name, desc) => OnDescription?.Invoke(name, desc);
+            _player.OnSelectable = SetNowSelectable;
+            _enemy.OnSelectable = SetNowSelectable;
         }
 
         public void Start()
@@ -78,6 +80,11 @@ namespace CardGame
             _timeOver_cts.Dispose();
 
             _disposables.Dispose();
+        }
+
+        private void SetNowSelectable(ISelectable selectable)
+        {
+
         }
     }
 }

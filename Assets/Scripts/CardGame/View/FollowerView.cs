@@ -13,10 +13,12 @@ namespace CardGame
         Action OnRelease { get; set; }
         Action OnEndAttack { get; set; }
         Action<int> OnBattle { get; set; }
+        Action OnSelect { get; set; }
         void Init(int playerID, int initID, string name, Sprite sprite);
         void SetPower(int num);
         void SetIsAttackAble(bool value);
         void SetIsBlocker(bool value);
+        void SetSelectable(bool value);
         void Release();
     }
     public class FollowerView : PooledObject<FollowerView>, IFollowerView
@@ -24,6 +26,7 @@ namespace CardGame
         public Action OnRelease { get; set; }
         public Action OnEndAttack { get; set; }
         public Action<int> OnBattle { get; set; }
+        public Action OnSelect { get; set; }
         [SerializeField] private Image _image;
         [SerializeField] private TMP_Text _nameText;
         [SerializeField] private TMP_Text _powerText;
@@ -34,6 +37,7 @@ namespace CardGame
         [Header("status")]
         [SerializeField] private Outline _outline;
         [SerializeField] private Image _blockerSign;
+        [SerializeField] private Button _selectButton;
         [Header("battle")]
         [SerializeField] private AttackZone _attackZone;
         [SerializeField] private BattleZone _battleZone;
@@ -68,6 +72,7 @@ namespace CardGame
                 _lineRenderer.enabled = false;
                 _sentan_img.color = Vector4.zero;
             };
+            _selectButton.onClick.AddListener(() => OnSelect?.Invoke());
         }
 
         public void Init(int playerID, int initID, string name, Sprite sprite)
@@ -98,6 +103,11 @@ namespace CardGame
         public void SetIsBlocker(bool value)
         {
             _blockerSign.enabled = value;
+        }
+
+        public void SetSelectable(bool value)
+        {
+            _selectButton.gameObject.SetActive(value);
         }
 
         public void Release()

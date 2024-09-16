@@ -6,11 +6,13 @@ using UnityEngine;
 
 namespace CardGame
 {
-    public class Follower : IDisposable
+    public class Follower : IDisposable, ISelectable
     {
         public Action OnDead;
+        public Action OnSelect;
         public Action<int> OnBattle;//enemyinitid
         public Follower BattleFollower;//battleの時以外はnullにする
+
         public int PlayerID { get; private set; }
         public int InitID { get; private set; }
         public string Name { get; private set; }
@@ -22,6 +24,8 @@ namespace CardGame
         public ReadOnlyReactiveProperty<bool> IsAttackAble => _isAttackAble;
         private ReactiveProperty<bool> _isBlocker;
         public ReadOnlyReactiveProperty<bool> IsBlocker => _isBlocker;
+        private ReactiveProperty<bool> _isSelectable;
+        public ReadOnlyReactiveProperty<bool> IsSelectable => _isSelectable;
 
         private CompositeDisposable _disposables;
 
@@ -34,6 +38,7 @@ namespace CardGame
             _power = new(power);
             _isAttackAble = new(false);
             _isBlocker = new(false);
+            _isSelectable = new(false);
             Sprite_ = sprite;
         }
         public void SetAbility(List<Ability> abilities)
@@ -46,6 +51,7 @@ namespace CardGame
             _power.Dispose();
             _isAttackAble.Dispose();
             _isBlocker.Dispose();
+            _isSelectable.Dispose();
             _disposables.Dispose();
         }
 
@@ -67,6 +73,11 @@ namespace CardGame
         public void EndAttack()
         {
             _isAttackAble.Value = false;
+        }
+
+        public void SetSelectable(bool value)
+        {
+            _isSelectable.Value = value;
         }
 
         public void Dead()

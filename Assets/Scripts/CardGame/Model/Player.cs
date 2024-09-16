@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using ObservableCollections;
 using R3;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace CardGame
 {
@@ -16,12 +17,14 @@ namespace CardGame
         Action OnTurnEnd { get; set; }
         public Action<string> OnMessage { get; set; }
         public Action<string, string> OnDescription { get; set; }
+        public Action<ISelectable> OnSelectable { get; set; }
     }
 
     public sealed partial class Player : IPlayer, IDisposable
     {
         public Action<string> OnMessage { get; set; }//いずれはenumで指定
         public Action<string, string> OnDescription { get; set; }//name, desc
+        public Action<ISelectable> OnSelectable { get; set; }
         public int PlayerID { get; private set; }
         public Player Enemy { get; private set; }
         public Action OnTurnEnd { get; set; }
@@ -49,6 +52,9 @@ namespace CardGame
             _initID++;
             return _initID;
         }
+
+        //tmp
+        public ISelectable NowSelectable = null;
 
         public Player(int id)
         {
@@ -273,6 +279,74 @@ namespace CardGame
                 f1.Dead();
                 f2.Dead();
             }
+        }
+
+        public void ResetSelectable()
+        {
+            _ = SetSelectable(CardKind.FOLLOWER, false, (s) => true);
+            _ = SetSelectable(CardKind.TRAP, false, (s) => true);
+        }
+        public int SetSelectable(CardKind cardKind, bool value, Func<ISelectable, bool> func)
+        {
+            if (cardKind == CardKind.FOLLOWER)
+            {
+                var fs = Field.Where((f) => func(f));
+                foreach (var f in fs)
+                {
+                    f.SetSelectable(value);
+                }
+                return fs.ToArray().Length;
+            }
+
+            if (cardKind == CardKind.TRAP)
+            {
+                var ts = TrapZone.Where((t) => func(t));
+                foreach (var t in ts)
+                {
+                    t.SetSelectable(value);
+                }
+                return ts.ToArray().Length;
+            }
+            return 0;
+        }
+
+        public async UniTask<ISelectable> PickUp(AbilityTarget target, CardKind[] cardKinds, Func<ISelectable, bool> func)
+        {
+            //入れ物を空に
+            NowSelectable = null;
+            //選択可能なものをピックアップ
+            int setCount = 0;
+            switch (target)
+            {
+                case AbilityTarget.PLAYER:
+                    foreach (var k in cardKinds)
+                        setCount += SetSelectable(k, true, func);
+                    break;
+                case AbilityTarget.ENEMY:
+                    foreach (var k in cardKinds)
+                        setCount += Enemy.SetSelectable(k, true, func);
+                    break;
+                case AbilityTarget.BOTH:
+                    foreach (var k in cardKinds)
+                    {
+                        setCount += SetSelectable(k, true, func);
+                        setCount += Enemy.SetSelectable(k, true, func);
+                    }
+                    break;
+            }
+            //選択可能なものがなければnullを返す
+            if (setCount < 1)
+            {
+                return null;
+            }
+            //入力を待つ
+            OnMessage?.Invoke("選んでね");
+            await UniTask.WaitUntil(() => NowSelectable != null);
+            //選択待機状態をリセット
+            Enemy.ResetSelectable();
+            ResetSelectable();
+
+            return NowSelectable;
         }
     }
 }

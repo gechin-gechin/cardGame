@@ -13,11 +13,12 @@ MonoBehaviour:
   m_Name: 6_hacker
   m_EditorClassIdentifier: 
   _id: 6
-  _name: "\u30D1\u30BD\u30B3\u30F3\u30AB\u30B9"
+  _name: "\u30D1\u30BD\u30B3\u30F3\u306E\u4EBA"
   _cost: 3
   _kind: 0
   _power: 1000
   _sprite: {fileID: 21300000, guid: 906649a183c9643df9b08d0373c57dbc, type: 3}
   _abilitiesToPlayer: []
-  _abilitiesToFollower: []
+  _abilitiesToFollower:
+  - {fileID: 11400000, guid: 6a7cf191bd91b4dc39836ad152159bf3, type: 2}
   _abilitiesToTrap: []

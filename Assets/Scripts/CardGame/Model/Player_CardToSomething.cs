@@ -18,6 +18,7 @@ namespace CardGame
                 card.Power.CurrentValue,
                 card.Sprite_
             );
+            f.OnSelect = () => OnSelectable?.Invoke(f);
             //バトル
             f.OnBattle = (id) => TryBattle(f, id);
             //能力
@@ -74,6 +75,7 @@ namespace CardGame
                 card.Power.CurrentValue,
                 card.Sprite_
             );
+            t.OnSelect = () => OnSelectable?.Invoke(t);
             //damage
             t.GetEnemyFollower = (initid) => TryTakeDamge(initid, t.IsBlocker.CurrentValue, t.Name);
             //能力
