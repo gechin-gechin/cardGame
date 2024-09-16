@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace CardGame
@@ -10,9 +11,10 @@ namespace CardGame
 
         public override AbilityTiming Timing => AbilityTiming.Common;
 
-        public override Action<Trap> Process => (t) =>
+        public override Func<Trap, UniTask> Process => (t) => UniTask.Defer(async () =>
         {
             t.SetIsBlocker(true);
-        };
+            await UniTask.DelayFrame(2);
+        });
     }
 }

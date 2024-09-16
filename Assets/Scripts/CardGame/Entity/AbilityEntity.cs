@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace CardGame
@@ -9,7 +10,7 @@ namespace CardGame
         [SerializeField] protected string _description;
         public abstract AbilityTarget Target { get; }
         public abstract AbilityTiming Timing { get; }
-        public abstract Action<T> Process { get; }
+        public abstract Func<T, UniTask> Process { get; }
         public string Description => _description;
     }
 }

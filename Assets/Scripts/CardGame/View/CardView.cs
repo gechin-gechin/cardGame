@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace CardGame
     public interface ICardView
     {
         Action OnRelease { get; set; }
-        Func<bool> TryUse { get; set; }
+        Func<UniTask<bool>> TryUse { get; set; }
         void Init(string name, int cost, Sprite sprite);
         void SetPower(int value);
     }
@@ -19,12 +20,13 @@ namespace CardGame
     public class CardView : PooledObject<CardView>, ICardView
     {
         public Action OnRelease { get; set; }
-        public Func<bool> TryUse { get; set; }
+        public Func<UniTask<bool>> TryUse { get; set; }
         [SerializeField] CardMovement _movement;
         [SerializeField] private TMP_Text _nameText;
         [SerializeField] private TMP_Text _costText;
         [SerializeField] private TMP_Text _powerText;
         [SerializeField] private Image _image;
+        private bool _isEndDragWorking = false;
 
         //これ自体のtransformの初期化はplayerviewがやっている
         public void Init(string name, int cost, Sprite sprite)
@@ -35,7 +37,7 @@ namespace CardGame
 
             _movement.Init();
             _movement.IsDraggable = true;
-            _movement.OnEnd += EndDrag;
+            _movement.OnEnd += () => _ = EndDrag();
             _movement.transform.localPosition = Vector3.zero;
             _movement.transform.localScale = Vector3.one;
         }
@@ -60,11 +62,17 @@ namespace CardGame
             OnRelease?.Invoke();
         }
 
-        private void EndDrag()
+        private async UniTask EndDrag()
         {
+            //何度も呼ばれる時があったため
+            if (_isEndDragWorking)
+            {
+                return;
+            }
+            _isEndDragWorking = true;
             if (_movement.transform.localPosition.y > 100 && TryUse != null)
             {
-                var b = TryUse.Invoke();
+                var b = await TryUse.Invoke();
                 if (b)
                 {
                     Release();
@@ -78,6 +86,7 @@ namespace CardGame
             {
                 _movement.transform.DOLocalMove(Vector3.zero, 0.15f);
             }
+            _isEndDragWorking = false;
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
 
@@ -20,7 +21,7 @@ namespace CardGame
         public AbilityEntity<Follower>[] AbilitiesToFollower { get; private set; }
         public AbilityEntity<Trap>[] AbilitiesToTrap { get; private set; }
 
-        public Func<bool> TryUse;
+        public Func<UniTask<bool>> TryUse;
 
         public Card(int id, string name, int cost, CardKind kind, int power, Sprite sprite,
         AbilityEntity<Player>[] abilitiesToPlayer, AbilityEntity<Follower>[] abilitiesToFollower, AbilityEntity<Trap>[] abilitiesToTrap)

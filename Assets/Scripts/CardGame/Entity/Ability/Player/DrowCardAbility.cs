@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace CardGame
@@ -14,12 +16,13 @@ namespace CardGame
         public override AbilityTiming Timing => _timing;
         public override AbilityTarget Target => AbilityTarget.PLAYER;
 
-        public override Action<Player> Process => (player) =>
+        public override Func<Player, UniTask> Process => (p) => UniTask.Defer(async () =>
         {
             for (int i = 0; i < _num; i++)
             {
-                player.Drow();
+                p.Drow();
             }
-        };
+            await UniTask.DelayFrame(1);
+        });
     }
 }

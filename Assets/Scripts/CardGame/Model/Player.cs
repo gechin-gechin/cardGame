@@ -116,7 +116,7 @@ namespace CardGame
             Hand.Add(c);
         }
 
-        public bool TryUseHandCard(Card card)
+        public async UniTask<bool> TryUseHandCard(Card card)
         {
             _leader.Value.GetExp(1);
             if (card.Cost <= _mana.Value)
@@ -135,7 +135,7 @@ namespace CardGame
                         {
                             foreach (var a in absf)
                             {
-                                a.Process?.Invoke();
+                                await a.Process.Invoke();
                             }
                         }
                         return true;
@@ -153,7 +153,7 @@ namespace CardGame
                         {
                             foreach (var a in abst)
                             {
-                                a.Process?.Invoke();
+                                await a.Process.Invoke();
                             }
                         }
                         return true;
@@ -205,7 +205,7 @@ namespace CardGame
                 if (IsHasBlocker())
                 {
                     enemyFollower.SetIsAttackAble(true);
-                    OnMessage?.Invoke("exist blocker");
+                    OnMessage?.Invoke("ブロッカーがいるよ！");
                     return;
                 }
             }
@@ -223,7 +223,7 @@ namespace CardGame
                 if (IsHasBlocker())
                 {
                     enemyFollower.SetIsAttackAble(true);
-                    OnMessage?.Invoke("exist blocker");
+                    OnMessage?.Invoke("ブロッカーがいるよ！");
                     return null;
                 }
             }
@@ -251,10 +251,10 @@ namespace CardGame
             var as2 = f2.Abilities.Where(a => a.Timing == AbilityTiming.Battle).ToArray();
             if (as1 != null)
                 foreach (var a in as1)
-                    a.Process?.Invoke();
+                    await a.Process.Invoke();
             if (as2 != null)
                 foreach (var a in as2)
-                    a.Process?.Invoke();
+                    await a.Process.Invoke();
             f1.BattleFollower = null;
             f2.BattleFollower = null;
             //待機

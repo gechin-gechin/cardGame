@@ -26,9 +26,10 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () =>
+                    async () =>
                     {
-                        a.Process?.Invoke(this);
+                        if (a.Process != null)//?が使えないため
+                            await a.Process.Invoke(this);
                         OnDescription?.Invoke(f.Name, a.Description);
                     },
                     a.Description
@@ -39,9 +40,10 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () =>
+                    async () =>
                     {
-                        a.Process?.Invoke(f);
+                        if (a.Process != null)
+                            await a.Process.Invoke(f);
                         OnDescription?.Invoke(f.Name, a.Description);
                     },
                     a.Description
@@ -80,9 +82,10 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () =>
+                    async () =>
                     {
-                        a.Process?.Invoke(this);
+                        if (a.Process != null)
+                            await a.Process.Invoke(this);
                         OnDescription?.Invoke(t.Name, a.Description);
                     },
                     a.Description
@@ -93,9 +96,10 @@ namespace CardGame
             {
                 var ab = new Ability(
                     a.Timing,
-                    () =>
+                    async () =>
                     {
-                        a.Process?.Invoke(t);
+                        if (a.Process != null)
+                            await a.Process.Invoke(t);
                         OnDescription?.Invoke(t.Name, a.Description);
                     },
                     a.Description

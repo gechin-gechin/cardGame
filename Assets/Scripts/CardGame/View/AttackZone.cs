@@ -21,7 +21,6 @@ namespace CardGame
         {
             PlayerID = playerID;
             InitID = initID;
-            Debug.Log(initID);
         }
 
         //Follower生成したターンもDropできてしまうためここで防ぐ、おそらくR３のバグ

@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using Cysharp.Threading.Tasks;
+using R3;
 
 namespace CardGame
 {
@@ -10,9 +12,10 @@ namespace CardGame
 
         public override AbilityTiming Timing => AbilityTiming.Common;
 
-        public override Action<Follower> Process => (f) =>
+        public override Func<Follower, UniTask> Process => (f) => UniTask.Defer(async () =>
         {
             f.SetIsAttackAble(true);
-        };
+            await UniTask.DelayFrame(1);
+        });
     }
 }

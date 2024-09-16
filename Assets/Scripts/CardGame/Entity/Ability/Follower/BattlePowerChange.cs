@@ -1,4 +1,5 @@
 using System;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace CardGame
@@ -11,10 +12,11 @@ namespace CardGame
         public override AbilityTarget Target => AbilityTarget.PLAYER;
         public override AbilityTiming Timing => AbilityTiming.Battle;
 
-        public override Action<Follower> Process => (f) =>
+        public override Func<Follower, UniTask> Process => (f) => UniTask.Defer(async () =>
         {
             var follower = _isMe ? f : f.BattleFollower;
             follower.ChangePower(_amount);
-        };
+            await UniTask.WaitForSeconds(0.2f);
+        });
     }
 }
