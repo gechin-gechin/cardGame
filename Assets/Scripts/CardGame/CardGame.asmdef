@@ -1,6 +1,6 @@
 {
     "name": "CardGame",
-    "rootNamespace": "",
+    "rootNamespace": "CardGame",
     "references": [
         "R3.Unity",
         "Unity.InputSystem",

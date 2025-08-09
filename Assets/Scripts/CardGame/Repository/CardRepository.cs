@@ -8,8 +8,16 @@ namespace CardGame
 {
     public class CardRepository
     {
-        private List<CardEntity> _entities;
-        public async UniTask<Card> Get(int id)
+        private static List<CardEntity> _entities;
+        private static CardTranslator _translator;
+        public CardRepository()
+        {
+            if (_translator == null)
+            {
+                _translator = new();
+            }
+        }
+        public async UniTask<Card> GetByID(int id)
         {
             if (_entities == null)
             {
@@ -19,8 +27,7 @@ namespace CardGame
             //エンティティを取ってくる
             var e = _entities.Where(e => e.ID == id).FirstOrDefault();
             //ゆくゆくは翻訳家を通す
-            var c = new Card(e.ID, e.Name, e.Cost);
-            return c;
+            return _translator.EntityToCard(e);
         }
     }
 }

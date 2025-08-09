@@ -15,3 +15,9 @@ MonoBehaviour:
   _id: 1
   _name: pikachu
   _cost: 2
+  _kind: 0
+  _power: 1500
+  _sprite: {fileID: 21300000, guid: 37ada237192d74055941dbbc8119180e, type: 3}
+  _abilitiesToPlayer: []
+  _abilitiesToFollower: []
+  _abilitiesToTrap: []

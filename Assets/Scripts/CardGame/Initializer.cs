@@ -10,18 +10,33 @@ namespace CardGame
         [SerializeField] private MainView _mainView;
         [SerializeField] private PlayerView _playerView;
         [SerializeField] private PlayerView _enemyView;
+        [Header("provider")]
+        [SerializeField] private CardProvider _cardProvider;
+        [SerializeField] private FollowerProvider _followerProvider;
+        [SerializeField] private TrapProvider _trapProvider;
 
         private CompositeDisposable _disposables;
 
         private async void Awake()
         {
             _disposables = new();
+            //repository
+            var leaderRepo = new LeaderRepository();
+            var cardRepo = new CardRepository();
             //model
-            var player = new Player();
-            var enemy = new Player();
+            var player = new Player(0);
+            var enemy = new Player(1);
+            player.SetEnemy(enemy);
+            enemy.SetEnemy(player);
+            await player.CreateLeader();
+            await enemy.CreateLeader();
             await player.CreateDeck();
             await enemy.CreateDeck();
             var main = new Main(player, enemy);
+            //providers
+            _cardProvider.Init(8);
+            _followerProvider.Init(6);
+            _trapProvider.Init(4);
             //model AddTo
             main.AddTo(_disposables);
             player.AddTo(_disposables);
@@ -37,7 +52,7 @@ namespace CardGame
             mp.Bind(main, _mainView);
             mp.AddTo(_disposables);
             //player
-            var pp = new PlayerPresenter();
+            var pp = new PlayerPresenter(_cardProvider, _followerProvider, _trapProvider);
             pp.Bind(player, _playerView);
             pp.Bind(enemy, _enemyView);
             pp.AddTo(_disposables);

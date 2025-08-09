@@ -35,6 +35,48 @@ MonoBehaviour:
     m_SerializedLabels:
     - Card
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b394e69edad84bf1beaa013f2273fcb
+    m_Address: Assets/Data/Leader/0_Tarou.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Leader
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80b269b23a1c7484184ebae5d363084e
+    m_Address: Assets/Data/Leader/1_Hanako.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Leader
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dd8f35b1a6caa407cbbde6c87aa2ee37
+    m_Address: Assets/Data/Card/3_Coins.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07ee6782b26b74fa79cada9f8dc5d55d
+    m_Address: Assets/Data/Card/4_Yama.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f30d3211d57d249d883d954c69432328
+    m_Address: Assets/Data/Card/5_Dog.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ed45f30022ef4ef48f17e1a26087937
+    m_Address: Assets/Data/Card/6_hacker.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7ab7dd1f9b2f54a48aff519532c39e7f
+    m_Address: Assets/Data/Card/7_driver.asset
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Card
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: cd2470c599bc841a29e477a97c0ebda3, type: 2}
   m_SchemaSet:

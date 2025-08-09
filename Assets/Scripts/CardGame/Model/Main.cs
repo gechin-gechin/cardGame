@@ -9,6 +9,9 @@ namespace CardGame
 {
     public class Main : IDisposable
     {
+        public Action<string> OnMessage;
+        public Action<string, string> OnDescription;
+
         private IPlayer _player;
         private IPlayer _enemy;
         private CancellationTokenSource _timeOver_cts;
@@ -33,6 +36,12 @@ namespace CardGame
             //デリゲートの登録
             _player.OnTurnEnd += () => ChangeTurn(_enemy);
             _enemy.OnTurnEnd += () => ChangeTurn(_player);
+            _player.OnMessage = (str) => OnMessage?.Invoke(str);
+            _enemy.OnMessage = (str) => OnMessage?.Invoke(str);
+            _player.OnDescription = (name, desc) => OnDescription?.Invoke(name, desc);
+            _enemy.OnDescription = (name, desc) => OnDescription?.Invoke(name, desc);
+            _player.OnSelectable = SetNowSelectable;
+            _enemy.OnSelectable = SetNowSelectable;
         }
 
         public void Start()
@@ -71,6 +80,11 @@ namespace CardGame
             _timeOver_cts.Dispose();
 
             _disposables.Dispose();
+        }
+
+        private void SetNowSelectable(ISelectable selectable)
+        {
+
         }
     }
 }

@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: 2_jibnyan
   m_EditorClassIdentifier: 
   _id: 2
-  _name: pikachu
+  _name: jibanyan
   _cost: 4
+  _power: 3000
+  _sprite: {fileID: 21300000, guid: ce03d54ae4ffa4f2a9219266eb347d06, type: 3}

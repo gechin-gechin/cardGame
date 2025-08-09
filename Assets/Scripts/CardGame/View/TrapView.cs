@@ -1,0 +1,70 @@
+using System;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace CardGame
+{
+    public interface ITrapView
+    {
+        Action<int> OnTakeDamage { get; set; }
+        Action OnRelease { get; set; }
+        Action OnSelect { get; set; }
+        void Init(int playerID, string name, Sprite sprite);
+        void SetLife(int num);
+        void SetIsBlocker(bool value);
+        void SetSelectable(bool value);
+        void Release();
+    }
+    public class TrapView : PooledObject<TrapView>, ITrapView
+    {
+        public Action<int> OnTakeDamage { get; set; }
+        public Action OnRelease { get; set; }
+        public Action OnSelect { get; set; }
+        [SerializeField] private Image _image;
+        [SerializeField] private TMP_Text _nameText;
+        [SerializeField] private TMP_Text _lifeText;
+        [SerializeField] private DamageZone _damageZone;
+        [Header("status")]
+        [SerializeField] private Image _blockerSign;
+        [SerializeField] private Button _selectButton;
+
+        public void Init(int playerID, string name, Sprite sprite)
+        {
+            _nameText.text = name;
+            _image.sprite = sprite;
+            _damageZone.Init(playerID);
+            _damageZone.TakeDamage = (n) => OnTakeDamage?.Invoke(n);
+            _selectButton.onClick.AddListener(() => OnSelect?.Invoke());
+        }
+
+        public void SetLife(int num)
+        {
+            _lifeText.text = num.ToString();
+        }
+        //破壊時にはPooledObjectのRelease()を呼ぶ
+
+        public void Release()
+        {
+            OnRelease?.Invoke();
+            ReleaseToPool();
+            OnRelease = null;
+        }
+
+        public void SetIsBlocker(bool value)
+        {
+            _blockerSign.enabled = value;
+        }
+
+        public void SetSelectable(bool value)
+        {
+            _selectButton.gameObject.SetActive(value);
+        }
+
+        //購読の破棄
+        private void OnDestroy()
+        {
+            OnRelease?.Invoke();
+        }
+    }
+}
